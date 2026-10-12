@@ -124,3 +124,13 @@ test('el puente nativo vence las solicitudes y descarta respuestas tardías', as
   await assert.rejects(request, /La solicitud tardó demasiado/);
 });
 
+test('la capa de red no envía tokens antiguos al iniciar sesión e invalida sesiones ante HTTP 401', () => {
+  const network = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'remote', 'NetworkModule.kt'),
+    'utf8'
+  );
+  assert.match(network, /endsWith\("\/login",\s*ignoreCase\s*=\s*true\)/);
+  assert.match(network, /takeIf\s*\{\s*it\.isNotBlank\(\)\s*\}/);
+  assert.match(network, /response\.code\s*==\s*401/);
+  assert.match(network, /session\.clear\(\)/);
+});
