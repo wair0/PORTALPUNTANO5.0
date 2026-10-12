@@ -2,6 +2,7 @@ package com.gpsl.st.portalpuntano5.ui.web
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -16,8 +17,10 @@ class PortalBridge(private val webView: WebView, private val scope: CoroutineSco
                 val body = runCatching { Json.parseToJsonElement(payload).jsonObject }.getOrDefault(JsonObject(emptyMap()))
                 val result = router.handle(route, body)
                 eval("window.PortalBridge.resolve($id, ${result.sanitize()})")
-            } catch (t: Throwable) {
-                eval("window.PortalBridge.reject($id, ${JSONObject.quote(t.message ?: "Error inesperado")})")
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                eval("window.PortalBridge.reject($id, ${JSONObject.quote(e.message ?: "Error inesperado")})")
             }
         }
     }

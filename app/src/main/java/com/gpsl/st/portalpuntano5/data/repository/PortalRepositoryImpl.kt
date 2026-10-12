@@ -5,6 +5,7 @@ import com.gpsl.st.portalpuntano5.data.local.SessionStore
 import com.gpsl.st.portalpuntano5.data.remote.PortalApi
 import com.gpsl.st.portalpuntano5.domain.model.*
 import com.gpsl.st.portalpuntano5.domain.repository.PortalRepository
+import kotlinx.coroutines.CancellationException
 
 class PortalRepositoryImpl(
     private val api: PortalApi,
@@ -77,8 +78,20 @@ class PortalRepositoryImpl(
         if (demo) return DemoData.credentials
 
         val name = (session.fullName ?: "").uppercase()
-        val licenseResult = runCatching { api.driverLicense() }
-        val healthResult = runCatching { api.healthCredential() }
+        val licenseResult = try {
+            Result.success(api.driverLicense())
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+        val healthResult = try {
+            Result.success(api.healthCredential())
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
         val credentials = mutableListOf<Credential>()
 
         licenseResult.getOrNull()?.let {
