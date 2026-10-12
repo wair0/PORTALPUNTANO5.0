@@ -194,7 +194,7 @@ test('la interfaz se sirve desde WebViewAssetLoader y sus recursos no dependen d
     'utf8'
   );
   assert.match(activity, /WebViewAssetLoader/);
-  assert.match(activity, /appassets\.androidplatform\.net/);
+  assert.match(activity, /WebViewAssetLoader\.DEFAULT_DOMAIN/);
   assert.match(activity, /assets\/ui/);
   assert.doesNotMatch(html, /(?:src|href)=["']https?:\/\//i);
   assert.doesNotMatch(html, /@import\s+url\(["']?https?:\/\//i);
