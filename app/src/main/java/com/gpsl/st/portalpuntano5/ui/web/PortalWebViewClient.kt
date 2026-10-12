@@ -17,15 +17,24 @@ class PortalWebViewClient(
         request: WebResourceRequest
     ): WebResourceResponse? = loader.shouldInterceptRequest(request.url)
 
-    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-        val uri = request.url
-        val isTrustedAssetOrigin =
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
+        handleNavigation(view, request.url)
+
+    @Suppress("DEPRECATION")
+    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean =
+        handleNavigation(view, Uri.parse(url))
+
+    private fun handleNavigation(view: WebView, uri: Uri): Boolean {
+        val trustedLocalAsset =
             uri.scheme.equals("https", ignoreCase = true) &&
-            uri.host.equals(WebViewAssetLoader.DEFAULT_DOMAIN, ignoreCase = true)
+            uri.host.equals(WebViewAssetLoader.DEFAULT_DOMAIN, ignoreCase = true) &&
+            (uri.port == -1 || uri.port == 443) &&
+            uri.userInfo == null &&
+            uri.path.orEmpty().startsWith("/assets/")
 
-        if (isTrustedAssetOrigin) return false
+        if (trustedLocalAsset) return false
 
-        // Only ordinary web links may leave the app; block arbitrary/custom schemes.
+        // Only ordinary HTTP(S) links may leave the app; block custom schemes.
         if (uri.scheme.equals("https", ignoreCase = true) ||
             uri.scheme.equals("http", ignoreCase = true)
         ) {
