@@ -1,9 +1,9 @@
 package com.gpsl.st.portalpuntano5.scanner
 
 import android.content.Context
-import com.google.android.gms.codescanner.GmsBarcodeScannerOptions
-import com.google.android.gms.codescanner.GmsBarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.Serializable
 
