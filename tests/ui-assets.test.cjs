@@ -53,3 +53,10 @@ test('la pantalla principal y el acceso al escaneo conservan los elementos visua
   assert.match(css, /button\.scan \.beam/);
   assert.match(css, /@keyframes scanline/);
 });
+
+test('la navegación inferior identifica su región y la pestaña actual para lectores de pantalla', () => {
+  const screens = fs.readFileSync(path.join(assetsRoot, 'js', 'screens.js'), 'utf8');
+  assert.match(screens, /aria-label="Navegación principal"/);
+  assert.match(screens, /aria-current="page"/);
+  assert.match(screens, /button type="button" class="tab/);
+});
