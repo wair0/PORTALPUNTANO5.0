@@ -154,27 +154,27 @@ test('las rutas usadas por la interfaz existen en el contrato del puente Android
     'utf8'
   );
   const screens = fs.readFileSync(path.join(assetsRoot, 'js', 'screens.js'), 'utf8');
-  const routes = [...app.matchAll(/\\w+:\\s*\\['([^']+)'\\s*,\\s*'([^']+)'\\]/g)];
+  const routes = [...app.matchAll(/\w+:\s*\['([^']+)'\s*,\s*'([^']+)'\]/g)];
   assert.ok(routes.length > 0, 'debe haber rutas de pantalla declaradas');
 
   for (const [, bridgeRoute, screenName] of routes) {
     assert.match(
-      router,
-      new RegExp('"' + bridgeRoute.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&') + '"'),
+      router.includes('"' + bridgeRoute + '"'),
+      true,
       'la ruta del puente no está registrada: ' + bridgeRoute
     );
     assert.match(
-      screens,
-      new RegExp('S\\.' + screenName + '\\s*='),
+      screens.includes('S.' + screenName + '='),
+      true,
       'la pantalla no está implementada: ' + screenName
     );
   }
 
-  const calledRoutes = [...app.matchAll(/Bridge\\.call\\('([^']+)'/g)].map(match => match[1]);
+  const calledRoutes = [...app.matchAll(/Bridge\.call\('([^']+)'/g)].map(match => match[1]);
   for (const bridgeRoute of calledRoutes) {
     assert.match(
-      router,
-      new RegExp('"' + bridgeRoute.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&') + '"'),
+      router.includes('"' + bridgeRoute + '"'),
+      true,
       'la interfaz llama a una ruta sin contrato nativo: ' + bridgeRoute
     );
   }
