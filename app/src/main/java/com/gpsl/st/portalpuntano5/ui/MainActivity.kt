@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
         val loader = WebViewAssetLoader.Builder().addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this)).build()
         webView.apply {
             setBackgroundColor(Color.TRANSPARENT)
-            settings.apply { javaScriptEnabled = true; allowFileAccess = false; allowContentAccess = false; domStorageEnabled = true; setSupportZoom(false) }
+            settings.apply { javaScriptEnabled = true; allowFileAccess = false; allowContentAccess = false; allowFileAccessFromFileURLs = false; allowUniversalAccessFromFileURLs = false; domStorageEnabled = true; setSupportZoom(false) }
             if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, false)
             webViewClient = PortalWebViewClient(loader) { applyInsets() }
             addJavascriptInterface(PortalBridge(this, lifecycleScope, BridgeRouter(container, DniScanner(this@MainActivity))), "PortalNative")
