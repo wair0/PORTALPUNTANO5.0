@@ -27,6 +27,9 @@ test('la política de seguridad evita conexiones remotas desde la interfaz', () 
   assert.match(html, /connect-src 'self'/);
   assert.match(html, /script-src 'self'/);
   assert.match(html, /style-src 'self'/);
+  assert.match(html, /object-src 'none'/);
+  assert.match(html, /frame-src 'none'/);
+  assert.match(html, /worker-src 'none'/);
 });
 
 test('el WebView bloquea accesos a archivos y contenido desde orígenes locales', () => {
