@@ -47,7 +47,7 @@ Este documento registra el estado comprobado del repositorio y los contratos ent
 - [x] Identificar módulos que fallan explícitamente por falta de integración.
 - [ ] Validar contratos de API con documentación/proveedor oficial.
 - [ ] Añadir pruebas de contrato para respuestas válidas, errores HTTP y sesión expirada.
-- [ ] Verificar coherencia entre todas las acciones visibles en la UI y las rutas del puente.
+- [x] Verificar automáticamente que las rutas de pantalla y las llamadas visibles de la UI existan en el puente nativo; las descargas siguen marcadas como pendientes.
 
 ## Próximos pasos
 
