@@ -158,23 +158,20 @@ test('las rutas usadas por la interfaz existen en el contrato del puente Android
   assert.ok(routes.length > 0, 'debe haber rutas de pantalla declaradas');
 
   for (const [, bridgeRoute, screenName] of routes) {
-    assert.match(
+    assert.ok(
       router.includes('"' + bridgeRoute + '"'),
-      true,
       'la ruta del puente no está registrada: ' + bridgeRoute
     );
-    assert.match(
+    assert.ok(
       screens.includes('S.' + screenName + '='),
-      true,
       'la pantalla no está implementada: ' + screenName
     );
   }
 
   const calledRoutes = [...app.matchAll(/Bridge\.call\('([^']+)'/g)].map(match => match[1]);
   for (const bridgeRoute of calledRoutes) {
-    assert.match(
+    assert.ok(
       router.includes('"' + bridgeRoute + '"'),
-      true,
       'la interfaz llama a una ruta sin contrato nativo: ' + bridgeRoute
     );
   }
