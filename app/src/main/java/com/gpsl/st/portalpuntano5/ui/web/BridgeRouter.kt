@@ -1,5 +1,6 @@
 package com.gpsl.st.portalpuntano5.ui.web
 
+import com.gpsl.st.portalpuntano5.BuildConfig
 import com.gpsl.st.portalpuntano5.core.AppContainer
 import com.gpsl.st.portalpuntano5.domain.model.LoginRequest
 import com.gpsl.st.portalpuntano5.scanner.DniScanner
@@ -10,6 +11,7 @@ class BridgeRouter(private val c: AppContainer, private val scanner: DniScanner)
     private val json = Json { encodeDefaults = true }
     private inline fun <reified T> enc(v: T): String = json.encodeToString(v)
     suspend fun handle(route: String, payload: JsonObject): String = when (route) {
+        "app.status" -> enc(mapOf("demoMode" to BuildConfig.DEMO_MODE))
         "auth.session" -> enc(c.auth.currentSession())
         "auth.login" -> enc(c.auth.login(LoginRequest(payload.str("docNumber"), payload.str("sex").ifBlank { "M" }, payload.str("password"))))
         "auth.logout" -> { c.auth.logout(); """{"ok":true}""" }
