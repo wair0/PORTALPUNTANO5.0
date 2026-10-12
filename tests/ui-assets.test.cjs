@@ -145,3 +145,47 @@ test('Android bloquea tráfico HTTP sin excepciones por dominio', () => {
   assert.doesNotMatch(networkConfig, /cleartextTrafficPermitted="true"/);
   assert.doesNotMatch(networkConfig, /<domain-config/);
 });
+
+
+test('las rutas usadas por la interfaz existen en el contrato del puente Android', () => {
+  const root = path.join(__dirname, '..', 'app', 'src', 'main');
+  const router = fs.readFileSync(
+    path.join(root, 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'ui', 'web', 'BridgeRouter.kt'),
+    'utf8'
+  );
+  const screens = fs.readFileSync(path.join(assetsRoot, 'js', 'screens.js'), 'utf8');
+  const routes = [...app.matchAll(/\\w+:\\s*\\['([^']+)'\\s*,\\s*'([^']+)'\\]/g)];
+  assert.ok(routes.length > 0, 'debe haber rutas de pantalla declaradas');
+
+  for (const [, bridgeRoute, screenName] of routes) {
+    assert.match(
+      router,
+      new RegExp('"' + bridgeRoute.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&') + '"'),
+      'la ruta del puente no está registrada: ' + bridgeRoute
+    );
+    assert.match(
+      screens,
+      new RegExp('S\\.' + screenName + '\\s*='),
+      'la pantalla no está implementada: ' + screenName
+    );
+  }
+
+  const calledRoutes = [...app.matchAll(/Bridge\\.call\\('([^']+)'/g)].map(match => match[1]);
+  for (const bridgeRoute of calledRoutes) {
+    assert.match(
+      router,
+      new RegExp('"' + bridgeRoute.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&') + '"'),
+      'la interfaz llama a una ruta sin contrato nativo: ' + bridgeRoute
+    );
+  }
+});
+
+test('la descarga pendiente no se presenta como una operación implementada', () => {
+  const router = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'ui', 'web', 'BridgeRouter.kt'),
+    'utf8'
+  );
+  const docs = fs.readFileSync(path.join(__dirname, '..', 'docs', 'ESTADO_TECNICO_Y_CONTRATOS.md'), 'utf8');
+  assert.match(router, /"files\\.download"\\s*->\\s*error\\("Descarga disponible en la próxima fase"\\)/);
+  assert.match(docs, /\| `files\\.download` \| Devuelve error explícito indicando que la descarga aún no está disponible \| Pendiente \|/);
+});
