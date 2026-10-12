@@ -79,3 +79,34 @@ test('los datos del perfil se escapan antes de insertarse en el HTML', () => {
   assert.match(html, /&quot; autofocus onfocus=&quot;alert\(1\)/);
   assert.doesNotMatch(html, /<img src=x onerror=alert\(1\)>/);
 });
+
+test('el puente nativo vence las solicitudes y descarta respuestas tardías', async () => {
+  const vm = require('node:vm');
+  const bridgeSource = fs.readFileSync(path.join(assetsRoot, 'js', 'bridge.js'), 'utf8');
+  let timeoutCallback;
+  let requestId;
+  const window = {
+    PortalNative: {
+      request: id => { requestId = id; }
+    }
+  };
+
+  vm.runInNewContext(bridgeSource, {
+    window,
+    setTimeout: callback => {
+      timeoutCallback = callback;
+      return 1;
+    },
+    clearTimeout: () => {}
+  });
+
+  const request = window.Bridge.call('home.summary');
+  assert.equal(typeof timeoutCallback, 'function');
+  assert.equal(typeof requestId, 'number');
+  timeoutCallback();
+  await assert.rejects(request, /La solicitud tardó demasiado/);
+
+  assert.doesNotThrow(() => window.PortalBridge.resolve(requestId, { stale: true }));
+  await assert.rejects(request, /La solicitud tardó demasiado/);
+});
+
