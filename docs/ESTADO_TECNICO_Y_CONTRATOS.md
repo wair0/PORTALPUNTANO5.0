@@ -1,0 +1,59 @@
+# ESTADO TÉCNICO Y CONTRATOS — PORTAL PUNTANO 5.0
+
+## Alcance
+
+Este documento registra el estado comprobado del repositorio y los contratos entre la interfaz WebView, el puente Android, los repositorios de dominio y la API. No declara como operativos servicios que todavía no están integrados o validados.
+
+## Arquitectura actual
+
+- **Interfaz:** HTML, CSS y JavaScript local en `app/src/main/assets/ui/`.
+- **Puente:** `PortalBridge` / `BridgeRouter`; la interfaz solicita operaciones mediante rutas nombradas.
+- **Dominio:** modelos serializables e interfaces `AuthRepository` y `PortalRepository`.
+- **Datos:** `PortalRepositoryImpl` y `AuthRepositoryImpl`, con selección explícita entre modo demo y modo conectado.
+- **Red:** `NetworkModule` y `PortalApi`, con Retrofit y configuración de sesión.
+
+## Contrato de rutas del puente
+
+| Ruta | Comportamiento observado | Estado |
+|---|---|---|
+| `app.status` | Informa si está habilitado el modo demo | Implementado |
+| `auth.session` | Devuelve la sesión actual | Implementado |
+| `auth.login` / `auth.logout` | Inicio y cierre de sesión | Implementado; requiere validación contra el servicio oficial |
+| `auth.scanDni` | Solicita escaneo de DNI | Implementado; requiere prueba en dispositivo |
+| `home.summary` | Resume perfil, turno y trámites | Depende de turnos y trámites |
+| `health.overview` | En modo conectado falla explícitamente porque el servicio aún no está integrado | Pendiente |
+| `shifts.list` | Consulta turnos | Implementado en cliente; contrato remoto por validar |
+| `procedures.list` | Consulta trámites | Implementado en cliente; contrato remoto por validar |
+| `payslips.list` | Consulta liquidaciones | Implementado en cliente; contrato remoto por validar |
+| `credentials.list` | Consulta credenciales de conducir y salud | Implementado con manejo de errores; validar API real |
+| `education.students` | Consulta dependientes/estudiantes | Implementado en cliente; contrato remoto por validar |
+| `judicial.list` | Consulta expedientes | Implementado en cliente; contrato remoto por validar |
+| `civil.certificates` | Consulta certificados | Implementado en cliente; contrato remoto por validar |
+| `files.download` | Devuelve error explícito indicando que la descarga aún no está disponible | Pendiente |
+
+## Reglas obligatorias
+
+1. No mostrar datos ficticios como si fueran reales en modo conectado.
+2. No convertir errores de red, autenticación o cancelación en respuestas de éxito vacías.
+3. Propagar `CancellationException` para respetar la cancelación de corutinas.
+4. Mantener las llamadas de red en la capa de datos; la interfaz usa rutas del puente y no accede directamente a servicios externos.
+5. No activar el modo conectado por defecto ni declarar una API real lista hasta validar URL, autenticación, DTO y respuestas con el proveedor oficial.
+6. Las rutas que todavía no tienen implementación deben mostrar un estado pendiente explícito, no una simulación silenciosa.
+
+## Criterios de cierre de la fase 2
+
+- [x] Identificar capas y puntos de entrada actuales.
+- [x] Enumerar rutas públicas del puente y su estado observado.
+- [x] Identificar módulos que fallan explícitamente por falta de integración.
+- [ ] Validar contratos de API con documentación/proveedor oficial.
+- [ ] Añadir pruebas de contrato para respuestas válidas, errores HTTP y sesión expirada.
+- [ ] Verificar coherencia entre todas las acciones visibles en la UI y las rutas del puente.
+
+## Próximos pasos
+
+1. Completar la fase 2 con pruebas de contrato y revisión de rutas.
+2. Cerrar la fase 3 comprobando carga local de recursos, navegación y comportamiento sin conexión.
+3. Revisar seguridad de sesión, WebView y políticas de contenido en la fase 4.
+4. Integrar y validar servicios oficiales en la fase 5.
+5. Probar módulos y regresiones en la fase 6.
+6. Cerrar la fase 7 con CI verde, APK descargable directamente y pruebas en dispositivo.
