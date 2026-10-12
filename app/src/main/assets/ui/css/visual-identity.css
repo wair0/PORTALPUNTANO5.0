@@ -378,3 +378,115 @@ button[aria-disabled="true"] {
     transition-duration: .01ms !important;
   }
 }
+
+
+/* RECUPERACIÓN DE ELEMENTOS VISUALES PRESENTES EN EL DISEÑO DE REFERENCIA */
+.hero { isolation: isolate; }
+.hero .orbit {
+  position: absolute;
+  z-index: 0;
+  top: -34px;
+  right: -34px;
+  width: 170px;
+  height: 170px;
+  opacity: .85;
+  pointer-events: none;
+}
+.hero .orbit i {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(150,210,255,.35);
+  border-radius: 50%;
+}
+.hero .orbit i:nth-child(2) {
+  inset: 22px;
+  border-style: dashed;
+  animation: spin 40s linear infinite;
+}
+.hero .orbit i:nth-child(3) {
+  inset: 46px;
+  border-color: rgba(190,160,255,.5);
+  animation: spin 26s linear infinite reverse;
+}
+.hero .orbit i:nth-child(3)::after {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7fe7ff;
+  box-shadow: 0 0 14px #7fe7ff;
+  content: "";
+}
+button.scan {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 76px;
+  padding: 14px 16px;
+  overflow: hidden;
+  border: 1px dashed var(--line-strong);
+  border-radius: 20px;
+  background: var(--surface);
+  text-align: left;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease;
+}
+button.scan:active { transform: scale(.985); }
+button.scan .frame {
+  position: relative;
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: var(--blue);
+}
+button.scan .frame::before,
+button.scan .frame::after {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--cyan);
+  content: "";
+}
+button.scan .frame::before {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-top-left-radius: 8px;
+}
+button.scan .frame::after {
+  right: 0;
+  bottom: 0;
+  border-top: 0;
+  border-left: 0;
+  border-bottom-right-radius: 8px;
+}
+button.scan .beam {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  box-shadow: 0 0 14px var(--cyan);
+  animation: scanline 2.6s ease-in-out infinite;
+}
+button.scan > span:last-child { display: block; min-width: 0; }
+button.scan b { display: block; margin-bottom: 4px; font-size: 14px; }
+button.scan span span { color: var(--ink-2); font-size: 12px; font-weight: 400; }
+@keyframes scanline {
+  0%, 100% { top: 4px; opacity: .2; }
+  50% { top: calc(100% - 6px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero .orbit i,
+  button.scan .beam { animation: none !important; }
+}
