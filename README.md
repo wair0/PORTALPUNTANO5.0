@@ -7,8 +7,9 @@ Evolución de Portal Puntano 4.0: aplicación Android nativa con interfaz HTML/C
 - Rama principal: `main`.
 - Android: Kotlin, Gradle 8.9, JDK 17, minSdk 24.
 - Interfaz: HTML/CSS/JavaScript local, sin dependencias de CDN.
-- El modo de demostración está habilitado por defecto (`DEMO_MODE=true`); no representa información real.
+- El modo de demostración está habilitado por defecto (`DEMO_MODE=true`); sus datos son ficticios y no representan información real.
 - El flujo de GitHub Actions compila el APK debug y publica directamente el archivo APK como artefacto, sin crear un ZIP adicional dentro del artefacto.
+- La ejecución de CI del commit `04048ae` compiló correctamente el APK debug.
 
 ## Ejecutar
 
@@ -31,7 +32,7 @@ Evolución de Portal Puntano 4.0: aplicación Android nativa con interfaz HTML/C
 ## Plan de trabajo por fases
 
 1. **Base reproducible:** estructura Gradle, compilación CI y publicación directa del APK.
-2. **Integración de interfaz:** asegurar que HTML, CSS, JavaScript e iconos se cargan desde assets locales y que la navegación funciona.
+2. **Auditoría y estabilidad:** contratos Kotlin/JavaScript, tratamiento de errores y separación estricta entre datos demo y datos reales.
 3. **Autenticación y sesión:** validar el contrato real de inicio de sesión, persistencia cifrada, expiración y cierre de sesión.
 4. **Servicios:** comprobar endpoints y DTOs reales para turnos, trámites, recibos, credenciales, educación, expedientes y registro civil.
 5. **Funciones pendientes:** descargas PDF, solicitudes de turno/trámite y recuperación de contraseña.
@@ -40,7 +41,8 @@ Evolución de Portal Puntano 4.0: aplicación Android nativa con interfaz HTML/C
 ## Limitaciones conocidas
 
 - Los endpoints y campos DTO deben contrastarse con respuestas reales de los servidores; se han inferido de la app anterior y no deben considerarse validados.
-- La información médica permanece en modo demo hasta confirmar sus endpoints.
+- El resumen de salud usa datos de demostración únicamente con `DEMO_MODE=true`. En modo conectado informa que el servicio todavía no está integrado, en lugar de mostrar datos ficticios.
 - La descarga de archivos todavía no está implementada en el puente nativo.
-- El modo demo debe desactivarse antes de una distribución conectada a servicios reales.
+- Si fallan ambas consultas de credenciales en modo conectado, se informa el error en lugar de mostrar una lista vacía como resultado válido.
+- El modo demo debe desactivarse antes de una distribución conectada a servicios reales, una vez validados los endpoints.
 - No se incluye `gradlew` ni `gradle-wrapper.jar`; CI instala Gradle 8.9 y Android Studio puede sincronizar el proyecto.

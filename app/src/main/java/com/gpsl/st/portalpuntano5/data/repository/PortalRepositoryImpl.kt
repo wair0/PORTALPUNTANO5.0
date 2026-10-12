@@ -6,34 +6,130 @@ import com.gpsl.st.portalpuntano5.data.remote.PortalApi
 import com.gpsl.st.portalpuntano5.domain.model.*
 import com.gpsl.st.portalpuntano5.domain.repository.PortalRepository
 
-class PortalRepositoryImpl(private val api: PortalApi, private val session: SessionStore, private val demo: Boolean) : PortalRepository {
+class PortalRepositoryImpl(
+    private val api: PortalApi,
+    private val session: SessionStore,
+    private val demo: Boolean
+) : PortalRepository {
     private val doc get() = session.docNumber ?: error("Sesión expirada (401)")
+
     override suspend fun homeSummary(): HomeSummary {
         val profile = if (demo) DemoData.profile else {
-            val n = session.fullName ?: "Ciudadano"
-            Profile(n, doc, n.split(" ").filter { it.isNotBlank() }.take(2).joinToString("") { it.first().uppercase() })
+            val name = session.fullName ?: "Ciudadano"
+            Profile(
+                name,
+                doc,
+                name.split(" ").filter { it.isNotBlank() }
+                    .take(2).joinToString("") { it.first().uppercase() }
+            )
         }
-        val appts = appointments(); val procs = procedures()
-        return HomeSummary(profile, appts.firstOrNull { it.status != "REALIZADO" }, procs.count { it.status == "VIGENTE" }, 0)
+        val appts = appointments()
+        val procs = procedures()
+        return HomeSummary(
+            profile,
+            appts.firstOrNull { it.status != "REALIZADO" },
+            procs.count { it.status == "VIGENTE" },
+            0
+        )
     }
-    override suspend fun healthOverview() = DemoData.health
-    override suspend fun appointments(): List<Appointment> = if (demo) DemoData.appointments else api.appointments().map {
-        Appointment(it.id.orEmpty(), it.healthCenter.orEmpty(), it.specialty.orEmpty(), it.professional.orEmpty(), it.date.orEmpty(), it.time.orEmpty(), (it.status ?: "PENDIENTE").uppercase())
+
+    override suspend fun healthOverview(): HealthOverview {
+        if (demo) return DemoData.health
+        error("El servicio de salud todavía no está integrado y validado. No se muestran datos de demostración.")
     }
+
+    override suspend fun appointments(): List<Appointment> =
+        if (demo) DemoData.appointments else api.appointments().map {
+            Appointment(
+                it.id.orEmpty(),
+                it.healthCenter.orEmpty(),
+                it.specialty.orEmpty(),
+                it.professional.orEmpty(),
+                it.date.orEmpty(),
+                it.time.orEmpty(),
+                (it.status ?: "PENDIENTE").uppercase()
+            )
+        }
+
     private val steps = listOf("Iniciado", "En revisión", "Aprobación", "Listo")
-    override suspend fun procedures(): List<Procedure> = if (demo) DemoData.procedures else api.procedures(doc).map {
-        val done = (it.status ?: "").contains("REALIZ", true); val progress = it.progress ?: if (done) 100 else 33
-        Procedure(it.id.orEmpty(), it.name.orEmpty(), if (done) "REALIZADO" else "VIGENTE", progress, it.date.orEmpty(), steps, (progress * steps.size / 100).coerceIn(1, steps.size))
-    }
-    override suspend fun payslips(): List<Payslip> = if (demo) DemoData.payslips else api.liquidations().map { Payslip(it.id.orEmpty(), it.period.orEmpty(), it.net.orEmpty()) }
+
+    override suspend fun procedures(): List<Procedure> =
+        if (demo) DemoData.procedures else api.procedures(doc).map {
+            val done = (it.status ?: "").contains("REALIZ", true)
+            val progress = it.progress ?: if (done) 100 else 33
+            Procedure(
+                it.id.orEmpty(),
+                it.name.orEmpty(),
+                if (done) "REALIZADO" else "VIGENTE",
+                progress,
+                it.date.orEmpty(),
+                steps,
+                (progress * steps.size / 100).coerceIn(1, steps.size)
+            )
+        }
+
+    override suspend fun payslips(): List<Payslip> =
+        if (demo) DemoData.payslips else api.liquidations().map {
+            Payslip(it.id.orEmpty(), it.period.orEmpty(), it.net.orEmpty())
+        }
+
     override suspend fun credentials(): List<Credential> {
         if (demo) return DemoData.credentials
-        val name = (session.fullName ?: "").uppercase(); val out = mutableListOf<Credential>()
-        runCatching { api.driverLicense() }.getOrNull()?.let { out += Credential("LICENCIA", "Licencia de conducir", name, it.number.orEmpty(), it.expiration.orEmpty(), it.categories.orEmpty()) }
-        runCatching { api.healthCredential() }.getOrNull()?.let { out += Credential("SALUD", "Credencial personal de salud", name, it.number.orEmpty(), it.expiration ?: "Vigente", "") }
-        return out
+
+        val name = (session.fullName ?: "").uppercase()
+        val licenseResult = runCatching { api.driverLicense() }
+        val healthResult = runCatching { api.healthCredential() }
+        val credentials = mutableListOf<Credential>()
+
+        licenseResult.getOrNull()?.let {
+            credentials += Credential(
+                "LICENCIA",
+                "Licencia de conducir",
+                name,
+                it.number.orEmpty(),
+                it.expiration.orEmpty(),
+                it.categories.orEmpty()
+            )
+        }
+        healthResult.getOrNull()?.let {
+            credentials += Credential(
+                "SALUD",
+                "Credencial personal de salud",
+                name,
+                it.number.orEmpty(),
+                it.expiration ?: "Vigente",
+                ""
+            )
+        }
+
+        if (credentials.isEmpty()) {
+            val cause = licenseResult.exceptionOrNull() ?: healthResult.exceptionOrNull()
+            throw IllegalStateException(
+                "No se pudieron consultar las credenciales. El servicio no respondió correctamente.",
+                cause
+            )
+        }
+        return credentials
     }
-    override suspend fun students(): List<Student> = if (demo) DemoData.students else api.students().map { Student(it.id.orEmpty(), it.name.orEmpty(), it.docNumber.orEmpty(), it.school.orEmpty()) }
-    override suspend fun expedients(): List<Expedient> = if (demo) DemoData.expedients else api.expedients(doc).map { Expedient(it.id.orEmpty(), it.number.orEmpty(), it.subject.orEmpty(), it.court.orEmpty(), it.lastAction.orEmpty()) }
-    override suspend fun civilCertificates(): List<CivilCertificate> = if (demo) DemoData.certificates else api.certificates().map { CivilCertificate(it.id.orEmpty(), it.type.orEmpty(), it.date.orEmpty()) }
+
+    override suspend fun students(): List<Student> =
+        if (demo) DemoData.students else api.students().map {
+            Student(it.id.orEmpty(), it.name.orEmpty(), it.docNumber.orEmpty(), it.school.orEmpty())
+        }
+
+    override suspend fun expedients(): List<Expedient> =
+        if (demo) DemoData.expedients else api.expedients(doc).map {
+            Expedient(
+                it.id.orEmpty(),
+                it.number.orEmpty(),
+                it.subject.orEmpty(),
+                it.court.orEmpty(),
+                it.lastAction.orEmpty()
+            )
+        }
+
+    override suspend fun civilCertificates(): List<CivilCertificate> =
+        if (demo) DemoData.certificates else api.certificates().map {
+            CivilCertificate(it.id.orEmpty(), it.type.orEmpty(), it.date.orEmpty())
+        }
 }
