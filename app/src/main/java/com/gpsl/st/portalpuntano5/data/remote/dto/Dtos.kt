@@ -1,0 +1,13 @@
+package com.gpsl.st.portalpuntano5.data.remote.dto
+
+import kotlinx.serialization.Serializable
+
+@Serializable data class LoginRequestDto(val docNumber: String, val sex: String, val password: String)
+@Serializable data class LoginResponseDto(val token: String? = null, val fullName: String? = null)
+@Serializable data class ProcedureDto(val id: String? = null, val name: String? = null, val status: String? = null, val date: String? = null, val progress: Int? = null)
+@Serializable data class LiquidationDto(val id: String? = null, val period: String? = null, val net: String? = null)
+@Serializable data class ExpedientDto(val id: String? = null, val number: String? = null, val subject: String? = null, val court: String? = null, val lastAction: String? = null)
+@Serializable data class CertificateDto(val id: String? = null, val type: String? = null, val date: String? = null)
+@Serializable data class AppointmentDto(val id: String? = null, val healthCenter: String? = null, val specialty: String? = null, val professional: String? = null, val date: String? = null, val time: String? = null, val status: String? = null)
+@Serializable data class CredentialDto(val holder: String? = null, val number: String? = null, val expiration: String? = null, val categories: String? = null)
+@Serializable data class StudentDto(val id: String? = null, val name: String? = null, val docNumber: String? = null, val school: String? = null)

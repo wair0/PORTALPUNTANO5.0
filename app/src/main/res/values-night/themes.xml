@@ -1,0 +1,1 @@
+<resources><style name="Theme.PortalPuntano" parent="android:style/Theme.Material.NoActionBar"><item name="android:colorAccent">#10BFE9</item><item name="android:statusBarColor">#050B1E</item><item name="android:navigationBarColor">#050B1E</item></style></resources>

@@ -1,0 +1,5 @@
+-keepattributes *Annotation*, InnerClasses, Signature
+-keepclassmembers class * { @android.webkit.JavascriptInterface <methods>; }
+-keep,includedescriptorclasses class com.gpsl.st.portalpuntano5.**$$serializer { *; }
+-keepclassmembers class com.gpsl.st.portalpuntano5.** { *** Companion; }
+-dontwarn okhttp3.internal.platform.**
