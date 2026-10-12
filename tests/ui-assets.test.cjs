@@ -186,3 +186,34 @@ test('la descarga pendiente no se presenta como una operación implementada', ()
   assert.match(router, /"files\\.download"\\s*->\\s*error\\("Descarga disponible en la próxima fase"\\)/);
   assert.ok(docs.includes("| `files.download` | Devuelve error explícito indicando que la descarga aún no está disponible | Pendiente |"));
 });
+
+
+test('la interfaz se sirve desde WebViewAssetLoader y sus recursos no dependen de Internet', () => {
+  const activity = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'ui', 'MainActivity.kt'),
+    'utf8'
+  );
+  assert.match(activity, /WebViewAssetLoader/);
+  assert.match(activity, /appassets\.androidplatform\.net/);
+  assert.match(activity, /assets\/ui/);
+  assert.doesNotMatch(html, /(?:src|href)=["']https?:\/\//i);
+  assert.doesNotMatch(html, /@import\s+url\(["']?https?:\/\//i);
+});
+
+test('el puente libera solicitudes agotadas y no deja respuestas tardías pendientes', async () => {
+  const vm = require('node:vm');
+  const bridgeSource = fs.readFileSync(path.join(assetsRoot, 'js', 'bridge.js'), 'utf8');
+  let timer;
+  let requestedId;
+  const window = { PortalNative: { request: id => { requestedId = id; } } };
+  vm.runInNewContext(bridgeSource, {
+    window,
+    setTimeout: callback => { timer = callback; return 1; },
+    clearTimeout: () => {}
+  });
+
+  const pending = window.Bridge.call('home.summary');
+  timer();
+  await assert.rejects(pending, /La solicitud tardó demasiado/);
+  assert.doesNotThrow(() => window.PortalBridge.resolve(requestedId, { late: true }));
+});
