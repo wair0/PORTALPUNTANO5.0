@@ -183,7 +183,7 @@ test('la descarga pendiente no se presenta como una operación implementada', ()
     'utf8'
   );
   const docs = fs.readFileSync(path.join(__dirname, '..', 'docs', 'ESTADO_TECNICO_Y_CONTRATOS.md'), 'utf8');
-  assert.match(router, /"files\\.download"\\s*->\\s*error\\("Descarga disponible en la próxima fase"\\)/);
+  assert.ok(router.replace(/\s+/g, " ").includes('"files.download" -> error("Descarga disponible en la próxima fase")'));
   assert.ok(docs.includes("| `files.download` | Devuelve error explícito indicando que la descarga aún no está disponible | Pendiente |"));
 });
 
