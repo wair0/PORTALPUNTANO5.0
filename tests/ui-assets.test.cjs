@@ -44,3 +44,12 @@ test('las pantallas principales tienen una ruta de aplicación declarada', () =>
     assert.match(app, new RegExp('\\b' + route + ':\\s*\\['), 'falta la ruta ' + route);
   }
 });
+
+test('la pantalla principal y el acceso al escaneo conservan los elementos visuales del diseño', () => {
+  const screens = fs.readFileSync(path.join(assetsRoot, 'js', 'screens.js'), 'utf8');
+  assert.match(screens, /class="orbit"/);
+  assert.match(screens, /class="scan"/);
+  assert.match(css, /\.hero \.orbit/);
+  assert.match(css, /button\.scan \.beam/);
+  assert.match(css, /@keyframes scanline/);
+});
