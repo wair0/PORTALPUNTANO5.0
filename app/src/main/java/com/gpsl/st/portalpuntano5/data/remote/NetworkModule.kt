@@ -13,8 +13,20 @@ import java.util.concurrent.TimeUnit
 class NetworkModule(private val session: SessionStore) {
     private val json = Json { ignoreUnknownKeys = true; isLenient = true; coerceInputValues = true; explicitNulls = false }
     private val auth = Interceptor { chain ->
-        val req = chain.request().newBuilder().apply { session.token?.let { header("Authorization", "Bearer $it") } }.build()
-        chain.proceed(req)
+        val original = chain.request()
+        val isLoginRequest = original.url.encodedPath.trimEnd('/').endsWith("/login", ignoreCase = true)
+        val request = original.newBuilder().apply {
+            if (!isLoginRequest) session.token?.takeIf { it.isNotBlank() }?.let {
+                header("Authorization", "Bearer $it")
+            }
+        }.build()
+        val response = chain.proceed(request)
+        if (response.code == 401) {
+            // Una respuesta de no autorizado invalida la sesión local para evitar
+            // seguir enviando un token caducado en las siguientes peticiones.
+            session.clear()
+        }
+        response
     }
     private val client = OkHttpClient.Builder().addInterceptor(auth)
         .connectTimeout(20, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build()
