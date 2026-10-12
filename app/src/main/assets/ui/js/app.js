@@ -6,12 +6,37 @@
   window.PortalDemoMode=!Bridge.isNative;
 
   const modeStatus=Bridge.call('app.status')
-    .then(status=>{window.PortalDemoMode=!!(status&&status.demoMode);})
-    .catch(()=>{window.PortalDemoMode=!Bridge.isNative;});
+    .then(status=>{
+      window.PortalDemoMode=!!(status&&status.demoMode);
+      syncDemoBanner();
+    })
+    .catch(()=>{
+      window.PortalDemoMode=!Bridge.isNative;
+      syncDemoBanner();
+    });
   const modeReady=Promise.race([
     modeStatus,
     new Promise(resolve=>setTimeout(resolve,800))
   ]);
+
+  function syncDemoBanner(){
+    const screen=root.querySelector('.screen');
+    if(!screen)return;
+    const existing=screen.querySelector('.demo-banner');
+    if(window.PortalDemoMode&&!existing){
+      const banner=document.createElement('div');
+      banner.className='demo-banner';
+      banner.setAttribute('role','status');
+      const title=document.createElement('b');
+      title.textContent='MODO DEMOSTRACIÓN';
+      const description=document.createElement('span');
+      description.textContent='Los datos mostrados son ficticios y no representan registros oficiales.';
+      banner.append(title,description);
+      screen.prepend(banner);
+    }else if(!window.PortalDemoMode&&existing){
+      existing.remove();
+    }
+  }
 
   function toast(message){
     const item=document.createElement('div');
