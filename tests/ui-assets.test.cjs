@@ -29,6 +29,17 @@ test('la política de seguridad evita conexiones remotas desde la interfaz', () 
   assert.match(html, /style-src 'self'/);
 });
 
+test('el WebView bloquea accesos a archivos y contenido desde orígenes locales', () => {
+  const activity = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'ui', 'MainActivity.kt'),
+    'utf8'
+  );
+  assert.match(activity, /allowFileAccess\s*=\s*false/);
+  assert.match(activity, /allowContentAccess\s*=\s*false/);
+  assert.match(activity, /allowFileAccessFromFileURLs\s*=\s*false/);
+  assert.match(activity, /allowUniversalAccessFromFileURLs\s*=\s*false/);
+});
+
 test('la capa visual incluye foco accesible, pantallas pequeñas y movimiento reducido', () => {
   assert.match(css, /:focus-visible/);
   assert.match(css, /max-width:\s*359px/);
