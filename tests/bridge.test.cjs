@@ -5,9 +5,13 @@ const vm = require('node:vm');
 
 const source = fs.readFileSync('app/src/main/assets/ui/js/bridge.js', 'utf8');
 
-function loadBridge(native, mock) {
+function loadBridge(native, mock, timers = {}) {
   const window = { PortalNative: native, Mock: mock || { handle: () => Promise.resolve({ demo: true }) } };
-  vm.runInNewContext(source, { window });
+  vm.runInNewContext(source, {
+    window,
+    setTimeout: timers.setTimeout || setTimeout,
+    clearTimeout: timers.clearTimeout || clearTimeout
+  });
   return window;
 }
 
@@ -45,4 +49,17 @@ test('convierte rechazos del lado nativo en errores de JavaScript', async () => 
     window.PortalBridge.reject(id, 'sesión expirada');
   }});
   await assert.rejects(window.Bridge.call('auth.session'), /sesión expirada/);
+});
+
+test('rechaza solicitudes que superan el tiempo límite y descarta respuestas tardías', async () => {
+  let requestId;
+  const window = loadBridge({ request(id) { requestId = id; } }, null, {
+    setTimeout: (callback) => setTimeout(callback, 0),
+    clearTimeout
+  });
+  await assert.rejects(
+    window.Bridge.call('home.summary'),
+    /La solicitud tardó demasiado/
+  );
+  assert.doesNotThrow(() => window.PortalBridge.resolve(requestId, { ok: true }));
 });
