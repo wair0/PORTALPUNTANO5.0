@@ -1,1 +1,93 @@
-:root{--bg:#edf2fa;--bg-2:#e2eaf6;--surface:rgba(255,255,255,.78);--surface-2:#fff;--surface-solid:#fff;--line:rgba(22,52,112,.12);--line-strong:rgba(22,52,112,.22);--grid:rgba(30,70,150,.07);--ink:#0a1a3a;--ink-2:#4b5d7d;--ink-3:#8797b3;--cyan:#10bfe9;--blue:#2f6bff;--violet:#7b4dff;--magenta:#c2399b;--mint:#12b87b;--amber:#f5a524;--rose:#ff4d6d;--grad-primary:linear-gradient(135deg,#2f6bff,#10bfe9);--grad-aurora:linear-gradient(135deg,#7b4dff,#2f6bff 46%,#10bfe9);--grad-night:linear-gradient(160deg,#0b1a45,#10285f 55%,#0d3a78);--shadow-sm:0 4px 14px rgba(10,26,58,.08);--shadow-md:0 14px 34px rgba(30,70,150,.14);--shadow-lg:0 24px 60px rgba(30,70,150,.22);--glow-blue:0 10px 30px rgba(47,107,255,.38);--r-sm:12px;--r-md:18px;--r-lg:26px;--r-xl:34px;--font:Inter,system-ui,-apple-system,Roboto,sans-serif;--font-mono:ui-monospace,monospace;--safe-top:0px;--safe-bottom:0px;--ease:cubic-bezier(.22,.8,.24,1)}:root[data-theme=dark],:root[data-theme=auto].is-dark{--bg:#050b1e;--bg-2:#081230;--surface:rgba(20,34,72,.72);--surface-2:#1a2a58;--surface-solid:#0e1a3d;--line:rgba(140,180,255,.16);--line-strong:rgba(140,180,255,.3);--grid:rgba(120,170,255,.08);--ink:#eaf1ff;--ink-2:#a7b7d9;--ink-3:#6f82ab}
+/* ==========================================================================
+   PORTAL PUNTANO 5.0 — Design tokens
+   Estilo: High-Tech Corporativo · "Utopía futurista"
+   Luz perlada, vidrio esmerilado, cian eléctrico + violeta aurora.
+   El magenta de la marca 4.0 (#932a7e) sobrevive como acento institucional.
+   ========================================================================== */
+
+:root {
+  /* Superficies */
+  --bg:            #edf2fa;
+  --bg-2:          #e2eaf6;
+  --surface:       rgba(255, 255, 255, .72);
+  --surface-2:     rgba(255, 255, 255, .88);
+  --surface-solid: #ffffff;
+  --line:          rgba(22, 52, 112, .12);
+  --line-strong:   rgba(22, 52, 112, .22);
+  --grid:          rgba(30, 70, 150, .07);
+
+  /* Tinta */
+  --ink:   #0a1a3a;
+  --ink-2: #4b5d7d;
+  --ink-3: #8797b3;
+  --on-accent: #ffffff;
+
+  /* Acentos */
+  --cyan:    #10bfe9;
+  --blue:    #2f6bff;
+  --violet:  #7b4dff;
+  --magenta: #c2399b;
+  --mint:    #12b87b;
+  --amber:   #f5a524;
+  --rose:    #ff4d6d;
+
+  --grad-primary: linear-gradient(135deg, #2f6bff 0%, #10bfe9 100%);
+  --grad-aurora:  linear-gradient(135deg, #7b4dff 0%, #2f6bff 46%, #10bfe9 100%);
+  --grad-brand:   linear-gradient(135deg, #c2399b 0%, #7b4dff 55%, #2f6bff 100%);
+  --grad-night:   linear-gradient(160deg, #0b1a45 0%, #10285f 55%, #0d3a78 100%);
+
+  /* Sombras y brillos */
+  --shadow-sm:  0 1px 2px rgba(10, 26, 58, .06), 0 4px 14px rgba(10, 26, 58, .06);
+  --shadow-md:  0 2px 4px rgba(10, 26, 58, .05), 0 14px 34px rgba(30, 70, 150, .14);
+  --shadow-lg:  0 24px 60px rgba(30, 70, 150, .22);
+  --glow-cyan:  0 0 0 1px rgba(16, 191, 233, .35), 0 8px 28px rgba(16, 191, 233, .38);
+  --glow-blue:  0 10px 30px rgba(47, 107, 255, .38);
+
+  /* Forma */
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 26px;
+  --r-xl: 34px;
+
+  /* Tipografía (sin dependencias de red: la app funciona offline) */
+  --font:      "Inter", "SF Pro Display", "Segoe UI Variable", "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* Zonas seguras — Kotlin las sobreescribe con los insets reales */
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+
+  --ease: cubic-bezier(.22, .8, .24, 1);
+}
+
+/* Modo noche "Órbita" */
+:root[data-theme="dark"],
+:root[data-theme="auto"].is-dark {
+  --bg:            #050b1e;
+  --bg-2:          #081230;
+  --surface:       rgba(20, 34, 72, .58);
+  --surface-2:     rgba(26, 42, 88, .78);
+  --surface-solid: #0e1a3d;
+  --line:          rgba(140, 180, 255, .16);
+  --line-strong:   rgba(140, 180, 255, .30);
+  --grid:          rgba(120, 170, 255, .08);
+  --ink:   #eaf1ff;
+  --ink-2: #a7b7d9;
+  --ink-3: #6f82ab;
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, .4), 0 4px 14px rgba(0, 0, 0, .35);
+  --shadow-md:  0 2px 4px rgba(0, 0, 0, .4), 0 14px 34px rgba(0, 0, 0, .45);
+  --shadow-lg:  0 24px 60px rgba(0, 0, 0, .55);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --bg: #050b1e; --bg-2: #081230;
+    --surface: rgba(20, 34, 72, .58); --surface-2: rgba(26, 42, 88, .78); --surface-solid: #0e1a3d;
+    --line: rgba(140, 180, 255, .16); --line-strong: rgba(140, 180, 255, .30);
+    --grid: rgba(120, 170, 255, .08);
+    --ink: #eaf1ff; --ink-2: #a7b7d9; --ink-3: #6f82ab;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.35);
+    --shadow-md: 0 2px 4px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.45);
+    --shadow-lg: 0 24px 60px rgba(0,0,0,.55);
+  }
+}
