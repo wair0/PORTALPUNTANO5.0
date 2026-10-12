@@ -134,3 +134,14 @@ test('la capa de red no envía tokens antiguos al iniciar sesión e invalida ses
   assert.match(network, /response\.code\s*==\s*401/);
   assert.match(network, /session\.clear\(\)/);
 });
+
+test('Android bloquea tráfico HTTP sin excepciones por dominio', () => {
+  const root = path.join(__dirname, '..', 'app', 'src', 'main');
+  const manifest = fs.readFileSync(path.join(root, 'AndroidManifest.xml'), 'utf8');
+  const networkConfig = fs.readFileSync(path.join(root, 'res', 'xml', 'network_security_config.xml'), 'utf8');
+  assert.match(manifest, /android:networkSecurityConfig="@xml\/network_security_config"/);
+  assert.match(networkConfig, /<base-config\s+cleartextTrafficPermitted="false">/);
+  assert.match(networkConfig, /<certificates\s+src="system"\s*\/>/);
+  assert.doesNotMatch(networkConfig, /cleartextTrafficPermitted="true"/);
+  assert.doesNotMatch(networkConfig, /<domain-config/);
+});
