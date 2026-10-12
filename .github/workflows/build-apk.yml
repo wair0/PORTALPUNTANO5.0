@@ -16,7 +16,7 @@ jobs:
           gradle-version: '8.9'
       - name: Validar sintaxis de JavaScript
         run: |
-          node --test tests/bridge.test.cjs
+          node --test tests/*.test.cjs
           node --check app/src/main/assets/ui/js/app.js
           node --check app/src/main/assets/ui/js/bridge.js
           node --check app/src/main/assets/ui/js/screens.js
