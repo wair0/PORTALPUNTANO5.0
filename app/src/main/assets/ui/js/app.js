@@ -41,9 +41,13 @@
   function toast(message){
     const item=document.createElement('div');
     item.className='toast';
-    item.textContent=message;
+    item.setAttribute('role','status');
+    item.setAttribute('aria-live','polite');
+    item.setAttribute('aria-atomic','true');
+    item.textContent=String(message||'Ocurrió un error inesperado.');
+    root.querySelectorAll('.toast').forEach(existing=>existing.remove());
     root.appendChild(item);
-    setTimeout(()=>item.remove(),2500);
+    setTimeout(()=>item.remove(),3500);
   }
 
   window.PortalUI={
