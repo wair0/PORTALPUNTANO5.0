@@ -60,3 +60,22 @@ test('la navegación inferior identifica su región y la pestaña actual para le
   assert.match(screens, /aria-current="page"/);
   assert.match(screens, /button type="button" class="tab/);
 });
+
+test('los datos del perfil se escapan antes de insertarse en el HTML', () => {
+  const vm = require('node:vm');
+  const screensSource = fs.readFileSync(path.join(assetsRoot, 'js', 'screens.js'), 'utf8');
+  const window = {
+    Icons: { svg: () => '<svg></svg>', mark: '<svg></svg>' },
+    PortalDemoMode: false
+  };
+  vm.runInNewContext(screensSource, { window });
+  const html = window.Screens.profile({
+    profile: {
+      fullName: '<img src=x onerror=alert(1)>',
+      docNumber: '" autofocus onfocus="alert(1)'
+    }
+  });
+  assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt;/);
+  assert.match(html, /&quot; autofocus onfocus=&quot;alert\(1\)/);
+  assert.doesNotMatch(html, /<img src=x onerror=alert\(1\)>/);
+});
