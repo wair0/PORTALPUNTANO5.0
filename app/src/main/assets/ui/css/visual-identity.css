@@ -296,3 +296,15 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Composición responsive de servicios en la pantalla principal */
+.grid-2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; align-items:stretch; }
+.grid-2 > .tile { width:100%; min-width:0; min-height:138px; margin:0; padding:14px; }
+.grid-2 > .tile .ico { width:42px; height:42px; }
+.grid-2 > .tile .go { right:12px; top:12px; }
+@media (max-width:340px) {
+  .grid-2 { gap:8px; }
+  .grid-2 > .tile { min-height:126px; padding:11px; }
+  .grid-2 > .tile strong { font-size:13px; }
+  .grid-2 > .tile small { font-size:10px; }
+}
