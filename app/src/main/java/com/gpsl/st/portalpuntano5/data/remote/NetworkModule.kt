@@ -18,7 +18,12 @@ class NetworkModule(private val session: SessionStore) {
     }
     private val client = OkHttpClient.Builder().addInterceptor(auth)
         .connectTimeout(20, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build()
-    private fun retrofit(baseUrl: String) = Retrofit.Builder().baseUrl(baseUrl).client(client)
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+    private fun retrofit(baseUrl: String): Retrofit {
+        require(BuildConfig.DEMO_MODE || baseUrl.startsWith("https://", ignoreCase = true)) {
+            "Configuración insegura: el servicio debe usar HTTPS antes de habilitar el modo conectado."
+        }
+        return Retrofit.Builder().baseUrl(baseUrl).client(client)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+    }
     val portal: PortalApi by lazy { retrofit(BuildConfig.PORTAL_BASE_URL).create(PortalApi::class.java) }
 }

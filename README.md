@@ -8,6 +8,7 @@ Evolución de Portal Puntano 4.0: aplicación Android nativa con interfaz HTML/C
 - Android: Kotlin, Gradle 8.9, JDK 17, minSdk 24.
 - Interfaz: HTML/CSS/JavaScript local, sin dependencias de CDN.
 - El modo de demostración está habilitado por defecto (`DEMO_MODE=true`); sus datos son ficticios y no representan información real.
+- El cliente bloquea la inicialización de servicios HTTP sin cifrar cuando se desactiva el modo demo; antes de conectar usuarios reales, las URL de API deben migrarse y validarse con HTTPS.
 - El flujo de GitHub Actions compila el APK debug y publica directamente el archivo APK como artefacto, sin crear un ZIP adicional dentro del artefacto.
 - La ejecución de CI del commit `04048ae` compiló correctamente el APK debug.
 
