@@ -115,10 +115,27 @@
     if(target.hasAttribute('data-item')){
       const index=Number(target.getAttribute('data-item'));
       if(Number.isInteger(index)&&detailItems[index]){
-        current='detail';
+        const item=detailItems[index];
         const titles={shifts:'Turno',procedures:'Trámite',credentials:'Credencial',payslips:'Recibo de sueldo',education:'Alumno',judicial:'Expediente judicial',civil:'Certificado',health:'Registro de salud'};
         const tabs={shifts:'shifts',procedures:'procedures',credentials:'credentials',payslips:'profile',education:'profile',judicial:'profile',civil:'profile',health:'home'};
-        paint(Screens.detail(detailItems[index],titles[detailRoute]||'Detalle',tabs[detailRoute]||'profile'));
+        const openDetail=data=>{
+          if(current!=='detail')return;
+          paint(Screens.detail(data,titles[detailRoute]||'Detalle',tabs[detailRoute]||'profile'));
+        };
+        if(detailRoute==='judicial'&&item.id){
+          current='detail'; paint(Screens.loading());
+          Bridge.call('judicial.actions',{id:String(item.id)})
+            .then(data=>openDetail({expediente:item,actuaciones:data}))
+            .catch(error=>{if(current==='detail')paint(Screens.error(error.message||'No se pudieron cargar las actuaciones.'));});
+        }else if(detailRoute==='education'&&item.id){
+          current='detail'; paint(Screens.loading());
+          Bridge.call('education.studentDetail',{studentId:String(item.id)})
+            .then(data=>openDetail({alumno:item,datosEducativos:data}))
+            .catch(error=>{if(current==='detail')paint(Screens.error(error.message||'No se pudieron cargar los datos educativos.'));});
+        }else{
+          current='detail';
+          paint(Screens.detail(item,titles[detailRoute]||'Detalle',tabs[detailRoute]||'profile'));
+        }
       }
       return;
     }
