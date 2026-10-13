@@ -34,7 +34,7 @@ class SectionDiagnosticLogger(context: Context) {
 
     @Synchronized
     fun recordFailure(route: String, elapsedMs: Long, error: Exception, docNumber: String?, tokenPresent: Boolean) {
-        val http = error as? HttpException
+        val http = generateSequence(error as Throwable?) { it.cause }.filterIsInstance<HttpException>().firstOrNull()
         val request = http?.response()?.raw()?.request
         val body = runCatching { http?.response()?.errorBody()?.string().orEmpty() }
             .getOrDefault("(no se pudo leer el cuerpo HTTP)")
