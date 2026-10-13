@@ -30,7 +30,7 @@ android {
         buildConfigField("String", "SALUD_BASE_URL", "\"${healthBaseUrl}\"")
         buildConfigField("String", "RECIPE_BASE_URL", "\"${recipeBaseUrl}\"")
         buildConfigField("String", "EDU_BASE_URL", "\"${educationBaseUrl}\"")
-        buildConfigField("boolean", "DEMO_MODE", "true")
+        buildConfigField("boolean", "DEMO_MODE", "false")
     }
     buildTypes { release { isMinifyEnabled = true; isShrinkResources = true; proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro") } }
     buildFeatures { buildConfig = true }
