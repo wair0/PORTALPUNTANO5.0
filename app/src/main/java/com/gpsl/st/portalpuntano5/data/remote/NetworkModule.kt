@@ -16,16 +16,20 @@ class NetworkModule(private val session: SessionStore) {
     private val auth = Interceptor { chain ->
         val configuredBaseUrl = BuildConfig.PORTAL_BASE_URL.trim()
         if (configuredBaseUrl.isBlank()) {
-            throw IOException("Portal Puntano real no está configurado: falta PORTAL_BASE_URL con una dirección HTTPS oficial.")
+            throw IOException("Portal Puntano real no está configurado: falta PORTAL_BASE_URL.")
         }
-        if (!configuredBaseUrl.startsWith("https://", ignoreCase = true)) {
-            throw IOException("Configuración rechazada por seguridad: Portal Puntano debe usar HTTPS.")
+        // Compatibilidad con la URL exacta que usa el código fuente de Portal Puntano 4.0.
+        // Atención: este endpoint heredado usa HTTP y no cifra credenciales ni tokens.
+        val isKnownLegacyEndpoint =
+            configuredBaseUrl.equals("http://puntano.gob.ar:8080/portalServer/", ignoreCase = true)
+        if (!configuredBaseUrl.startsWith("https://", ignoreCase = true) && !isKnownLegacyEndpoint) {
+            throw IOException("Configuración rechazada: use HTTPS o la URL heredada exacta de Portal Puntano 4.0.")
         }
         val original = chain.request()
         val isLoginRequest = original.url.encodedPath.trimEnd('/').endsWith("/login", ignoreCase = true)
         val request = original.newBuilder().apply {
             if (!isLoginRequest) session.token?.takeIf { it.isNotBlank() }?.let {
-                header("Authorization", "Bearer $it")
+                header("X-Authorization", "Bearer $it")
             }
         }.build()
         val response = chain.proceed(request)
