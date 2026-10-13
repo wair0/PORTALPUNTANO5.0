@@ -6,6 +6,7 @@ import com.gpsl.st.portalpuntano5.data.remote.PortalApi
 import com.gpsl.st.portalpuntano5.domain.model.*
 import com.gpsl.st.portalpuntano5.domain.repository.PortalRepository
 import kotlinx.coroutines.CancellationException
+import retrofit2.HttpException
 import kotlinx.serialization.json.contentOrNull
 
 class PortalRepositoryImpl(
@@ -93,52 +94,67 @@ class PortalRepositoryImpl(
     override suspend fun credentials(): List<Credential> {
         if (demo) return DemoData.credentials
 
-        val name = (session.fullName ?: "").uppercase()
-        val licenseResult = try {
-            Result.success(api.driverLicense())
+        val holder = session.fullName.orEmpty().uppercase()
+        // Igual que Portal Puntano 4.0: las dos tarjetas existen aunque la persona
+        // no tenga una licencia o una matrícula registradas.
+        val license = credentialOrAbsent(
+            kind = "LICENCIA",
+            title = "Licencia de conducir",
+            holder = holder,
+            absentMessage = "USTED NO POSEE LICENCIA DE CONDUCIR"
+        ) { api.driverLicense() }
+
+        val registration = credentialOrAbsent(
+            kind = "MATRICULA",
+            title = "Matrícula",
+            holder = holder,
+            absentMessage = "USTED NO POSEE MATRÍCULA"
+        ) { api.healthCredential() }
+
+        return listOf(license, registration)
+    }
+
+    private suspend fun credentialOrAbsent(
+        kind: String,
+        title: String,
+        holder: String,
+        absentMessage: String,
+        request: suspend () -> com.gpsl.st.portalpuntano5.data.remote.dto.CredentialDto
+    ): Credential {
+        val dto = try {
+            request()
         } catch (e: CancellationException) {
             throw e
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-        val healthResult = try {
-            Result.success(api.healthCredential())
-        } catch (e: CancellationException) {
+        } catch (e: HttpException) {
+            // En el servicio legado, un 404 al consultar una credencial significa
+            // que no hay registro para esa persona; otros errores sí deben mostrarse.
+            if (e.code() == 404 || e.code() == 204) {
+                return Credential(kind, title, holder, "", "", absentMessage)
+            }
             throw e
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-        val credentials = mutableListOf<Credential>()
-
-        licenseResult.getOrNull()?.let {
-            credentials += Credential(
-                "LICENCIA",
-                "Licencia de conducir",
-                name,
-                it.number.orEmpty(),
-                it.expiration.orEmpty(),
-                it.categories.orEmpty()
-            )
-        }
-        healthResult.getOrNull()?.let {
-            credentials += Credential(
-                "SALUD",
-                "Credencial personal de salud",
-                name,
-                it.number.orEmpty(),
-                it.expiration ?: "Vigente",
-                ""
-            )
         }
 
-        if (credentials.isEmpty()) {
-            val cause = licenseResult.exceptionOrNull() ?: healthResult.exceptionOrNull()
-            throw IllegalStateException(
-                "No se pudieron consultar las credenciales. El servicio no respondió correctamente.",
-                cause
-            )
+        val message = dto.message?.trim().orEmpty()
+        if (message.contains("NO POSEE", ignoreCase = true)) {
+            return Credential(kind, title, dto.holder ?: holder, "", "", message.uppercase())
         }
-        return credentials
+
+        val number = dto.number ?: dto.registrationNumber ?: dto.matricula ?: dto.licenseNumber ?: ""
+        val detail = listOf(dto.categories, dto.professionalTitle, message)
+            .firstOrNull { !it.isNullOrBlank() }.orEmpty()
+
+        // Un objeto JSON vacío o sin datos identificatorios no equivale a una
+        // credencial válida: mostrar el mensaje de ausencia que usa PP 4.0.
+        val hasCredentialData = number.isNotBlank() ||
+            !dto.expiration.isNullOrBlank() ||
+            !dto.categories.isNullOrBlank() ||
+            !dto.professionalTitle.isNullOrBlank()
+
+        return if (hasCredentialData) {
+            Credential(kind, title, dto.holder ?: holder, number, dto.expiration.orEmpty(), detail)
+        } else {
+            Credential(kind, title, holder, "", "", message.ifBlank { absentMessage })
+        }
     }
 
     override suspend fun students(): List<Student> =
