@@ -6,6 +6,7 @@ import com.gpsl.st.portalpuntano5.data.remote.PortalApi
 import com.gpsl.st.portalpuntano5.domain.model.*
 import com.gpsl.st.portalpuntano5.domain.repository.PortalRepository
 import kotlinx.coroutines.CancellationException
+import kotlinx.serialization.json.content
 
 class PortalRepositoryImpl(
     private val api: PortalApi,
