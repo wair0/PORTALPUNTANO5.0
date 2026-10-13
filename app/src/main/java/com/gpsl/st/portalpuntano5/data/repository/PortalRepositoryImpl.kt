@@ -54,20 +54,29 @@ class PortalRepositoryImpl(
 
     private val steps = listOf("Iniciado", "En revisión", "Aprobación", "Listo")
 
-    override suspend fun procedures(): List<Procedure> =
-        if (demo) DemoData.procedures else api.procedures(doc).map {
-            val done = (it.status ?: "").contains("REALIZ", true)
-            val progress = it.progress ?: if (done) 100 else 33
-            Procedure(
-                it.id.orEmpty(),
-                it.name.orEmpty(),
-                if (done) "REALIZADO" else "VIGENTE",
-                progress,
-                it.date.orEmpty(),
-                steps,
-                (progress * steps.size / 100).coerceIn(1, steps.size)
-            )
-        }
+    override suspend fun procedures(): List<Procedure> {
+        if (demo) return DemoData.procedures
+
+        // Portal Puntano 4.0 exige status=ACT o status=FIN y devuelve { content, page }.
+        val active = api.procedures(doc, status = "ACT").content.map { it.toProcedure("ACT") }
+        val finished = api.procedures(doc, status = "FIN").content.map { it.toProcedure("FIN") }
+        return active + finished
+    }
+
+    private fun com.gpsl.st.portalpuntano5.data.remote.dto.ProcedureDto.toProcedure(requestedStatus: String): Procedure {
+        val rawStatus = (procedureStatus ?: status ?: requestedStatus).uppercase()
+        val done = requestedStatus == "FIN" || rawStatus.contains("REALIZ") || rawStatus == "FIN"
+        val progress = progress ?: if (done) 100 else 33
+        return Procedure(
+            id?.content ?: "",
+            name ?: coverLetter.orEmpty(),
+            if (done) "REALIZADO" else "VIGENTE",
+            progress,
+            date ?: dateCreated.orEmpty(),
+            steps,
+            (progress * steps.size / 100).coerceIn(1, steps.size)
+        )
+    }
 
     override suspend fun payslips(): List<Payslip> =
         if (demo) DemoData.payslips else api.liquidations().map {
