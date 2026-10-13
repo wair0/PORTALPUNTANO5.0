@@ -6,16 +6,16 @@ plugins {
 
 val portalBaseUrl = providers.gradleProperty("PORTAL_BASE_URL")
     .orElse(providers.environmentVariable("PORTAL_BASE_URL"))
-    .getOrElse("")
+    .getOrElse("http://puntano.gob.ar:8080/portalServer/")
 val healthBaseUrl = providers.gradleProperty("SALUD_BASE_URL")
     .orElse(providers.environmentVariable("SALUD_BASE_URL"))
-    .getOrElse("")
+    .getOrElse("http://www.registrosmedicos.sanluis.gob.ar:8080/saludServer/")
 val recipeBaseUrl = providers.gradleProperty("RECIPE_BASE_URL")
     .orElse(providers.environmentVariable("RECIPE_BASE_URL"))
-    .getOrElse("")
+    .getOrElse("https://recetadigital.sanluis.gob.ar:8080/recipeServer/")
 val educationBaseUrl = providers.gradleProperty("EDU_BASE_URL")
     .orElse(providers.environmentVariable("EDU_BASE_URL"))
-    .getOrElse("")
+    .getOrElse("http://www.Escuelas3punto0.sanluis.gob.ar:8080/educacionalcenterServer/")
 
 android {
     namespace = "com.gpsl.st.portalpuntano5"
