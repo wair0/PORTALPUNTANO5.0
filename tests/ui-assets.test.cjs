@@ -256,8 +256,8 @@ test('los endpoints de servicios se configuran externamente y no incluyen HTTP h
     assert.match(gradle, new RegExp('gradleProperty\\("' + key + '"\\)'));
     assert.match(gradle, new RegExp('environmentVariable\\("' + key + '"\\)'));
   }
-  assert.doesNotMatch(gradle, /http:\\/\\//i);
-  assert.doesNotMatch(gradle, /puntano\\.gob\\.ar|registrosmedicos\\.sanluis|Escuelas3punto0/i);
+  assert.equal(gradle.includes('http://'), false, 'no debe haber endpoints HTTP');
+  for (const legacy of ['puntano.gob.ar', 'registrosmedicos.sanluis', 'Escuelas3punto0']) { assert.equal(gradle.includes(legacy), false, 'endpoint heredado: ' + legacy); }
 });
 
 test('el modo conectado exige endpoint configurado y HTTPS antes de crear Retrofit', () => {
