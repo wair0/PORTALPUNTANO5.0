@@ -7,7 +7,8 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface PortalApi {
-    @POST("login") suspend fun login(@Body body: LoginRequestDto): LoginResponseDto
+    // Ruta confirmada en login.page.ts de Portal Puntano 4.0.
+    @POST("token/mobile/login") suspend fun login(@Body body: LoginRequestDto): LoginResponseDto
     @GET("secure/procedure/user/{docNumber}") suspend fun procedures(@Path("docNumber") docNumber: String): List<ProcedureDto>
     @GET("secure/liquidations/") suspend fun liquidations(): List<LiquidationDto>
     @GET("secure/judicialExpedient/docType/DNI/docNumber/{docNumber}") suspend fun expedients(@Path("docNumber") docNumber: String): List<ExpedientDto>
