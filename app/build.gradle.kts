@@ -4,6 +4,19 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val portalBaseUrl = providers.gradleProperty("PORTAL_BASE_URL")
+    .orElse(providers.environmentVariable("PORTAL_BASE_URL"))
+    .getOrElse("")
+val healthBaseUrl = providers.gradleProperty("SALUD_BASE_URL")
+    .orElse(providers.environmentVariable("SALUD_BASE_URL"))
+    .getOrElse("")
+val recipeBaseUrl = providers.gradleProperty("RECIPE_BASE_URL")
+    .orElse(providers.environmentVariable("RECIPE_BASE_URL"))
+    .getOrElse("")
+val educationBaseUrl = providers.gradleProperty("EDU_BASE_URL")
+    .orElse(providers.environmentVariable("EDU_BASE_URL"))
+    .getOrElse("")
+
 android {
     namespace = "com.gpsl.st.portalpuntano5"
     compileSdk = 35
