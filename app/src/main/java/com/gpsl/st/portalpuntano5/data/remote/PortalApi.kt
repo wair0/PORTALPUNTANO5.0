@@ -1,6 +1,7 @@
 package com.gpsl.st.portalpuntano5.data.remote
 
 import com.gpsl.st.portalpuntano5.data.remote.dto.*
+import kotlinx.serialization.json.JsonElement
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -28,11 +29,18 @@ interface PortalApi {
     suspend fun liquidations(@Path("userId") userId: String): LiquidationsResponseDto
 
     @GET("secure/judicialExpedient/docType/DNI/docNumber/{docNumber}") suspend fun expedients(@Path("docNumber") docNumber: String): List<ExpedientDto>
+    @GET("secure/actions/expedient/{id}") suspend fun expedientActions(@Path("id") id: String): JsonElement
     @GET("secure/civilRegistration/certificates") suspend fun certificates(): List<CertificateDto>
     @GET("secure/appointments/rm") suspend fun appointments(): List<AppointmentDto>
     @GET("secure/driverLicense/license") suspend fun driverLicense(): CredentialDto
     @GET("secure/ministryOfHealth/credential") suspend fun healthCredential(): CredentialDto
 
-    // Endpoint confirmado en services/student.service.ts del código original.
-    @GET("secure/education/student/tutor") suspend fun students(): List<StudentDto>
+    // La respuesta legacy puede ser un objeto contenedor y no un array directo.
+    @GET("secure/education/student/tutor") suspend fun students(): JsonElement
+    @GET("secure/education/schoolCycle/person/{personId}") suspend fun schoolCycles(@Path("personId") personId: String): JsonElement
+    @GET("secure/education/analyticalCertificate/docNumber/{docNumber}") suspend fun analyticalCertificate(@Path("docNumber") docNumber: String): JsonElement
+    @GET("secure/education/studentId/{studentId}/schoolCycle/{schoolCycleId}") suspend fun studentCycle(@Path("studentId") studentId: String, @Path("schoolCycleId") schoolCycleId: String): JsonElement
+    @GET("secure/education/subjects/studentId/{studentId}/schoolCycle/{schoolCycleId}") suspend fun subjects(@Path("studentId") studentId: String, @Path("schoolCycleId") schoolCycleId: String): JsonElement
+    @GET("secure/education/studentId/{studentId}/schoolCycle/{schoolCycleId}/reportCard") suspend fun reportCard(@Path("studentId") studentId: String, @Path("schoolCycleId") schoolCycleId: String): JsonElement
+    @GET("secure/education/studentId/{studentId}/concurrence/dateFrom/{dateFrom}/dateTo/{dateTo}") suspend fun concurrence(@Path("studentId") studentId: String, @Path("dateFrom") dateFrom: String, @Path("dateTo") dateTo: String, @Query("present") present: Boolean = false): JsonElement
 }
