@@ -1,0 +1,315 @@
+== PPLOG-1.0 | Mozilla/5.0 (Linux; Android 13; moto g52 Build/T2SRS33.72-22-4-11; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/153.0.8010.36 Mobile Safari/537.36 ==
+[2026-10-13 02:34:53.903] #1 SYS | pantalla=(inicio) | PPLOG-1.0 iniciado url=https://localhost/index.html
+[2026-10-13 02:34:54.847] #2 LOCAL← | pantalla=(inicio) | sessionStorage.get "ionic-persist-config" → null ← (sin tap: carga automática de pantalla)
+[2026-10-13 02:34:55.081] #3 SYS | pantalla=(inicio) | PPLOG-1.0 listo (deviceready). Nombre del archivo: PP_log.txt (se crea en Descargas si Android lo permite)
+[2026-10-13 02:34:55.414] #4 NAV | pantalla=app-login | replaceState → /login | desde=(inicio) | hacia=app-login ← (sin tap: carga automática de pantalla)
+[2026-10-13 02:34:56.581] #5 VIEW | pantalla=app-login | ionViewWillEnter app-login url=/login
+[2026-10-13 02:34:56.583] #6 VIEW | pantalla=app-login | ionViewDidEnter app-login url=/login
+[2026-10-13 02:34:58.468] #7 TAP | pantalla=app-login | <ion-item> clase="border item md in-list ion-focusable ion-untouched ion-prist…(+86)" dom=ion-content > div > ion-list > ion-item
+[2026-10-13 02:35:03.093] #8 TAP | pantalla=app-login | <ion-select> texto="MasculinoFemeninoNo binario" nombre="sex" clase="ng-untouched ng-pristine ng-valid ion-untouched ion-pristine…(+30)" dom=div > ion-list > ion-item > ion-select
+[2026-10-13 02:35:04.375] #9 TAP | pantalla=app-login | <button#alert-input-1-0> texto="Masculino" clase="alert-radio-button alert-tappable alert-radio ion-focusable …(+15)" dom=ion-alert#ion-overlay-1 > div > div > button#alert-input-1-0
+[2026-10-13 02:35:05.534] #10 TAP | pantalla=app-login | <button> texto="OK" clase="alert-button ion-focusable ion-activatable sc-ion-alert-md a…(+8)" dom=ion-alert#ion-overlay-1 > div > div > button
+[2026-10-13 02:35:06.343] #11 TAP | pantalla=app-login | <ion-item> clase="border item md in-list ion-focusable ion-untouched ion-prist…(+86)" dom=ion-content > div > ion-list > ion-item
+[2026-10-13 02:35:12.381] #12 TAP | pantalla=app-login | <ion-button> texto="INGRESAR" clase="ion-color ion-color-light md button button-solid ion-activat…(+37)" dom=ion-content > div > ion-list > ion-button
+[2026-10-13 02:35:13.394] #13 HTTP→ | pantalla=app-login | POST http://puntano.gob.ar:8080/portalServer/token/mobile/login body={"docType":"DNI","docNumber":"39991140","sex":"M","password":"***"} ← TAP#12 ion-button"INGRESAR"
+[2026-10-13 02:35:15.940] #14 HTTP← | pantalla=app-login | POST http://puntano.gob.ar:8080/portalServer/token/mobile/login status=0 2547ms bytes=0 resp= ← TAP#12 ion-button"INGRESAR"
+[2026-10-13 02:35:15.945] #15 NAV | pantalla=app-home | pushState → /home | desde=app-login | hacia=app-home ← TAP#12 ion-button"INGRESAR"
+[2026-10-13 02:35:15.956] #16 NAV | pantalla=app-home | cambio de pantalla visible | desde=app-home | hacia=app-home url=/home ← TAP#12 ion-button"INGRESAR"
+[2026-10-13 02:35:15.993] #17 VIEW | pantalla=app-home | ionViewWillEnter app-home url=/home
+[2026-10-13 02:35:15.995] #18 VIEW | pantalla=app-home | ionViewDidEnter app-home url=/home
+[2026-10-13 02:35:16.052] #19 HTTP→ | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/user/currentUser ← TAP#12 ion-button"INGRESAR"
+[2026-10-13 02:35:16.054] #20 HTTP→ | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/education/student/tutor ← TAP#12 ion-button"INGRESAR"
+[2026-10-13 02:35:16.199] #21 HTTP← | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/user/currentUser status=0 147ms bytes=0 resp= ← TAP#12 ion-button"INGRESAR"
+[2026-10-13 02:35:16.342] #22 HTTP← | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/education/student/tutor status=0 288ms bytes=0 resp= ← TAP#12 ion-button"INGRESAR"
+[2026-10-13 02:36:02.139] #23 TAP | pantalla=app-home | <ion-card> clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-grid > ion-row > ion-col > ion-card
+[2026-10-13 02:36:02.154] #24 HTTP→ | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/judicialExpedient/docType/DNI/docNumber/39991140 ← TAP#23 ion-card
+[2026-10-13 02:36:03.655] #25 HTTP← | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/judicialExpedient/docType/DNI/docNumber/39991140 status=0 1500ms bytes=0 resp= ← TAP#23 ion-card
+[2026-10-13 02:36:03.672] #26 NAV | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | pushState → /judicialExpedients | desde=app-home | hacia=app-judicialexpedients ("EXPEDIENTES JUDICIALES") ← TAP#23 ion-card
+[2026-10-13 02:36:03.683] #27 VIEW | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | ionViewWillEnter app-judicialexpedients url=/judicialExpedients
+[2026-10-13 02:36:03.921] #28 NAV | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | cambio de pantalla visible | desde=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | hacia=app-judicialexpedients ("EXPEDIENTES JUDICIALES") url=/judicialExpedients ← TAP#23 ion-card
+[2026-10-13 02:36:04.019] #29 VIEW | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | ionViewDidEnter app-judicialexpedients url=/judicialExpedients
+[2026-10-13 02:36:17.495] #30 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <svg> texto="ionicons-v5-a" dom=ion-content > ion-list > ion-list-header > svg
+[2026-10-13 02:36:18.325] #31 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <svg> texto="ionicons-v5-a" dom=ion-content > ion-list > ion-list-header > svg
+[2026-10-13 02:36:18.841] #32 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <svg> texto="ionicons-v5-a" dom=ion-content > ion-list > ion-list-header > svg
+[2026-10-13 02:36:19.358] #33 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <svg> texto="ionicons-v5-a" dom=ion-content > ion-list > ion-list-header > svg
+[2026-10-13 02:36:19.904] #34 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <svg> texto="ionicons-v5-a" dom=ion-content > ion-list > ion-list-header > svg
+[2026-10-13 02:36:20.435] #35 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <svg> texto="ionicons-v5-a" dom=ion-content > ion-list > ion-list-header > svg
+[2026-10-13 02:36:21.003] #36 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <polyline> dom=ion-list > ion-list-header > svg > polyline
+[2026-10-13 02:36:47.651] #37 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <svg> texto="ionicons-v5-a" dom=ion-content > ion-list > ion-list-header > svg
+[2026-10-13 02:36:48.586] #38 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <ion-item> texto="OFR 235026/2 (Acumulado a PEX 235026/18): OFICIO RELACIONADO AVERIGUACION PRIVAC…(+112)" clase="item-label item md item-lines-none in-list ion-focusable hyd…(+5)" dom=div > ion-item > ion-list > ion-item
+[2026-10-13 02:36:48.598] #39 HTTP→ | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | GET http://puntano.gob.ar:8080/portalServer/secure/actions/expedient/1052073 ← TAP#38 ion-item"OFR 235026/2 (Acumulado a PEX …(+57)"
+[2026-10-13 02:36:50.253] #40 HTTP← | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | GET http://puntano.gob.ar:8080/portalServer/secure/actions/expedient/1052073 status=0 1655ms bytes=0 resp= ← TAP#38 ion-item"OFR 235026/2 (Acumulado a PEX …(+57)"
+[2026-10-13 02:36:50.264] #41 VIEW | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | ionViewWillEnter app-judicialexpedientdetail url=/judicialExpedientDetail
+[2026-10-13 02:36:50.278] #42 NAV | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | pushState → /judicialExpedientDetail | desde=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | hacia=app-judicialexpedientdetail ("ACTUACIONES") ← TAP#38 ion-item"OFR 235026/2 (Acumulado a PEX …(+57)"
+[2026-10-13 02:36:50.586] #43 VIEW | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | ionViewDidEnter app-judicialexpedientdetail url=/judicialExpedientDetail
+[2026-10-13 02:36:50.722] #44 NAV | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | cambio de pantalla visible | desde=app-judicialexpedientdetail ("ACTUACIONES") | hacia=app-judicialexpedientdetail ("ACTUACIONES") url=/judicialExpedientDetail ← TAP#38 ion-item"OFR 235026/2 (Acumulado a PEX …(+57)"
+[2026-10-13 02:36:55.061] #45 TAP | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | <ion-card> clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-item > ion-list > ion-item > ion-card
+[2026-10-13 02:36:55.077] #46 HTTP→ | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password ← TAP#45 ion-card
+[2026-10-13 02:36:55.275] #47 HTTP← | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password status=0 198ms bytes=0 resp= ← TAP#45 ion-card
+[2026-10-13 02:37:26.763] #48 TAP | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | <ion-card> clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-item > ion-list > ion-item > ion-card
+[2026-10-13 02:37:26.776] #49 HTTP→ | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password ← TAP#48 ion-card
+[2026-10-13 02:37:26.996] #50 HTTP← | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password status=0 220ms bytes=0 resp= ← TAP#48 ion-card
+
+2026-10-13 02:37:47.779] #51 TAP | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:37:47.796] #52 VIEW | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | ionViewWillEnter app-judicialexpedients url=/judicialExpedients
+[2026-10-13 02:37:47.816] #53 NAV | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | pushState → /judicialExpedients | desde=app-judicialexpedientdetail ("ACTUACIONES") | hacia=app-judicialexpedientdetail ("ACTUACIONES") ← TAP#51 button"ATRÁS"
+[2026-10-13 02:37:48.029] #54 VIEW | pantalla=app-judicialexpedientdetail ("ACTUACIONES") | ionViewDidEnter app-judicialexpedients url=/judicialExpedients
+[2026-10-13 02:37:48.321] #55 NAV | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | cambio de pantalla visible | desde=app-judicialexpedientdetail ("ACTUACIONES") | hacia=app-judicialexpedients ("EXPEDIENTES JUDICIALES") url=/judicialExpedients ← TAP#51 button"ATRÁS"
+[2026-10-13 02:37:50.391] #56 TAP | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:37:50.402] #57 VIEW | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | ionViewWillEnter app-home url=/home
+[2026-10-13 02:37:50.419] #58 NAV | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | pushState → /home | desde=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | hacia=app-judicialexpedients ("EXPEDIENTES JUDICIALES") ← TAP#56 button"ATRÁS"
+[2026-10-13 02:37:50.635] #59 VIEW | pantalla=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | ionViewDidEnter app-home url=/home
+[2026-10-13 02:37:50.721] #60 NAV | pantalla=app-home | cambio de pantalla visible | desde=app-judicialexpedients ("EXPEDIENTES JUDICIALES") | hacia=app-home url=/home ← TAP#56 button"ATRÁS"
+[2026-10-13 02:37:53.003] #61 TAP | pantalla=app-home | <ion-card#sge> clase="map sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-grid > ion-row > ion-col > ion-card#sge
+[2026-10-13 02:37:53.035] #62 VIEW | pantalla=app-home | ionViewWillEnter app-students-list url=/students-list
+[2026-10-13 02:37:53.051] #63 NAV | pantalla=app-students-list ("PORTAL PUNTANO") | pushState → /students-list | desde=app-home | hacia=app-students-list ("PORTAL PUNTANO") ← TAP#61 ion-card
+[2026-10-13 02:37:53.121] #64 NAV | pantalla=app-students-list ("PORTAL PUNTANO") | cambio de pantalla visible | desde=app-students-list ("PORTAL PUNTANO") | hacia=app-students-list ("PORTAL PUNTANO") url=/students-list ← TAP#61 ion-card
+[2026-10-13 02:37:53.341] #65 VIEW | pantalla=app-students-list ("PORTAL PUNTANO") | ionViewDidEnter app-students-list url=/students-list
+[2026-10-13 02:37:54.484] #66 TAP | pantalla=app-students-list ("PORTAL PUNTANO") | <ion-card> texto="Nombre alumno : VICTOR GABRIEL MONTES DNI : 39991140" clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-content > div > ion-grid > ion-card
+[2026-10-13 02:37:54.725] #67 NAV | pantalla=app-student-options ("PORTAL PUNTANO") | pushState → /student-options | desde=app-students-list ("PORTAL PUNTANO") | hacia=app-student-options ("PORTAL PUNTANO") ← TAP#66 ion-card"Nombre alumno : VICTOR GABRIEL…(+22)"
+[2026-10-13 02:37:54.733] #68 HTTP→ | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/schoolCycle/person/61648 ← TAP#66 ion-card"Nombre alumno : VICTOR GABRIEL…(+22)"
+[2026-10-13 02:37:54.770] #69 VIEW | pantalla=app-student-options ("PORTAL PUNTANO") | ionViewWillEnter app-student-options url=/student-options
+[2026-10-13 02:37:54.792] #70 HTTP→ | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/analyticalCertificate/docNumber/39991140 ← TAP#66 ion-card"Nombre alumno : VICTOR GABRIEL…(+22)"
+[2026-10-13 02:37:54.922] #71 NAV | pantalla=app-student-options ("PORTAL PUNTANO") | cambio de pantalla visible | desde=app-student-options ("PORTAL PUNTANO") | hacia=app-student-options ("PORTAL PUNTANO") url=/student-options ← TAP#66 ion-card"Nombre alumno : VICTOR GABRIEL…(+22)"
+[2026-10-13 02:37:55.017] #72 HTTP← | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/schoolCycle/person/61648 status=0 283ms bytes=0 resp= ← TAP#66 ion-card"Nombre alumno : VICTOR GABRIEL…(+22)"
+[2026-10-13 02:37:55.020] #73 HTTP← | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/analyticalCertificate/docNumber/39991140 status=0 228ms bytes=0 resp= ← TAP#66 ion-card"Nombre alumno : VICTOR GABRIEL…(+22)"
+[2026-10-13 02:37:55.082] #74 VIEW | pantalla=app-student-options ("PORTAL PUNTANO") | ionViewDidEnter app-student-options url=/student-options
+[2026-10-13 02:37:57.114] #75 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <ion-select> texto="20252026" clase="ng-untouched ng-pristine ng-valid md in-item hydrated ion-un…(+30)" dom=app-student-options > ion-content > ion-item > ion-select
+[2026-10-13 02:37:59.611] #76 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <button#alert-input-9-1> texto="2026" clase="alert-radio-button alert-tappable alert-radio ion-focusable …(+15)" dom=ion-alert#ion-overlay-9 > div > div > button#alert-input-9-1
+[2026-10-13 02:38:07.731] #77 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <button> texto="OK" clase="alert-button ion-focusable ion-activatable sc-ion-alert-md a…(+8)" dom=ion-alert#ion-overlay-9 > div > div > button
+[2026-10-13 02:38:07.757] #78 HTTP→ | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer//secure/education/studentId/61648/schoolCycle/206 ← TAP#77 button"OK"
+[2026-10-13 02:38:07.774] #79 HTTP→ | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/subjects/studentId/61648/schoolCycle/206 ← TAP#77 button"OK"
+[2026-10-13 02:38:07.777] #80 HTTP→ | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/studentId/61648/schoolCycle/206/reportCard ← TAP#77 button"OK"
+[2026-10-13 02:38:08.019] #81 HTTP← | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer//secure/education/studentId/61648/schoolCycle/206 status=0 262ms bytes=0 resp= ← TAP#77 button"OK"
+[2026-10-13 02:38:08.051] #82 HTTP← | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/subjects/studentId/61648/schoolCycle/206 status=0 277ms bytes=0 resp= ← TAP#77 button"OK"
+[2026-10-13 02:38:08.321] #83 HTTP← | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/studentId/61648/schoolCycle/206/reportCard status=0 544ms bytes=0 resp= ← TAP#77 button"OK"
+[2026-10-13 02:38:34.075] #84 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <mat-expansion-panel-header#mat-expansion-panel-header-0> texto="Matriculacion" clase="accordionHeader mat-expansion-panel-header ng-tns-c8-1 ng-tr…(+116)" dom=ion-content > mat-accordion > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-0
+[2026-10-13 02:38:35.507] #85 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <mat-expansion-panel-header#mat-expansion-panel-header-1> texto="Asistencia" clase="accordionHeader mat-expansion-panel-header ng-tns-c8-3 ng-tr…(+116)" dom=mat-accordion > form > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-1
+[2026-10-13 02:38:38.121] #86 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <ion-toggle> nombre="presentAsistanceCtrl" clase="ng-untouched ng-pristine ng-valid ion-untouched ion-pristine…(+58)" dom=div > ion-row > ion-col > ion-toggle
+[2026-10-13 02:38:39.207] #87 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <ion-toggle> nombre="presentAsistanceCtrl" clase="ng-untouched ng-valid ion-color ion-color-sge md interactive…(+67)" dom=div > ion-row > ion-col > ion-toggle
+[2026-10-13 02:38:40.207] #88 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <button> texto="Open calendar" clase="mat-icon-button mat-button-base cdk-focused cdk-touch-focuse…(+1)" dom=div > div > mat-datepicker-toggle > button
+[2026-10-13 02:38:42.768] #89 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <button> texto="OCT. 2026" clase="mat-calendar-period-button mat-button mat-button-base cdk-fo…(+23)" dom=mat-calendar-header > div > div > button
+[2026-10-13 02:38:44.978] #90 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <td> texto="2026" clase="mat-calendar-body-cell mat-calendar-body-active ng-star-inse…(+4)" dom=table > tbody > tr > td
+[2026-10-13 02:38:47.521] #91 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <td> texto="ABR." clase="mat-calendar-body-cell ng-star-inserted" dom=table > tbody > tr > td
+[2026-10-13 02:38:51.276] #92 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <td> texto="1" clase="mat-calendar-body-cell ng-star-inserted" dom=table > tbody > tr > td
+[2026-10-13 02:38:52.494] #93 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <button> texto="Open calendar" clase="mat-icon-button mat-button-base cdk-focused cdk-touch-focuse…(+1)" dom=div > div > mat-datepicker-toggle > button
+[2026-10-13 02:38:57.181] #94 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <td> texto="13" clase="mat-calendar-body-cell mat-calendar-body-active ng-star-inse…(+4)" dom=table > tbody > tr > td
+[2026-10-13 02:38:58.569] #95 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <ion-button> texto="BUSCAR" clase="ion-color ion-color-sge md button button-block button-solid …(+48)" dom=div > ion-row > ion-col > ion-button
+[2026-10-13 02:38:58.586] #96 HTTP→ | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/studentId/61648/concurrence/dateFrom/2026-04-01/dateTo/2026-10-13?present=false ← TAP#95 ion-button"BUSCAR"
+[2026-10-13 02:38:59.077] #97 HTTP← | pantalla=app-student-options ("PORTAL PUNTANO") | GET http://puntano.gob.ar:8080/portalServer/secure/education/studentId/61648/concurrence/dateFrom/2026-04-01/dateTo/2026-10-13?present=false status=0 491ms bytes=0 resp= ← TAP#95 ion-button"BUSCAR"
+[2026-10-13 02:39:01.625] #98 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <ion-item> texto="Ausente Injustificado" clase="item md in-list ion-focusable hydrated" dom=app-sge-assistance-info > ion-card > ion-list > ion-item
+[2026-10-13 02:39:23.735] #99 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <mat-expansion-panel-header#mat-expansion-panel-header-2> texto="Notas" clase="accordionHeader mat-expansion-panel-header ng-tns-c8-7 ng-tr…(+116)" dom=mat-accordion > form > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-2
+[2026-10-13 02:39:26.965] #100 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <mat-expansion-panel-header#mat-expansion-panel-header-2> texto="Notas" clase="accordionHeader mat-expansion-panel-header ng-tns-c8-7 ng-tr…(+129)" dom=mat-accordion > form > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-2
+[2026-10-13 02:39:29.070] #101 TAP | pantalla=app-student-options ("PORTAL PUNTANO") | <ion-button> texto="ATRÁS" clase="white md button button-clear ion-activatable ion-focusable h…(+17)" dom=ion-header > ion-toolbar > ion-buttons > ion-button
+[2026-10-13 02:39:29.090] #102 VIEW | pantalla=app-student-options ("PORTAL PUNTANO") | ionViewWillEnter app-students-list url=/students-list
+[2026-10-13 02:39:29.090] #103 VIEW | pantalla=app-student-options ("PORTAL PUNTANO") | ionViewDidEnter app-students-list url=/students-list
+[2026-10-13 02:39:29.143] #104 NAV | pantalla=app-students-list ("PORTAL PUNTANO") | pushState → /students-list | desde=app-student-options ("PORTAL PUNTANO") | hacia=app-students-list ("PORTAL PUNTANO") ← TAP#101 ion-button"ATRÁS"
+[2026-10-13 02:39:29.145] #105 NAV | pantalla=app-students-list ("PORTAL PUNTANO") | cambio de pantalla visible | desde=app-students-list ("PORTAL PUNTANO") | hacia=app-students-list ("PORTAL PUNTANO") url=/students-list ← TAP#101 ion-button"ATRÁS"
+[2026-10-13 02:39:30.144] #106 TAP | pantalla=app-students-list ("PORTAL PUNTANO") | <ion-button> texto="ATRÁS" clase="white md button button-clear ion-activatable ion-focusable h…(+17)" dom=ion-header > ion-toolbar > ion-buttons > ion-button
+[2026-10-13 02:39:30.225] #107 NAV | pantalla=app-home | pushState → /home | desde=app-students-list ("PORTAL PUNTANO") | hacia=app-home ← TAP#106 ion-button"ATRÁS"
+[2026-10-13 02:39:30.256] #108 VIEW | pantalla=app-home | ionViewWillEnter app-home url=/home
+[2026-10-13 02:39:30.258] #109 VIEW | pantalla=app-home | ionViewDidEnter app-home url=/home
+
+[[2026-10-13 02:39:30.275] #110 HTTP→ | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/education/student/tutor ← TAP#106 ion-button"ATRÁS"
+[2026-10-13 02:39:30.322] #111 NAV | pantalla=app-home | cambio de pantalla visible | desde=app-home | hacia=app-home url=/home ← TAP#106 ion-button"ATRÁS"
+[2026-10-13 02:39:30.616] #112 HTTP← | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/education/student/tutor status=0 341ms bytes=0 resp= ← TAP#106 ion-button"ATRÁS"
+[2026-10-13 02:39:32.145] #113 TAP | pantalla=app-home | <ion-card> clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-grid > ion-row > ion-col > ion-card
+[2026-10-13 02:39:32.176] #114 VIEW | pantalla=app-home | ionViewWillEnter app-health url=/health
+[2026-10-13 02:39:32.180] #115 NAV | pantalla=app-health | pushState → /health | desde=app-home | hacia=app-health ← TAP#113 ion-card
+[2026-10-13 02:39:32.484] #116 VIEW | pantalla=app-health | ionViewDidEnter app-health url=/health
+[2026-10-13 02:39:32.722] #117 NAV | pantalla=app-health | cambio de pantalla visible | desde=app-health | hacia=app-health url=/health ← TAP#113 ion-card
+[2026-10-13 02:39:33.188] #118 TAP | pantalla=app-health | <ion-card> clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-content > ion-row > ion-col > ion-card
+[2026-10-13 02:39:33.199] #119 HTTP→ | pantalla=app-health | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password ← TAP#118 ion-card
+[2026-10-13 02:39:33.409] #120 HTTP← | pantalla=app-health | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password status=0 210ms bytes=0 resp= ← TAP#118 ion-card
+[2026-10-13 02:39:33.413] #121 HTTP→ | pantalla=app-health | POST http://www.registrosmedicos.sanluis.gob.ar:8080/saludServer/token/external/login body={"apiCode":"8f6324c1-ea19-409a-9b0d-f11ddf3d3e4c","externalToken":"***"} ← TAP#118 ion-card
+[2026-10-13 02:39:34.250] #122 HTTP← | pantalla=app-health | POST http://www.registrosmedicos.sanluis.gob.ar:8080/saludServer/token/external/login status=0 837ms bytes=0 resp= ← TAP#118 ion-card
+[2026-10-13 02:39:34.262] #123 HTTP→ | pantalla=app-health | GET http://www.registrosmedicos.sanluis.gob.ar:8080/saludServer/secure/external/mobile/consultation/person?specialtyId=0&dateFrom=&dateTo=&size=2 ← TAP#118 ion-card
+[2026-10-13 02:39:34.787] #124 HTTP→ | pantalla=app-health | GET https://recetadigital.sanluis.gob.ar:8080/recipeServer/secure/external/mobile/prescriptions?benefitType=M&specialtyId=0&dateFrom=&dateTo=&size=2 ← TAP#118 ion-card
+[2026-10-13 02:39:34.788] #125 HTTP← | pantalla=app-health | GET http://www.registrosmedicos.sanluis.gob.ar:8080/saludServer/secure/external/mobile/consultation/person?specialtyId=0&dateFrom=&dateTo=&size=2 status=0 526ms bytes=0 resp= ← TAP#118 ion-card
+[2026-10-13 02:39:35.124] #126 HTTP→ | pantalla=app-health | GET https://recetadigital.sanluis.gob.ar:8080/recipeServer/secure/external/mobile/prescriptions?benefitType=P&specialtyId=0&dateFrom=&dateTo=&size=2 ← TAP#118 ion-card
+[2026-10-13 02:39:35.127] #127 HTTP← | pantalla=app-health | GET https://recetadigital.sanluis.gob.ar:8080/recipeServer/secure/external/mobile/prescriptions?benefitType=M&specialtyId=0&dateFrom=&dateTo=&size=2 status=0 340ms bytes=0 resp= ← TAP#118 ion-card
+[2026-10-13 02:39:35.368] #128 VIEW | pantalla=app-health | ionViewWillEnter app-rm url=/rm
+[2026-10-13 02:39:35.368] #129 HTTP← | pantalla=app-health | GET https://recetadigital.sanluis.gob.ar:8080/recipeServer/secure/external/mobile/prescriptions?benefitType=P&specialtyId=0&dateFrom=&dateTo=&size=2 status=0 244ms bytes=0 resp= ← TAP#118 ion-card
+[2026-10-13 02:39:35.369] #130 NAV | pantalla=app-rm ("REGISTROS MÉDICOS") | pushState → /rm | desde=app-health | hacia=app-rm ("REGISTROS MÉDICOS") ← TAP#118 ion-card
+[2026-10-13 02:39:35.693] #131 VIEW | pantalla=app-rm ("REGISTROS MÉDICOS") | ionViewDidEnter app-rm url=/rm
+[2026-10-13 02:39:35.722] #132 NAV | pantalla=app-rm ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-rm ("REGISTROS MÉDICOS") | hacia=app-rm ("REGISTROS MÉDICOS") url=/rm ← TAP#118 ion-card
+[2026-10-13 02:39:40.018] #133 TAP | pantalla=app-rm ("REGISTROS MÉDICOS") | <svg> dom=ion-content > div > div > svg
+[2026-10-13 02:39:40.080] #134 VIEW | pantalla=app-rm ("REGISTROS MÉDICOS") | ionViewWillEnter app-consultations url=/consultations
+[2026-10-13 02:39:40.103] #135 NAV | pantalla=app-consultations ("REGISTROS MÉDICOS") | pushState → /consultations | desde=app-rm ("REGISTROS MÉDICOS") | hacia=app-consultations ("REGISTROS MÉDICOS") ← TAP#133 svg
+[2026-10-13 02:39:40.117] #136 HTTP→ | pantalla=app-consultations ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/patient/39991140/M/DNI ← TAP#133 svg
+[2026-10-13 02:39:40.284] #137 HTTP← | pantalla=app-consultations ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/patient/39991140/M/DNI status=0 166ms bytes=0 resp= ← TAP#133 svg
+[2026-10-13 02:39:40.286] #138 HTTP→ | pantalla=app-consultations ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/consultations/patient/159482/?size=3&dateFrom=2000-01-01& ← TAP#133 svg
+[2026-10-13 02:39:40.294] #139 HTTP→ | pantalla=app-consultations ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/specialties/159482 ← TAP#133 svg
+[2026-10-13 02:39:40.385] #140 VIEW | pantalla=app-consultations ("REGISTROS MÉDICOS") | ionViewDidEnter app-consultations url=/consultations
+[2026-10-13 02:39:40.484] #141 HTTP← | pantalla=app-consultations ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/consultations/patient/159482/?size=3&dateFrom=2000-01-01& status=0 198ms bytes=0 resp= ← TAP#133 svg
+[2026-10-13 02:39:40.492] #142 HTTP← | pantalla=app-consultations ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/specialties/159482 status=0 198ms bytes=0 resp= ← TAP#133 svg
+[2026-10-13 02:39:40.521] #143 NAV | pantalla=app-consultations ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-consultations ("REGISTROS MÉDICOS") | hacia=app-consultations ("REGISTROS MÉDICOS") url=/consultations ← TAP#133 svg
+[2026-10-13 02:39:59.216] #144 TAP | pantalla=app-consultations ("REGISTROS MÉDICOS") | <ion-item> texto="06-10-2026 08:39:00 Odontología Ana Paula, La Malfa Modica HOSPITAL CERRO DE LA …(+4)" clase="border-red ng-star-inserted item-label item md in-list ion-f…(+17)" dom=app-consultations > ion-content > ion-list > ion-item
+[2026-10-13 02:39:59.254] #145 VIEW | pantalla=app-consultations ("REGISTROS MÉDICOS") | ionViewWillEnter app-consultation url=/consultation
+[2026-10-13 02:39:59.268] #146 NAV | pantalla=app-consultation ("REGISTROS MÉDICOS") | pushState → /consultation | desde=app-consultations ("REGISTROS MÉDICOS") | hacia=app-consultation ("REGISTROS MÉDICOS") ← TAP#144 ion-item"06-10-2026 08:39:00 Odontologí…(+55)"
+[2026-10-13 02:39:59.270] #147 HTTP→ | pantalla=app-consultation ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/consultation/10553991 ← TAP#144 ion-item"06-10-2026 08:39:00 Odontologí…(+55)"
+[2026-10-13 02:39:59.557] #148 VIEW | pantalla=app-consultation ("REGISTROS MÉDICOS") | ionViewDidEnter app-consultation url=/consultation
+[2026-10-13 02:39:59.722] #149 NAV | pantalla=app-consultation ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-consultation ("REGISTROS MÉDICOS") | hacia=app-consultation ("REGISTROS MÉDICOS") url=/consultation ← TAP#144 ion-item"06-10-2026 08:39:00 Odontologí…(+55)"
+[2026-10-13 02:40:00.263] #150 HTTP← | pantalla=app-consultation ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/consultation/10553991 status=0 993ms bytes=0 resp= ← TAP#144 ion-item"06-10-2026 08:39:00 Odontologí…(+55)"
+[2026-10-13 02:40:03.378] #151 TAP | pantalla=app-consultation ("REGISTROS MÉDICOS") | <button> clase="download-button" dom=ion-content > div > div > button
+[2026-10-13 02:40:06.892] #152 TAP | pantalla=app-consultation ("REGISTROS MÉDICOS") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:40:06.908] #153 VIEW | pantalla=app-consultation ("REGISTROS MÉDICOS") | ionViewWillEnter app-consultations url=/consultations
+[2026-10-13 02:40:06.930] #154 NAV | pantalla=app-consultation ("REGISTROS MÉDICOS") | pushState → /consultations | desde=app-consultation ("REGISTROS MÉDICOS") | hacia=app-consultation ("REGISTROS MÉDICOS") ← TAP#152 button"ATRÁS"
+[2026-10-13 02:40:07.145] #155 VIEW | pantalla=app-consultation ("REGISTROS MÉDICOS") | ionViewDidEnter app-consultations url=/consultations
+[2026-10-13 02:40:07.522] #156 NAV | pantalla=app-consultations ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-consultation ("REGISTROS MÉDICOS") | hacia=app-consultations ("REGISTROS MÉDICOS") url=/consultations ← TAP#152 button"ATRÁS"
+[2026-10-13 02:40:08.222] #157 TAP | pantalla=app-consultations ("REGISTROS MÉDICOS") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:40:08.232] #158 VIEW | pantalla=app-consultations ("REGISTROS MÉDICOS") | ionViewWillEnter app-rm url=/rm
+[2026-10-13 02:40:08.248] #159 NAV | pantalla=app-consultations ("REGISTROS MÉDICOS") | pushState → /rm | desde=app-consultations ("REGISTROS MÉDICOS") | hacia=app-consultations ("REGISTROS MÉDICOS") ← TAP#157 button"ATRÁS"
+[2026-10-13 02:40:08.463] #160 VIEW | pantalla=app-consultations ("REGISTROS MÉDICOS") | ionViewDidEnter app-rm url=/rm
+[2026-10-13 02:40:08.722] #161 NAV | pantalla=app-rm ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-consultations ("REGISTROS MÉDICOS") | hacia=app-rm ("REGISTROS MÉDICOS") url=/rm ← TAP#157 button"ATRÁS"
+[2026-10-13 02:40:11.250] #162 TAP | pantalla=app-rm ("REGISTROS MÉDICOS") | <svg> dom=ion-content > div > div > svg
+[2026-10-13 02:40:11.287] #163 VIEW | pantalla=app-rm ("REGISTROS MÉDICOS") | ionViewWillEnter app-diagnosis url=/diagnosis
+[2026-10-13 02:40:11.298] #164 NAV | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | pushState → /diagnosis | desde=app-rm ("REGISTROS MÉDICOS") | hacia=app-diagnosis ("REGISTROS MÉDICOS") ← TAP#162 svg
+[2026-10-13 02:40:11.308] #165 HTTP→ | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/patient/39991140/M/DNI ← TAP#162 svg
+[2026-10-13 02:40:11.595] #166 HTTP← | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/patient/39991140/M/DNI status=0 287ms bytes=0 resp= ← TAP#162 svg
+[2026-10-13 02:40:11.597] #167 HTTP→ | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/diagnosis/patient/159482 ← TAP#162 svg
+[2026-10-13 02:40:11.600] #168 VIEW | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | ionViewDidEnter app-diagnosis url=/diagnosis
+[2026-10-13 02:40:11.722] #169 NAV | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-diagnosis ("REGISTROS MÉDICOS") | hacia=app-diagnosis ("REGISTROS MÉDICOS") url=/diagnosis ← TAP#162 svg
+[2026-10-13 02:40:11.905] #170 HTTP← | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/diagnosis/patient/159482 status=0 308ms bytes=0 resp= ← TAP#162 svg
+[2026-10-13 02:40:26.874] #171 TAP | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | <mat-expansion-panel-header#mat-expansion-panel-header-20> texto="CONTROL POR ODONTOLOGIA" clase="mat-expansion-panel-header ng-tns-c8-48 ng-trigger ng-trigge…(+101)" dom=ion-col > mat-accordion > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-20
+[2026-10-13 02:40:26.898] #172 HTTP→ | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/diagnosisEvolutions/9333310/patient/159482 ← TAP#171 mat-expansion-panel-header"CONTROL POR ODONTOLOGIA"
+[2026-10-13 02:40:38.149] #173 TAP | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | <mat-expansion-panel-header#mat-expansion-panel-header-19> texto="DOLOR DE GARGANTA" clase="mat-expansion-panel-header ng-tns-c8-46 ng-trigger ng-trigge…(+101)" dom=ion-col > mat-accordion > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-19
+[2026-10-13 02:40:38.169] #174 HTTP→ | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/diagnosisEvolutions/9333024/patient/159482 ← TAP#173 mat-expansion-panel-header"DOLOR DE GARGANTA"
+[2026-10-13 02:40:38.421] #175 HTTP← | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/diagnosisEvolutions/9333024/patient/159482 status=0 252ms bytes=0 resp= ← TAP#173 mat-expansion-panel-header"DOLOR DE GARGANTA"
+[2026-10-13 02:40:54.317] #176 TAP | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | <mat-expansion-panel-header#mat-expansion-panel-header-19> texto="DOLOR DE GARGANTA" clase="mat-expansion-panel-header ng-tns-c8-46 ng-trigger ng-trigge…(+114)" dom=ion-col > mat-accordion > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-19
+[2026-10-13 02:40:56.338] #177 TAP | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | <mat-expansion-panel-header#mat-expansion-panel-header-19> texto="DOLOR DE GARGANTA" clase="mat-expansion-panel-header ng-tns-c8-46 ng-trigger ng-trigge…(+101)" dom=ion-col > mat-accordion > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-19
+[2026-10-13 02:41:20.846] #178 TAP | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | <mat-expansion-panel-header#mat-expansion-panel-header-19> texto="DOLOR DE GARGANTA" clase="mat-expansion-panel-header ng-tns-c8-46 ng-trigger ng-trigge…(+114)" dom=ion-col > mat-accordion > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-19
+[2026-10-13 02:41:23.621] #179 TAP | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:41:23.633] #180 VIEW | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | ionViewWillEnter app-rm url=/rm
+[2026-10-13 02:41:23.649] #181 NAV | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | pushState → /rm | desde=app-diagnosis ("REGISTROS MÉDICOS") | hacia=app-diagnosis ("REGISTROS MÉDICOS") ← TAP#179 button"ATRÁS"
+[2026-10-13 02:41:23.869] #182 VIEW | pantalla=app-diagnosis ("REGISTROS MÉDICOS") | ionViewDidEnter app-rm url=/rm
+[2026-10-13 02:41:24.323] #183 NAV | pantalla=app-rm ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-diagnosis ("REGISTROS MÉDICOS") | hacia=app-rm ("REGISTROS MÉDICOS") url=/rm ← TAP#179 button"ATRÁS"
+[2026-10-13 02:41:26.802] #184 TAP | pantalla=app-rm ("REGISTROS MÉDICOS") | <h4> texto="MIS RECETAS" dom=ion-content > div > div > h4
+[2026-10-13 02:41:26.836] #185 VIEW | pantalla=app-rm ("REGISTROS MÉDICOS") | ionViewWillEnter app-prescriptions url=/prescriptions
+[2026-10-13 02:41:26.846] #186 NAV | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | pushState → /prescriptions | desde=app-rm ("REGISTROS MÉDICOS") | hacia=app-prescriptions ("REGISTROS MÉDICOS") ← TAP#184 h4"MIS RECETAS"
+[2026-10-13 02:41:26.858] #187 HTTP→ | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/patient/39991140/M/DNI ← TAP#184 h4"MIS RECETAS"
+[2026-10-13 02:41:27.140] #188 VIEW | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | ionViewDidEnter app-prescriptions url=/prescriptions
+[2026-10-13 02:41:27.204] #189 HTTP← | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/patient/39991140/M/DNI status=0 346ms bytes=0 resp= ← TAP#184 h4"MIS RECETAS"
+[2026-10-13 02:41:27.210] #190 HTTP→ | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/consultations/patient/159482/code/M ← TAP#184 h4"MIS RECETAS"
+[2026-10-13 02:41:27.321] #191 NAV | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-prescriptions ("REGISTROS MÉDICOS") | hacia=app-prescriptions ("REGISTROS MÉDICOS") url=/prescriptions ← TAP#184 h4"MIS RECETAS"
+[2026-10-13 02:41:27.714] #192 HTTP← | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/consultations/patient/159482/code/M status=0 504ms bytes=0 resp= ← TAP#184 h4"MIS RECETAS"
+[2026-10-13 02:41:31.305] #193 TAP | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | <p> texto="GARCIA, CLAUDIA BEATRIZ" clase="prescriptions__item-text" dom=ion-content > div > div > p
+[2026-10-13 02:41:31.332] #194 VIEW | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | ionViewWillEnter app-prescription url=/prescription
+[2026-10-13 02:41:31.343] #195 NAV | pantalla=app-prescription ("REGISTROS MÉDICOS") | pushState → /prescription | desde=app-prescriptions ("REGISTROS MÉDICOS") | hacia=app-prescription ("REGISTROS MÉDICOS") ← TAP#193 p"GARCIA, CLAUDIA BEATRIZ"
+[2026-10-13 02:41:31.345] #196 HTTP→ | pantalla=app-prescription ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/prescriptions/consultation/7607183?benefitType=M ← TAP#193 p"GARCIA, CLAUDIA BEATRIZ"
+[2026-10-13 02:41:31.523] #197 NAV | pantalla=app-prescription ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-prescription ("REGISTROS MÉDICOS") | hacia=app-prescription ("REGISTROS MÉDICOS") url=/prescription ← TAP#193 p"GARCIA, CLAUDIA BEATRIZ"
+[2026-10-13 02:41:31.542] #198 HTTP← | pantalla=app-prescription ("REGISTROS MÉDICOS") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/prescriptions/consultation/7607183?benefitType=M status=0 197ms bytes=0 resp= ← TAP#193 p"GARCIA, CLAUDIA BEATRIZ"
+[2026-10-13 02:41:31.643] #199 VIEW | pantalla=app-prescription ("REGISTROS MÉDICOS") | ionViewDidEnter app-prescription url=/prescription
+[2026-10-13 02:41:33.825] #200 TAP | pantalla=app-prescription ("REGISTROS MÉDICOS") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:41:33.838] #201 VIEW | pantalla=app-prescription ("REGISTROS MÉDICOS") | ionViewWillEnter app-prescriptions url=/prescriptions
+[2026-10-13 02:41:33.850] #202 NAV | pantalla=app-prescription ("REGISTROS MÉDICOS") | pushState → /prescriptions | desde=app-prescription ("REGISTROS MÉDICOS") | hacia=app-prescription ("REGISTROS MÉDICOS") ← TAP#200 button"ATRÁS"
+[2026-10-13 02:41:34.060] #203 VIEW | pantalla=app-prescription ("REGISTROS MÉDICOS") | ionViewDidEnter app-prescriptions url=/prescriptions
+[2026-10-13 02:41:34.522] #204 NAV | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-prescription ("REGISTROS MÉDICOS") | hacia=app-prescriptions ("REGISTROS MÉDICOS") url=/prescriptions ← TAP#200 button"ATRÁS"
+[2026-10-13 02:41:34.655] #205 TAP | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:41:34.667] #206 VIEW | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | ionViewWillEnter app-rm url=/rm
+[2026-10-13 02:41:34.676] #207 NAV | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | pushState → /rm | desde=app-prescriptions ("REGISTROS MÉDICOS") | hacia=app-prescriptions ("REGISTROS MÉDICOS") ← TAP#205 button"ATRÁS"
+[2026-10-13 02:41:34.891] #208 VIEW | pantalla=app-prescriptions ("REGISTROS MÉDICOS") | ionViewDidEnter app-rm url=/rm
+
+
+2026-10-13 02:41:35.122] #209 NAV | pantalla=app-rm ("REGISTROS MÉDICOS") | cambio de pantalla visible | desde=app-prescriptions ("REGISTROS MÉDICOS") | hacia=app-rm ("REGISTROS MÉDICOS") url=/rm ← TAP#205 button"ATRÁS"
+[2026-10-13 02:41:35.604] #210 TAP | pantalla=app-rm ("REGISTROS MÉDICOS") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:41:35.630] #211 VIEW | pantalla=app-rm ("REGISTROS MÉDICOS") | ionViewWillEnter app-health url=/health
+[2026-10-13 02:41:35.642] #212 NAV | pantalla=app-rm ("REGISTROS MÉDICOS") | replaceState → /health | desde=app-rm ("REGISTROS MÉDICOS") | hacia=app-rm ("REGISTROS MÉDICOS") ← TAP#210 button"ATRÁS"
+[2026-10-13 02:41:35.644] #213 NAV | pantalla=app-rm ("REGISTROS MÉDICOS") | pushState → /health | desde=app-rm ("REGISTROS MÉDICOS") | hacia=app-rm ("REGISTROS MÉDICOS") ← TAP#210 button"ATRÁS"
+[2026-10-13 02:41:35.867] #214 VIEW | pantalla=app-rm ("REGISTROS MÉDICOS") | ionViewDidEnter app-health url=/health
+[2026-10-13 02:41:36.322] #215 NAV | pantalla=app-health | cambio de pantalla visible | desde=app-rm ("REGISTROS MÉDICOS") | hacia=app-health url=/health ← TAP#210 button"ATRÁS"
+[2026-10-13 02:41:38.066] #216 TAP | pantalla=app-health | <ion-card#map> clase="map sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-content > ion-row > ion-col > ion-card#map
+[2026-10-13 02:41:38.084] #217 VIEW | pantalla=app-health | ionViewWillEnter app-sport-map url=/sportMap
+[2026-10-13 02:41:38.093] #218 NAV | pantalla=app-sport-map ("PORTAL PUNTANO") | pushState → /sportMap | desde=app-health | hacia=app-sport-map ("PORTAL PUNTANO") ← TAP#216 ion-card
+[2026-10-13 02:41:38.121] #219 NAV | pantalla=app-sport-map ("PORTAL PUNTANO") | cambio de pantalla visible | desde=app-sport-map ("PORTAL PUNTANO") | hacia=app-sport-map ("PORTAL PUNTANO") url=/sportMap ← TAP#216 ion-card
+[2026-10-13 02:41:38.385] #220 VIEW | pantalla=app-sport-map ("PORTAL PUNTANO") | ionViewDidEnter app-sport-map url=/sportMap
+[2026-10-13 02:41:44.653] #221 TAP | pantalla=app-sport-map ("PORTAL PUNTANO") | <b> texto="MAPA DEPORTIVO" dom=ion-list > ion-list-header > h2 > b
+[2026-10-13 02:41:45.103] #222 TAP | pantalla=app-sport-map ("PORTAL PUNTANO") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:41:45.117] #223 VIEW | pantalla=app-sport-map ("PORTAL PUNTANO") | ionViewWillEnter app-health url=/health
+[2026-10-13 02:41:45.125] #224 NAV | pantalla=app-sport-map ("PORTAL PUNTANO") | pushState → /health | desde=app-sport-map ("PORTAL PUNTANO") | hacia=app-sport-map ("PORTAL PUNTANO") ← TAP#222 button"ATRÁS"
+[2026-10-13 02:41:45.337] #225 VIEW | pantalla=app-sport-map ("PORTAL PUNTANO") | ionViewDidEnter app-health url=/health
+[2026-10-13 02:41:45.818] #226 TAP | pantalla=app-sport-map ("PORTAL PUNTANO") | <ion-button> texto="ATRÁS" clase="white md button button-clear ion-activatable ion-focusable h…(+17)" dom=ion-header > ion-toolbar > ion-buttons > ion-button
+[2026-10-13 02:41:45.829] #227 VIEW | pantalla=app-sport-map ("PORTAL PUNTANO") | ionViewWillEnter app-home url=/home
+[2026-10-13 02:41:45.848] #228 NAV | pantalla=app-health | pushState → /home | desde=app-sport-map ("PORTAL PUNTANO") | hacia=app-health ← TAP#226 ion-button"ATRÁS"
+[2026-10-13 02:41:45.922] #229 NAV | pantalla=app-health | cambio de pantalla visible | desde=app-health | hacia=app-health url=/home ← TAP#226 ion-button"ATRÁS"
+[2026-10-13 02:41:46.146] #230 VIEW | pantalla=app-health | ionViewDidEnter app-home url=/home
+[2026-10-13 02:41:46.522] #231 NAV | pantalla=app-home | cambio de pantalla visible | desde=app-health | hacia=app-home url=/home ← TAP#226 ion-button"ATRÁS"
+[2026-10-13 02:41:46.916] #232 TAP | pantalla=app-home | <ion-card> texto=".rc0 { fill: #1E88E5; } .rc1 { fill: #FFFFFF; }" clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-grid > ion-row > ion-col > ion-card
+[2026-10-13 02:41:46.927] #233 HTTP→ | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/civilRegistration/certificates ← TAP#232 ion-card".rc0 { fill: #1E88E5; } .rc1 {…(+17)"
+[2026-10-13 02:41:47.512] #234 HTTP← | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/civilRegistration/certificates status=0 585ms bytes=0 resp= ← TAP#232 ion-card".rc0 { fill: #1E88E5; } .rc1 {…(+17)"
+[2026-10-13 02:41:47.524] #235 VIEW | pantalla=app-home | ionViewWillEnter app-proceedings url=/proceedings
+[2026-10-13 02:41:47.537] #236 NAV | pantalla=app-proceedings ("REGISTRO CIVIL") | pushState → /proceedings | desde=app-home | hacia=app-proceedings ("REGISTRO CIVIL") ← TAP#232 ion-card".rc0 { fill: #1E88E5; } .rc1 {…(+17)"
+[2026-10-13 02:41:47.725] #237 NAV | pantalla=app-proceedings ("REGISTRO CIVIL") | cambio de pantalla visible | desde=app-proceedings ("REGISTRO CIVIL") | hacia=app-proceedings ("REGISTRO CIVIL") url=/proceedings ← TAP#232 ion-card".rc0 { fill: #1E88E5; } .rc1 {…(+17)"
+[2026-10-13 02:41:47.832] #238 VIEW | pantalla=app-proceedings ("REGISTRO CIVIL") | ionViewDidEnter app-proceedings url=/proceedings
+[2026-10-13 02:41:49.030] #239 TAP | pantalla=app-proceedings ("REGISTRO CIVIL") | <svg> texto="ionicons-v5-a" dom=ion-content > ion-list > ion-list-header > svg
+[2026-10-13 02:41:49.613] #240 TAP | pantalla=app-proceedings ("REGISTRO CIVIL") | <svg> texto="ionicons-v5-a" dom=ion-content > ion-list > ion-list-header > svg
+[2026-10-13 02:41:50.929] #241 TAP | pantalla=app-proceedings ("REGISTRO CIVIL") | <ion-card> clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-item > ion-list > ion-item > ion-card
+[2026-10-13 02:41:50.947] #242 HTTP→ | pantalla=app-proceedings ("REGISTRO CIVIL") | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password ← TAP#241 ion-card
+[2026-10-13 02:41:51.136] #243 HTTP← | pantalla=app-proceedings ("REGISTRO CIVIL") | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password status=0 189ms bytes=0 resp= ← TAP#241 ion-card
+[2026-10-13 02:42:48.093] #244 HTTP← | pantalla=app-proceedings ("REGISTRO CIVIL") | GET http://puntano.gob.ar:8080/portalServer/secure/bus/rm/diagnosisEvolutions/9333310/patient/159482 status=0 141195ms bytes=0 resp= ← TAP#171 mat-expansion-panel-header"CONTROL POR ODONTOLOGIA"
+[2026-10-13 02:43:02.908] #245 VIEW | pantalla=app-proceedings ("REGISTRO CIVIL") | ionViewWillEnter app-home url=/home
+[2026-10-13 02:43:02.927] #246 NAV | pantalla=app-proceedings ("REGISTRO CIVIL") | pushState → /home | desde=app-proceedings ("REGISTRO CIVIL") | hacia=app-proceedings ("REGISTRO CIVIL") ← (sin tap: carga automática de pantalla)
+[2026-10-13 02:43:03.148] #247 VIEW | pantalla=app-proceedings ("REGISTRO CIVIL") | ionViewDidEnter app-home url=/home
+[2026-10-13 02:43:03.322] #248 NAV | pantalla=app-home | cambio de pantalla visible | desde=app-proceedings ("REGISTRO CIVIL") | hacia=app-home url=/home ← (sin tap: carga automática de pantalla)
+[2026-10-13 02:45:03.328] #249 TAP | pantalla=app-home | <ion-card> texto=".rc0 { fill: #1E88E5; } .rc1 { fill: #FFFFFF; }" clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-grid > ion-row > ion-col > ion-card
+[2026-10-13 02:45:03.359] #250 HTTP→ | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/civilRegistration/certificates ← TAP#249 ion-card".rc0 { fill: #1E88E5; } .rc1 {…(+17)"
+[2026-10-13 02:45:03.989] #251 HTTP← | pantalla=app-home | GET http://puntano.gob.ar:8080/portalServer/secure/civilRegistration/certificates status=0 631ms bytes=0 resp= ← TAP#249 ion-card".rc0 { fill: #1E88E5; } .rc1 {…(+17)"
+[2026-10-13 02:45:04.006] #252 VIEW | pantalla=app-home | ionViewWillEnter app-proceedings url=/proceedings
+
+2026-10-13 02:45:04.019] #253 NAV | pantalla=app-proceedings ("REGISTRO CIVIL") | pushState → /proceedings | desde=app-home | hacia=app-proceedings ("REGISTRO CIVIL") ← TAP#249 ion-card".rc0 { fill: #1E88E5; } .rc1 {…(+17)"
+[2026-10-13 02:45:04.308] #254 VIEW | pantalla=app-proceedings ("REGISTRO CIVIL") | ionViewDidEnter app-proceedings url=/proceedings
+[2026-10-13 02:45:04.522] #255 NAV | pantalla=app-proceedings ("REGISTRO CIVIL") | cambio de pantalla visible | desde=app-proceedings ("REGISTRO CIVIL") | hacia=app-proceedings ("REGISTRO CIVIL") url=/proceedings ← TAP#249 ion-card".rc0 { fill: #1E88E5; } .rc1 {…(+17)"
+[2026-10-13 02:45:05.108] #256 TAP | pantalla=app-proceedings ("REGISTRO CIVIL") | <ion-card> clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-item > ion-list > ion-item > ion-card
+[2026-10-13 02:45:05.129] #257 HTTP→ | pantalla=app-proceedings ("REGISTRO CIVIL") | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password ← TAP#256 ion-card
+[2026-10-13 02:45:05.333] #258 HTTP← | pantalla=app-proceedings ("REGISTRO CIVIL") | GET http://puntano.gob.ar:8080/portalServer/secure/mobile/check/password status=0 204ms bytes=0 resp= ← TAP#256 ion-card
+[2026-10-13 02:45:20.601] #259 TAP | pantalla=app-proceedings ("REGISTRO CIVIL") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:45:20.618] #260 VIEW | pantalla=app-proceedings ("REGISTRO CIVIL") | ionViewWillEnter app-home url=/home
+[2026-10-13 02:45:20.634] #261 NAV | pantalla=app-proceedings ("REGISTRO CIVIL") | pushState → /home | desde=app-proceedings ("REGISTRO CIVIL") | hacia=app-proceedings ("REGISTRO CIVIL") ← TAP#259 button"ATRÁS"
+[2026-10-13 02:45:20.834] #262 VIEW | pantalla=app-proceedings ("REGISTRO CIVIL") | ionViewDidEnter app-home url=/home
+[2026-10-13 02:45:21.330] #263 NAV | pantalla=app-home | cambio de pantalla visible | desde=app-proceedings ("REGISTRO CIVIL") | hacia=app-home url=/home ← TAP#259 button"ATRÁS"
+[2026-10-13 02:45:22.565] #264 TAP | pantalla=app-home | <ion-card> clase="sc-ion-card-md-h sc-ion-card-md-s md hydrated" dom=ion-grid > ion-row > ion-col > ion-card
+[2026-10-13 02:45:22.604] #265 NAV | pantalla=app-procedureshome ("MIS TRÁMITES") | pushState → /proceduresHome | desde=app-home | hacia=app-procedureshome ("MIS TRÁMITES") ← TAP#264 ion-card
+[2026-10-13 02:45:22.613] #266 VIEW | pantalla=app-procedureshome ("MIS TRÁMITES") | ionViewWillEnter app-procedureshome url=/proceduresHome
+[2026-10-13 02:45:22.913] #267 VIEW | pantalla=app-procedureshome ("MIS TRÁMITES") | ionViewDidEnter app-procedureshome url=/proceduresHome
+[2026-10-13 02:45:23.122] #268 NAV | pantalla=app-procedureshome ("MIS TRÁMITES") | cambio de pantalla visible | desde=app-procedureshome ("MIS TRÁMITES") | hacia=app-procedureshome ("MIS TRÁMITES") url=/proceduresHome ← TAP#264 ion-card
+[2026-10-13 02:45:23.836] #269 TAP | pantalla=app-procedureshome ("MIS TRÁMITES") | <ion-button> texto="NUEVO TRÁMITE" ruta="/newProcedure" clase="btn-procedures md button button-block button-solid ion-activ…(+39)" dom=ion-router-outlet > app-procedureshome > ion-content > ion-button
+[2026-10-13 02:45:23.870] #270 VIEW | pantalla=app-procedureshome ("MIS TRÁMITES") | ionViewWillEnter app-new-procedure url=/newProcedure
+[2026-10-13 02:45:23.885] #271 NAV | pantalla=app-new-procedure ("NUEVO TRÁMITE") | pushState → /newProcedure | desde=app-procedureshome ("MIS TRÁMITES") | hacia=app-new-procedure ("NUEVO TRÁMITE") ← TAP#269 ion-button"NUEVO TRÁMITE"
+[2026-10-13 02:45:24.177] #272 VIEW | pantalla=app-new-procedure ("NUEVO TRÁMITE") | ionViewDidEnter app-new-procedure url=/newProcedure
+[2026-10-13 02:45:24.322] #273 NAV | pantalla=app-new-procedure ("NUEVO TRÁMITE") | cambio de pantalla visible | desde=app-new-procedure ("NUEVO TRÁMITE") | hacia=app-new-procedure ("NUEVO TRÁMITE") url=/newProcedure ← TAP#269 ion-button"NUEVO TRÁMITE"
+[2026-10-13 02:45:24.980] #274 TAP | pantalla=app-new-procedure ("NUEVO TRÁMITE") | <mat-expansion-panel-header#mat-expansion-panel-header-21> texto="Certificado de Libre de Deuda de Alimentos" clase="mat-expansion-panel-header ng-tns-c8-50 ng-trigger ng-trigge…(+101)" dom=ion-content > mat-accordion > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-21
+[2026-10-13 02:45:28.010] #275 TAP | pantalla=app-new-procedure ("NUEVO TRÁMITE") | <mat-expansion-panel-header#mat-expansion-panel-header-22> texto="Defensoría del pueblo" clase="mat-expansion-panel-header ng-tns-c8-52 ng-trigger ng-trigge…(+101)" dom=ion-content > mat-accordion > mat-expansion-panel > mat-expansion-panel-header#mat-expansion-panel-header-22
+[2026-10-13 02:45:29.725] #276 TAP | pantalla=app-new-procedure ("NUEVO TRÁMITE") | <button> texto="ATRÁS" clase="button-native sc-ion-back-button-md" dom=ion-toolbar > ion-buttons > ion-back-button > button
+[2026-10-13 02:45:29.738] #277 VIEW | pantalla=app-new-procedure ("NUEVO TRÁMITE") | ionViewWillEnter app-procedureshome url=/proceduresHome
+[2026-10-13 02:45:29.749] #278 NAV | pantalla=app-new-procedure ("NUEVO TRÁMITE") | replaceState → /proceduresHome | desde=app-new-procedure ("NUEVO TRÁMITE") | hacia=app-new-procedure ("NUEVO TRÁMITE") ← TAP#276 button"ATRÁS"
+[2026-10-13 02:45:29.750] #279 NAV | pantalla=app-new-procedure ("NUEVO TRÁMITE") | pushState → /proceduresHome | desde=app-new-procedure ("NUEVO TRÁMITE") | hacia=app-new-procedure ("NUEVO TRÁMITE") ← TAP#276 button"ATRÁS"
+[2026-10-13 02:45:29.956] #280 VIEW | pantalla=app-new-procedure ("NUEVO TRÁMITE") | ionViewDidEnter app-procedureshome url=/proceduresHome
+
+2026-10-13 02:45:30.323] #281 NAV | pantalla=app-procedureshome ("MIS TRÁMITES") | cambio de pantalla visible | desde=app-new-procedure ("NUEVO TRÁMITE") | hacia=app-procedureshome ("MIS TRÁMITES") url=/proceduresHome ← TAP#276 button"ATRÁS"
+[2026-10-13 02:45:30.920] #282 TAP | pantalla=app-procedureshome ("MIS TRÁMITES") | <ion-button> texto="TRÁMITES VIGENTES" clase="btn-procedures md button button-block button-solid ion-activ…(+39)" dom=ion-router-outlet > app-procedureshome > ion-content > ion-button
+[2026-10-13 02:45:30.924] #283 HTTP→ | pantalla=app-procedureshome ("MIS TRÁMITES") | GET http://puntano.gob.ar:8080/portalServer/secure/procedure/user/25204?status=ACT&search=&page=0&size=500&sort=dateCreated,desc ← TAP#282 ion-button"TRÁMITES VIGENTES"
+[2026-10-13 02:45:32.452] #284 HTTP← | pantalla=app-procedureshome ("MIS TRÁMITES") | GET http://puntano.gob.ar:8080/portalServer/secure/procedure/user/25204?status=ACT&search=&page=0&size=500&sort=dateCreated,desc status=0 1528ms bytes=0 resp= ← TAP#282 ion-button"TRÁMITES VIGENTES"
+[2026-10-13 02:45:32.898] #285 TAP | pantalla=app-procedureshome ("MIS TRÁMITES") | <ion-button> texto="TRÁMITES REALIZADOS" clase="btn-procedures md button button-block button-solid ion-activ…(+39)" dom=ion-router-outlet > app-procedureshome > ion-content > ion-button
+[2026-10-13 02:45:32.911] #286 HTTP→ | pantalla=app-procedureshome ("MIS TRÁMITES") | GET http://puntano.gob.ar:8080/portalServer/secure/procedure/user/25204?status=FIN&search=&page=0&size=5&sort=dateCreated,desc ← TAP#285 ion-button"TRÁMITES REALIZADOS"
+[2026-10-13 02:45:32.925] #287 VIEW | pantalla=app-procedureshome ("MIS TRÁMITES") | ionViewWillEnter app-completed-procedures url=/completedProcedures
+[2026-10-13 02:45:32.937] #288 NAV | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | pushState → /completedProcedures | desde=app-procedureshome ("MIS TRÁMITES") | hacia=app-completed-procedures ("TRÁMITES REALIZADOS") ← TAP#285 ion-button"TRÁMITES REALIZADOS"
+[2026-10-13 02:45:34.082] #289 HTTP← | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | GET http://puntano.gob.ar:8080/portalServer/secure/procedure/user/25204?status=FIN&search=&page=0&size=5&sort=dateCreated,desc status=0 1171ms bytes=0 resp= ← TAP#285 ion-button"TRÁMITES REALIZADOS"
+[2026-10-13 02:45:34.087] #290 VIEW | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | ionViewDidEnter app-completed-procedures url=/completedProcedures
+[2026-10-13 02:45:34.098] #291 NAV | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | cambio de pantalla visible | desde=app-completed-procedures ("TRÁMITES REALIZADOS") | hacia=app-completed-procedures ("TRÁMITES REALIZADOS") url=/completedProcedures ← TAP#285 ion-button"TRÁMITES REALIZADOS"
+[2026-10-13 02:45:34.810] #292 TAP | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | <ion-item> texto="Mostrar todos" clase="show-all item md item-lines-none ion-focusable hydrated" dom=ion-router-outlet > app-completed-procedures > ion-content > ion-item
+[2026-10-13 02:45:34.812] #293 HTTP→ | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | GET http://puntano.gob.ar:8080/portalServer/secure/procedure/user/25204?status=FIN&search=&page=0&size=&sort=dateCreated,desc ← TAP#292 ion-item"Mostrar todos"
+[2026-10-13 02:45:34.967] #294 HTTP← | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | GET http://puntano.gob.ar:8080/portalServer/secure/procedure/user/25204?status=FIN&search=&page=0&size=&sort=dateCreated,desc status=0 155ms bytes=0 resp= ← TAP#292 ion-item"Mostrar todos"
+[2026-10-13 02:46:39.709] #295 TAP | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | <div> texto="Cargando" clase="loading-wrapper sc-ion-loading-md" dom=app-root > ion-app > ion-loading#ion-overlay-33 > div
+[2026-10-13 02:50:22.081] #296 VIEW | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | ionViewWillEnter app-procedureshome url=/proceduresHome
+[2026-10-13 02:50:22.098] #297 NAV | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | pushState → /proceduresHome | desde=app-completed-procedures ("TRÁMITES REALIZADOS") | hacia=app-completed-procedures ("TRÁMITES REALIZADOS") ← (sin tap: carga automática de pantalla)
+[2026-10-13 02:50:22.304] #298 VIEW | pantalla=app-completed-procedures ("TRÁMITES REALIZADOS") | ionViewDidEnter app-procedureshome url=/proceduresHome
+[2026-10-13 02:50:22.522] #299 NAV | pantalla=app-procedureshome ("MIS TRÁMITES") | cambio de pantalla visible | desde=app-completed-procedures ("TRÁMITES REALIZADOS") | hacia=app-procedureshome ("MIS TRÁMITES") url=/proceduresHome ← (sin tap: carga automática de pantalla)
+[2026-10-13 02:50:23.178] #300 VIEW | pantalla=app-procedureshome ("MIS TRÁMITES") | ionViewWillEnter app-home url=/home
+
+
+2026-10-13 02:50:23.207] #301 NAV | pantalla=app-procedureshome ("MIS TRÁMITES") | pushState → /home | desde=app-procedureshome ("MIS TRÁMITES") | hacia=app-procedureshome ("MIS TRÁMITES") ← (sin tap: carga automática de pantalla)
+[2026-10-13 02:50:23.426] #302 VIEW | pantalla=app-procedureshome ("MIS TRÁMITES") | ionViewDidEnter app-home url=/home
+[2026-10-13 02:50:23.722] #303 NAV | pantalla=app-home | cambio de pantalla visible | desde=app-procedureshome ("MIS TRÁMITES") | hacia=app-home url=/home ← (sin tap: carga automática de pantalla)
+[2026-10-13 02:50:26.368] #304 TAP | pantalla=app-home | <div> texto="Cargando" clase="loading-wrapper sc-ion-loading-md" dom=app-root > ion-app > ion-loading#ion-overlay-33 > div
+[2026-10-13 02:50:40.022] #305 SYS | pantalla=app-home | Guardado en carpeta de la app (Android/data/...): file:///storage/emulated/0/Android/data/com.gpsl.st.portalpuntanomultiplataforma/files/PP_log_2026-10-13-02-50-39-613.txt
+>> Guardado en carpeta de la app (Android/data/...): file:///storage/emulated/0/Android/data/com.gpsl.st.portalpuntanomultiplataforma/files/PP_log_2026-10-13-02-50-39-613.txt
