@@ -31,15 +31,20 @@ class NetworkModule(private val session: SessionStore) {
     private val client = OkHttpClient.Builder().addInterceptor(auth)
         .connectTimeout(20, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build()
     private fun retrofit(baseUrl: String): Retrofit {
+        val configuredBaseUrl = baseUrl.trim()
         if (!BuildConfig.DEMO_MODE) {
-            require(baseUrl.isNotBlank()) {
+            require(configuredBaseUrl.isNotBlank()) {
                 "Servicio no configurado: define PORTAL_BASE_URL con la URL oficial antes de habilitar el modo conectado."
             }
-            require(baseUrl.startsWith("https://", ignoreCase = true)) {
+            require(configuredBaseUrl.startsWith("https://", ignoreCase = true)) {
                 "Configuración insegura: el servicio debe usar HTTPS antes de habilitar el modo conectado."
             }
         }
-        return Retrofit.Builder().baseUrl(baseUrl).client(client)
+        // Retrofit exige una URL base válida incluso en modo demo. Esta URL reservada
+        // no identifica un servicio real y evita que la app se cierre al arrancar
+        // cuando PORTAL_BASE_URL no está configurada. Las operaciones demo no llaman a la API.
+        val effectiveBaseUrl = configuredBaseUrl.ifBlank { "https://portal-puntano-demo.invalid/" }
+        return Retrofit.Builder().baseUrl(effectiveBaseUrl).client(client)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
     }
     val portal: PortalApi by lazy { retrofit(BuildConfig.PORTAL_BASE_URL).create(PortalApi::class.java) }
