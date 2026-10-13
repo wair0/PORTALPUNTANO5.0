@@ -31,6 +31,13 @@ Este documento registra el estado comprobado del repositorio y los contratos ent
 | `civil.certificates` | Consulta certificados | Implementado en cliente; contrato remoto por validar |
 | `files.download` | Devuelve error explícito indicando que la descarga aún no está disponible | Pendiente |
 
+## Preparación de integraciones oficiales (fase 5)
+
+- Las URLs de Portal, Salud, Receta Digital y Educación ya no se fijan como endpoints HTTP dentro del código fuente: se leen de propiedades Gradle o variables de entorno.
+- En modo conectado, `PORTAL_BASE_URL` debe estar definido y usar HTTPS; si falta o es inseguro, la app falla con un mensaje explícito antes de crear Retrofit.
+- La compilación de demostración mantiene `DEMO_MODE=true`; no debe interpretarse como una integración oficial operativa.
+- **Pendiente de información del proveedor:** confirmar las URLs oficiales HTTPS, rutas, esquema de autenticación, DTO y ejemplos de respuesta para cada servicio. No se sustituyen por endpoints adivinados.
+
 ## Sesión y seguridad
 
 - La sesión se conserva en `EncryptedSharedPreferences`, cifrada mediante una `MasterKey`.
@@ -69,6 +76,6 @@ Este documento registra el estado comprobado del repositorio y los contratos ent
 1. Completar la fase 2 con pruebas de contrato y revisión de rutas.
 2. Cerrar la fase 3 comprobando carga local de la presentación visual y navegación; verificar por separado que las consultas de datos requieren conectividad y muestran errores explícitos cuando no la hay.
 3. Revisar seguridad de sesión, WebView y políticas de contenido en la fase 4.
-4. Integrar y validar servicios oficiales en la fase 5.
+4. Completar la fase 5 al recibir y validar contratos oficiales: URLs HTTPS, autenticación, rutas, DTO y respuestas de los servicios.
 5. Probar módulos y regresiones en la fase 6.
 6. Cerrar la fase 7 con CI verde, APK descargable directamente y pruebas en dispositivo.
