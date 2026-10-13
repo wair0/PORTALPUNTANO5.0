@@ -19,7 +19,7 @@ import kotlinx.serialization.json.JsonPrimitive
 @Serializable data class ExpedientDto(val id: String? = null, val number: String? = null, val subject: String? = null, val court: String? = null, val lastAction: String? = null)
 @Serializable data class CertificateDto(val id: String? = null, val type: String? = null, val date: String? = null)
 @Serializable data class AppointmentDto(val id: String? = null, val healthCenter: String? = null, val specialty: String? = null, val professional: String? = null, val date: String? = null, val time: String? = null, val status: String? = null)
-@Serializable data class CredentialDto(val holder: String? = null, val number: String? = null, val expiration: String? = null, val categories: String? = null)
+@Serializable data class CredentialDto(val holder: String? = null, val number: String? = null, val expiration: String? = null, val categories: String? = null, val message: String? = null, val status: String? = null, val matricula: String? = null, val registrationNumber: String? = null, val licenseNumber: String? = null, val professionalTitle: String? = null)
 
 // El código original utiliza studentId; se mantienen alias para tolerar variantes del servicio.
 @Serializable data class StudentDto(val studentId: JsonPrimitive? = null, val id: JsonPrimitive? = null, val name: String? = null, val docNumber: String? = null, val school: String? = null, val schoolName: String? = null)
