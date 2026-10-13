@@ -3,6 +3,8 @@
   const html=document.documentElement;
   let loginState={sex:'M',docNumber:''};
   let current=null;
+  let detailItems=[];
+  let detailRoute='home';
   window.PortalDemoMode=!Bridge.isNative;
 
   const modeStatus=Bridge.call('app.status')
@@ -88,7 +90,7 @@
     paint(Screens.loading());
     modeReady
       .then(()=>Bridge.call(target[0]))
-      .then(data=>{if(current===route)paint(Screens[target[1]](data));})
+      .then(data=>{if(current===route){detailItems=Array.isArray(data)?data:[];detailRoute=route;paint(Screens[target[1]](data));}})
       .catch(error=>{
         if(current!==route)return;
         if(/401|sesi[oó]n|sesion/i.test(error.message||'')){
@@ -107,8 +109,19 @@
   }
 
   root.addEventListener('click',event=>{
-    const target=event.target.closest('[data-go],[data-back],[data-action],[data-seg] button');
+    const target=event.target.closest('[data-go],[data-back],[data-action],[data-item],[data-seg] button');
     if(!target)return;
+
+    if(target.hasAttribute('data-item')){
+      const index=Number(target.getAttribute('data-item'));
+      if(Number.isInteger(index)&&detailItems[index]){
+        current='detail';
+        const titles={shifts:'Turno',procedures:'Trámite',credentials:'Credencial',payslips:'Recibo de sueldo',education:'Alumno',judicial:'Expediente judicial',civil:'Certificado',health:'Registro de salud'};
+        const tabs={shifts:'shifts',procedures:'procedures',credentials:'credentials',payslips:'profile',education:'profile',judicial:'profile',civil:'profile',health:'home'};
+        paint(Screens.detail(detailItems[index],titles[detailRoute]||'Detalle',tabs[detailRoute]||'profile'));
+      }
+      return;
+    }
 
     if(target.hasAttribute('data-go')){
       location.hash=target.getAttribute('data-go');
@@ -146,6 +159,9 @@
           .then(()=>{location.hash='#/login';})
           .catch(error=>toast(error.message||'No se pudo cerrar la sesión.'))
           .finally(()=>{target.disabled=false;});
+        break;
+      case 'detail-back':
+        render();
         break;
       case 'retry':
         render();
