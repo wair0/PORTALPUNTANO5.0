@@ -6,6 +6,7 @@ import com.gpsl.st.portalpuntano5.data.remote.PortalApi
 import com.gpsl.st.portalpuntano5.domain.model.*
 import com.gpsl.st.portalpuntano5.domain.repository.PortalRepository
 import kotlinx.coroutines.CancellationException
+import kotlinx.serialization.json.contentOrNull
 
 class PortalRepositoryImpl(
     private val api: PortalApi,
@@ -13,6 +14,7 @@ class PortalRepositoryImpl(
     private val demo: Boolean
 ) : PortalRepository {
     private val doc get() = session.docNumber ?: error("Sesión expirada (401)")
+    private val userId get() = session.userId ?: error("Volvé a iniciar sesión para consultar los recibos de sueldo.")
 
     override suspend fun homeSummary(): HomeSummary {
         val profile = if (demo) DemoData.profile else {
@@ -78,10 +80,15 @@ class PortalRepositoryImpl(
         )
     }
 
-    override suspend fun payslips(): List<Payslip> =
-        if (demo) DemoData.payslips else api.liquidations().map {
-            Payslip(it.id.orEmpty(), it.period.orEmpty(), it.net.orEmpty())
+    override suspend fun payslips(): List<Payslip> {
+        if (demo) return DemoData.payslips
+        return api.liquidations(userId).liquidations.flatMap { group ->
+            val year = group.year?.contentOrNull.orEmpty()
+            group.liquidation.map { item ->
+                Payslip(item.id?.contentOrNull ?: "", listOf(year, item.period ?: item.name.orEmpty()).filter { it.isNotBlank() }.joinToString(" · "), item.net?.contentOrNull.orEmpty())
+            }
         }
+    }
 
     override suspend fun credentials(): List<Credential> {
         if (demo) return DemoData.credentials
@@ -136,7 +143,7 @@ class PortalRepositoryImpl(
 
     override suspend fun students(): List<Student> =
         if (demo) DemoData.students else api.students().map {
-            Student(it.id.orEmpty(), it.name.orEmpty(), it.docNumber.orEmpty(), it.school.orEmpty())
+            Student(it.studentId?.contentOrNull ?: it.id?.contentOrNull ?: "", it.name.orEmpty(), it.docNumber.orEmpty(), it.school ?: it.schoolName.orEmpty())
         }
 
     override suspend fun expedients(): List<Expedient> =
