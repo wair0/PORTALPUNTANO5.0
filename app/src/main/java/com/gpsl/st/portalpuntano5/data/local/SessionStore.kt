@@ -19,5 +19,16 @@ class SessionStore(context: Context) {
     var fullName: String? get() = prefs.getString("name", null)
         set(v) { prefs.edit().putString("name", v).apply() }
     val isLoggedIn: Boolean get() = !token.isNullOrBlank()
+
+    /** Persiste los campos de identidad juntos para evitar sesiones parcialmente escritas. */
+    fun saveSession(token: String, docNumber: String, fullName: String) {
+        require(token.isNotBlank()) { "El token de sesión no puede estar vacío" }
+        prefs.edit()
+            .putString("token", token)
+            .putString("doc", docNumber)
+            .putString("name", fullName)
+            .apply()
+    }
+
     fun clear() = prefs.edit().clear().apply()
 }
