@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
             webViewClient = PortalWebViewClient(loader) { applyInsets() }
             val diagnostics = LoginDiagnosticLogger(this@MainActivity)
             addJavascriptInterface(
-                PortalBridge(this, lifecycleScope, BridgeRouter(container, DniScanner(this@MainActivity), diagnostics, HomeDiagnosticLogger(this@MainActivity))),
+                PortalBridge(this, lifecycleScope, BridgeRouter(container, DniScanner(this@MainActivity), diagnostics, HomeDiagnosticLogger(this@MainActivity), SectionDiagnosticLogger(this@MainActivity))),
                 "PortalNative"
             )
             WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
