@@ -21,6 +21,7 @@ import com.gpsl.st.portalpuntano5.ui.web.BridgeRouter
 import com.gpsl.st.portalpuntano5.ui.web.LoginDiagnosticLogger
 import com.gpsl.st.portalpuntano5.ui.web.HomeDiagnosticLogger
 import com.gpsl.st.portalpuntano5.ui.web.PortalBridge
+import com.gpsl.st.portalpuntano5.ui.web.SectionDiagnosticLogger
 import com.gpsl.st.portalpuntano5.ui.web.PortalWebViewClient
 
 class MainActivity : ComponentActivity() {
