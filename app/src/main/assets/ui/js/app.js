@@ -63,13 +63,13 @@
   const routes={
     home:['home.summary','home'],
     health:['health.overview','health'],
-    shifts:['shifts.list','shifts'],
-    procedures:['procedures.list','procedures'],
-    credentials:['credentials.list','credentials'],
-    payslips:['payslips.list','payslips'],
-    education:['education.students','education'],
-    judicial:['judicial.list','judicial'],
-    civil:['civil.certificates','civil'],
+    shifts:['official.section','officialSection','shifts'],
+    procedures:['official.section','officialSection','procedures'],
+    credentials:['official.section','officialSection','credentials'],
+    payslips:['official.section','officialSection','payslips'],
+    education:['official.section','officialSection','education'],
+    judicial:['official.section','officialSection','judicial'],
+    civil:['official.section','officialSection','civil'],
     profile:['home.summary','profile']
   };
 
@@ -89,8 +89,8 @@
 
     paint(Screens.loading());
     modeReady
-      .then(()=>Bridge.call(target[0]))
-      .then(data=>{if(current===route){detailItems=Array.isArray(data)?data:[];detailRoute=route;paint(Screens[target[1]](data));}})
+      .then(()=>Bridge.call(target[0],target[2]?{path:target[2]}:{}))
+      .then(data=>{if(current===route){detailItems=Array.isArray(data)?data:(data&&Array.isArray(data.records)?data.records:[]);detailRoute=route;paint(Screens[target[1]](data));}})
       .catch(error=>{
         if(current!==route)return;
         if(/401|sesi[oó]n|sesion/i.test(error.message||'')){
@@ -109,7 +109,7 @@
   }
 
   root.addEventListener('click',event=>{
-    const target=event.target.closest('[data-go],[data-back],[data-action],[data-item],[data-seg] button');
+    const target=event.target.closest('[data-go],[data-back],[data-action],[data-item],[data-official-path],[data-seg] button');
     if(!target)return;
 
     if(target.hasAttribute('data-item')){
@@ -137,6 +137,23 @@
           paint(Screens.detail(item,titles[detailRoute]||'Detalle',tabs[detailRoute]||'profile'));
         }
       }
+      return;
+    }
+
+    if(target.hasAttribute('data-official-path')){
+      const key=target.getAttribute('data-official-path');
+      current='official-section';
+      paint(Screens.loading());
+      Bridge.call('health.section',{path:key})
+        .then(data=>{
+          if(current!=='official-section')return;
+          detailItems=Array.isArray(data.records)?data.records:[];
+          detailRoute=key;
+          paint(Screens.officialSection(data));
+        })
+        .catch(error=>{
+          if(current==='official-section')paint(Screens.error(error.message||'No se pudieron extraer los datos oficiales.'));
+        });
       return;
     }
 
@@ -178,6 +195,7 @@
           .finally(()=>{target.disabled=false;});
         break;
       case 'detail-back':
+      case 'official-back':
         render();
         break;
       case 'retry':
