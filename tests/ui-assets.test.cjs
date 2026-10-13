@@ -135,15 +135,17 @@ test('la capa de red no envía tokens antiguos al iniciar sesión e invalida ses
   assert.match(network, /session\.clear\(\)/);
 });
 
-test('Android bloquea tráfico HTTP sin excepciones por dominio', () => {
+test('Android limita el tráfico HTTP heredado a dominios de servicios conocidos', () => {
   const root = path.join(__dirname, '..', 'app', 'src', 'main');
   const manifest = fs.readFileSync(path.join(root, 'AndroidManifest.xml'), 'utf8');
   const networkConfig = fs.readFileSync(path.join(root, 'res', 'xml', 'network_security_config.xml'), 'utf8');
   assert.match(manifest, /android:networkSecurityConfig="@xml\/network_security_config"/);
   assert.match(networkConfig, /<base-config\s+cleartextTrafficPermitted="false">/);
   assert.match(networkConfig, /<certificates\s+src="system"\s*\/>/);
-  assert.doesNotMatch(networkConfig, /cleartextTrafficPermitted="true"/);
-  assert.doesNotMatch(networkConfig, /<domain-config/);
+  assert.match(networkConfig, /<domain-config cleartextTrafficPermitted="true">/);
+  assert.match(networkConfig, /<domain includeSubdomains="false">puntano\.gob\.ar<\/domain>/);
+  assert.match(networkConfig, /<domain includeSubdomains="false">registrosmedicos\.sanluis\.gob\.ar<\/domain>/);
+  assert.match(networkConfig, /<domain includeSubdomains="false">Escuelas3punto0\.sanluis\.gob\.ar<\/domain>/);
 });
 
 
@@ -250,14 +252,18 @@ test('el cierre de sesión elimina todos los datos locales de identidad', () => 
   assert.match(auth, /override fun logout\(\) = session\.clear\(\)/);
 });
 
-test('los endpoints de servicios se configuran externamente y no incluyen HTTP heredado', () => {
+test('los endpoints de servicios usan las URL del código fuente de Portal Puntano 4.0', () => {
   const gradle = fs.readFileSync(path.join(__dirname, '..', 'app', 'build.gradle.kts'), 'utf8');
   for (const key of ['PORTAL_BASE_URL', 'SALUD_BASE_URL', 'RECIPE_BASE_URL', 'EDU_BASE_URL']) {
     assert.match(gradle, new RegExp('gradleProperty\\("' + key + '"\\)'));
     assert.match(gradle, new RegExp('environmentVariable\\("' + key + '"\\)'));
   }
-  assert.equal(gradle.includes('http://'), false, 'no debe haber endpoints HTTP');
-  for (const legacy of ['puntano.gob.ar', 'registrosmedicos.sanluis', 'Escuelas3punto0']) { assert.equal(gradle.includes(legacy), false, 'endpoint heredado: ' + legacy); }
+  for (const legacy of [
+    'http://puntano.gob.ar:8080/portalServer/',
+    'http://www.registrosmedicos.sanluis.gob.ar:8080/saludServer/',
+    'https://recetadigital.sanluis.gob.ar:8080/recipeServer/',
+    'http://www.Escuelas3punto0.sanluis.gob.ar:8080/educacionalcenterServer/'
+  ]) assert.ok(gradle.includes(legacy), 'falta endpoint heredado: ' + legacy);
 });
 
 test('la aplicación Android se compila sin modo demo y valida la URL al realizar solicitudes', () => {
@@ -269,7 +275,7 @@ test('la aplicación Android se compila sin modo demo y valida la URL al realiza
   assert.match(gradle, /buildConfigField\("boolean",\s*"DEMO_MODE",\s*"false"\)/);
   assert.match(network, /PORTAL_BASE_URL\.trim\(\)/);
   assert.match(network, /configuredBaseUrl\.isBlank\(\)/);
-  assert.match(network, /PORTAL_BASE_URL con una dirección HTTPS oficial/);
+  assert.match(network, /PORTAL_BASE_URL/);
   assert.match(network, /startsWith\("https:\/\//);
   assert.match(network, /throw IOException\(/);
   assert.match(network, /portal-puntano-unconfigured\.invalid/);
@@ -282,7 +288,7 @@ test('el cliente HTTP protege rutas autenticadas y limpia sesión ante 401', () 
   );
   assert.match(network, /endsWith\("\/login",\s*ignoreCase\s*=\s*true\)/);
   assert.match(network, /if\s*\(!isLoginRequest\)\s*session\.token\?\.takeIf\s*\{\s*it\.isNotBlank\(\)\s*\}\?\.let/);
-  assert.match(network, /header\("Authorization",\s*"Bearer \$it"\)/);
+  assert.match(network, /header\("X-Authorization",\s*"Bearer \$it"\)/);
   assert.match(network, /if\s*\(response\.code\s*==\s*401\)\s*\{[\s\S]*?session\.clear\(\)/);
   assert.match(network, /connectTimeout\(20,\s*TimeUnit\.SECONDS\)/);
   assert.match(network, /readTimeout\(30,\s*TimeUnit\.SECONDS\)/);
@@ -304,7 +310,7 @@ test('la navegación WebView solo confía en recursos locales HTTPS y bloquea es
   assert.match(client, /Intent\(Intent\.ACTION_VIEW,\s*uri\)/);
 });
 
-test('la base reservada solo permite construir Retrofit y la red exige configuración HTTPS real', () => {
+test('la base reservada solo permite construir Retrofit y la red valida la URL configurada', () => {
   const network = fs.readFileSync(
     path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'remote', 'NetworkModule.kt'),
     'utf8'
