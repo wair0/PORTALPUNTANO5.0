@@ -283,3 +283,20 @@ test('el cliente HTTP protege rutas autenticadas y limpia sesión ante 401', () 
   assert.match(network, /connectTimeout\(20,\s*TimeUnit\.SECONDS\)/);
   assert.match(network, /readTimeout\(30,\s*TimeUnit\.SECONDS\)/);
 });
+
+test('la navegación WebView solo confía en recursos locales HTTPS y bloquea esquemas personalizados', () => {
+  const client = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'ui', 'web', 'PortalWebViewClient.kt'),
+    'utf8'
+  );
+  assert.match(client, /uri\.scheme\.equals\("https",\s*ignoreCase\s*=\s*true\)/);
+  assert.match(client, /uri\.host\.equals\(WebViewAssetLoader\.DEFAULT_DOMAIN,\s*ignoreCase\s*=\s*true\)/);
+  assert.match(client, /uri\.port\s*==\s*-1\s*\|\|\s*uri\.port\s*==\s*443/);
+  assert.match(client, /uri\.userInfo\s*==\s*null/);
+  assert.match(client, /uri\.path\.orEmpty\(\)\.startsWith\("\/assets\/"\)/);
+  assert.match(client, /uri\.scheme\.equals\("http",\s*ignoreCase\s*=\s*true\)/);
+  assert.match(client, /uri\.scheme\.equals\("https",\s*ignoreCase\s*=\s*true\)/);
+  assert.match(client, /return true/);
+  assert.match(client, /Intent\(Intent\.ACTION_VIEW,\s*uri\)/);
+});
+
