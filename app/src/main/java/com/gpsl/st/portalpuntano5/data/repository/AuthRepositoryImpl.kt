@@ -15,9 +15,9 @@ class AuthRepositoryImpl(private val api: PortalApi, private val session: Sessio
             session.saveSession("demo", request.docNumber, DemoData.profile.fullName)
             return currentSession()
         }
-        val res = api.login(LoginRequestDto(request.docNumber, request.sex, request.password))
-        val token = res.token ?: error("Credenciales inválidas")
-        session.saveSession(token, request.docNumber, res.fullName ?: claim(token, "name") ?: request.docNumber)
+        val res = api.login(LoginRequestDto("DNI", request.docNumber, request.sex, request.password))
+        val token = res.authToken?.token?.takeIf { it.isNotBlank() } ?: error("El servidor no devolvió un token de sesión válido")
+        session.saveSession(token, request.docNumber, res.user?.fullName ?: res.user?.name ?: claim(token, "name") ?: request.docNumber)
         return currentSession()
     }
     override fun logout() = session.clear()
