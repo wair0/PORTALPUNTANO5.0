@@ -22,8 +22,12 @@ class SessionStore(context: Context) {
         set(v) { prefs.edit().putString("userId", v).apply() }
     val isLoggedIn: Boolean get() = !token.isNullOrBlank()
 
+    /** Mantiene la firma original para llamadas que no necesitan el ID interno. */
+    fun saveSession(token: String, docNumber: String, fullName: String) =
+        saveSession(token, docNumber, fullName, null)
+
     /** Persiste los campos de identidad juntos para evitar sesiones parcialmente escritas. */
-    fun saveSession(token: String, docNumber: String, fullName: String, userId: String? = null) {
+    fun saveSession(token: String, docNumber: String, fullName: String, userId: String?) {
         require(token.isNotBlank()) { "El token de sesión no puede estar vacío" }
         prefs.edit()
             .putString("token", token)
