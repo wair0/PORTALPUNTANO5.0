@@ -5,4 +5,11 @@
             <certificates src="system" />
         </trust-anchors>
     </base-config>
+    <!-- Compatibilidad con servicios HTTP heredados del código fuente de Portal Puntano 4.0.
+         HTTP no cifra contraseñas ni tokens; migrar a HTTPS cuando el servidor lo admita. -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">puntano.gob.ar</domain>
+        <domain includeSubdomains="false">registrosmedicos.sanluis.gob.ar</domain>
+        <domain includeSubdomains="false">Escuelas3punto0.sanluis.gob.ar</domain>
+    </domain-config>
 </network-security-config>
