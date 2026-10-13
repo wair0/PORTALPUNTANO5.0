@@ -42,18 +42,20 @@ class PortalRepositoryImpl(
         error("El servicio de salud todavía no está integrado y validado. No se muestran datos de demostración.")
     }
 
-    override suspend fun appointments(): List<Appointment> =
-        if (demo) DemoData.appointments else api.appointments().map {
+    override suspend fun appointments(): List<Appointment> {
+        if (demo) return DemoData.appointments
+        return api.appointments().records("appointments", "data", "content", "items", "results", "turnos").map { item ->
             Appointment(
-                it.id.orEmpty(),
-                it.healthCenter.orEmpty(),
-                it.specialty.orEmpty(),
-                it.professional.orEmpty(),
-                it.date.orEmpty(),
-                it.time.orEmpty(),
-                (it.status ?: "PENDIENTE").uppercase()
+                item.text("id", "appointmentId", "turnId"),
+                item.text("healthCenter", "center", "centerName", "healthCenterName"),
+                item.text("specialty", "speciality", "specialtyName"),
+                item.text("professional", "professionalName", "doctor", "doctorName"),
+                item.text("date", "appointmentDate", "dateTime", "fecha"),
+                item.text("time", "hour", "appointmentTime", "hora"),
+                item.text("status", "state", "estado").ifBlank { "PENDIENTE" }.uppercase()
             )
         }
+    }
 
     private val steps = listOf("Iniciado", "En revisión", "Aprobación", "Listo")
 
@@ -215,19 +217,53 @@ class PortalRepositoryImpl(
     override suspend fun concurrence(studentId: String, dateFrom: String, dateTo: String): JsonElement =
         api.concurrence(studentId, dateFrom, dateTo, present = false)
 
-    override suspend fun expedients(): List<Expedient> =
-        if (demo) DemoData.expedients else api.expedients(doc).map {
+    override suspend fun expedients(): List<Expedient> {
+        if (demo) return DemoData.expedients
+        return api.expedients(doc).records("expedients", "judicialExpedients", "data", "content", "items", "results", "causes").map { item ->
             Expedient(
-                it.id.orEmpty(),
-                it.number.orEmpty(),
-                it.subject.orEmpty(),
-                it.court.orEmpty(),
-                it.lastAction.orEmpty()
+                item.text("id", "expedientId", "judicialExpedientId"),
+                item.text("number", "expedientNumber", "caseNumber", "numero"),
+                item.text("subject", "coverLetter", "caratula", "title", "name"),
+                item.text("court", "courtName", "tribunal", "juzgado"),
+                item.text("lastAction", "lastMovement", "lastUpdate", "ultimaActuacion")
             )
         }
+    }
 
-    override suspend fun civilCertificates(): List<CivilCertificate> =
-        if (demo) DemoData.certificates else api.certificates().map {
-            CivilCertificate(it.id.orEmpty(), it.type.orEmpty(), it.date.orEmpty())
+    override suspend fun civilCertificates(): List<CivilCertificate> {
+        if (demo) return DemoData.certificates
+        return api.certificates().records("certificates", "certificate", "data", "content", "items", "results").map { item ->
+            CivilCertificate(
+                item.text("id", "certificateId"),
+                item.text("type", "certificateType", "name", "title", "tipo"),
+                item.text("date", "createdAt", "issueDate", "fecha")
+            )
         }
+    }
+
+    private fun JsonElement.records(vararg wrappers: String): List<JsonObject> {
+        if (this is JsonArray) return this.mapNotNull { it as? JsonObject }
+        if (this !is JsonObject) return emptyList()
+        for (key in wrappers) {
+            val child = this[key] ?: continue
+            if (child is JsonArray) return child.mapNotNull { it as? JsonObject }
+            if (child is JsonObject) {
+                val nested = child.records(*wrappers)
+                if (nested.isNotEmpty()) return nested
+                if (child.keys.any { it in setOf("id", "studentId", "number", "name", "title", "type", "center", "healthCenter") }) return listOf(child)
+            }
+        }
+        return if (keys.any { it in setOf("id", "appointmentId", "expedientId", "certificateId", "number", "name", "title", "type", "center", "healthCenter") }) listOf(this) else emptyList()
+    }
+
+    private fun JsonObject.text(vararg keys: String): String =
+        keys.firstNotNullOfOrNull { key ->
+            this[key]?.let { value ->
+                when (value) {
+                    is JsonPrimitive -> value.contentOrNull
+                    is JsonObject -> value["name"]?.jsonPrimitive?.contentOrNull
+                    else -> null
+                }
+            }?.takeIf { it.isNotBlank() }
+        }.orEmpty()
 }
