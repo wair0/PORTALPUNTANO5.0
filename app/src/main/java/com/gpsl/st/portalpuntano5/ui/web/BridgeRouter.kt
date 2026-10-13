@@ -13,28 +13,57 @@ class BridgeRouter(
     private val c: AppContainer,
     private val scanner: DniScanner,
     private val loginLogger: LoginDiagnosticLogger,
-    private val homeLogger: HomeDiagnosticLogger
+    private val homeLogger: HomeDiagnosticLogger,
+    private val sectionLogger: SectionDiagnosticLogger
 ) {
     private val json = Json { encodeDefaults = true }
     private inline fun <reified T> enc(v: T): String = json.encodeToString(v)
 
-    suspend fun handle(route: String, payload: JsonObject): String = when (route) {
-        "app.status" -> enc(mapOf("demoMode" to BuildConfig.DEMO_MODE))
-        "auth.session" -> enc(c.auth.currentSession())
-        "auth.login" -> login(payload)
-        "auth.logout" -> { c.auth.logout(); """{"ok":true}""" }
-        "auth.scanDni" -> enc(scanner.scan())
-        "home.summary" -> homeSummary()
-        "health.overview" -> enc(c.portal.healthOverview())
-        "shifts.list" -> enc(c.portal.appointments())
-        "procedures.list" -> enc(c.portal.procedures())
-        "payslips.list" -> enc(c.portal.payslips())
-        "credentials.list" -> enc(c.portal.credentials())
-        "education.students" -> enc(c.portal.students())
-        "judicial.list" -> enc(c.portal.expedients())
-        "civil.certificates" -> enc(c.portal.civilCertificates())
-        "files.download" -> error("Descarga disponible en la próxima fase")
-        else -> error("Ruta desconocida: $route")
+    suspend fun handle(route: String, payload: JsonObject): String {
+        val startedAt = System.currentTimeMillis()
+        return try {
+            val result = when (route) {
+                "app.status" -> enc(mapOf("demoMode" to BuildConfig.DEMO_MODE))
+                "auth.session" -> enc(c.auth.currentSession())
+                "auth.login" -> login(payload)
+                "auth.logout" -> { c.auth.logout(); """{"ok":true}""" }
+                "auth.scanDni" -> enc(scanner.scan())
+                "home.summary" -> homeSummary()
+                "health.overview" -> enc(c.portal.healthOverview())
+                "shifts.list" -> enc(c.portal.appointments())
+                "procedures.list" -> enc(c.portal.procedures())
+                "payslips.list" -> enc(c.portal.payslips())
+                "credentials.list" -> enc(c.portal.credentials())
+                "education.students" -> enc(c.portal.students())
+                "judicial.list" -> enc(c.portal.expedients())
+                "civil.certificates" -> enc(c.portal.civilCertificates())
+                "files.download" -> error("Descarga disponible en la próxima fase")
+                else -> error("Ruta desconocida: $route")
+            }
+            runCatching {
+                sectionLogger.recordSuccess(
+                    route, System.currentTimeMillis() - startedAt, result,
+                    c.session.docNumber, c.session.isLoggedIn
+                )
+            }
+            result
+        } catch (e: CancellationException) {
+            runCatching {
+                sectionLogger.recordCancelled(
+                    route, System.currentTimeMillis() - startedAt,
+                    c.session.docNumber, c.session.isLoggedIn
+                )
+            }
+            throw e
+        } catch (e: Exception) {
+            runCatching {
+                sectionLogger.recordFailure(
+                    route, System.currentTimeMillis() - startedAt, e,
+                    c.session.docNumber, c.session.isLoggedIn
+                )
+            }
+            throw e
+        }
     }
 
     private suspend fun homeSummary(): String {
