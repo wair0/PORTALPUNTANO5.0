@@ -9,7 +9,9 @@
          HTTP no cifra contraseñas ni tokens; migrar a HTTPS cuando el servidor lo admita. -->
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="false">puntano.gob.ar</domain>
+        <domain includeSubdomains="false">www.registrosmedicos.sanluis.gob.ar</domain>
         <domain includeSubdomains="false">registrosmedicos.sanluis.gob.ar</domain>
+        <domain includeSubdomains="false">www.Escuelas3punto0.sanluis.gob.ar</domain>
         <domain includeSubdomains="false">Escuelas3punto0.sanluis.gob.ar</domain>
     </domain-config>
 </network-security-config>
