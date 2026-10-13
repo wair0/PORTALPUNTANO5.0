@@ -29,7 +29,9 @@ class BridgeRouter(
                 "auth.logout" -> { c.auth.logout(); """{"ok":true}""" }
                 "auth.scanDni" -> enc(scanner.scan())
                 "home.summary" -> homeSummary()
-                "health.overview" -> enc(c.portal.healthOverview())
+                "health.overview" -> c.officialPortal.catalog()
+                "health.section" -> c.officialPortal.fetch(payload.str("path"))
+                "official.section" -> c.officialPortal.fetch(payload.str("path"))
                 "shifts.list" -> enc(c.portal.appointments())
                 "procedures.list" -> enc(c.portal.procedures())
                 "payslips.list" -> enc(c.portal.payslips())
