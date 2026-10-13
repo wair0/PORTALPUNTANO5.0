@@ -28,10 +28,10 @@ interface PortalApi {
     @GET("secure/liquidations/{userId}")
     suspend fun liquidations(@Path("userId") userId: String): LiquidationsResponseDto
 
-    @GET("secure/judicialExpedient/docType/DNI/docNumber/{docNumber}") suspend fun expedients(@Path("docNumber") docNumber: String): List<ExpedientDto>
+    @GET("secure/judicialExpedient/docType/DNI/docNumber/{docNumber}") suspend fun expedients(@Path("docNumber") docNumber: String): JsonElement
     @GET("secure/actions/expedient/{id}") suspend fun expedientActions(@Path("id") id: String): JsonElement
-    @GET("secure/civilRegistration/certificates") suspend fun certificates(): List<CertificateDto>
-    @GET("secure/appointments/rm") suspend fun appointments(): List<AppointmentDto>
+    @GET("secure/civilRegistration/certificates") suspend fun certificates(): JsonElement
+    @GET("secure/appointments/rm") suspend fun appointments(): JsonElement
     @GET("secure/driverLicense/license") suspend fun driverLicense(): CredentialDto
     @GET("secure/ministryOfHealth/credential") suspend fun healthCredential(): CredentialDto
 
