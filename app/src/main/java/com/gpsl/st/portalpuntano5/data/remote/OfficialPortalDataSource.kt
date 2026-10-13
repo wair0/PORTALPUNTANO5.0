@@ -94,10 +94,12 @@ class OfficialPortalDataSource(private val session: SessionStore) {
     private fun parseResponse(key: String, title: String, url: String, contentType: String, body: String): String {
         val jsonBody = contentType.contains("json", true) || body.trimStart().let { it.startsWith("{") || it.startsWith("[") }
         if (jsonBody) {
+            val records = runCatching { jsonRecords(body) }.getOrDefault(JSONArray())
             return JSONObject()
                 .put("key", key).put("title", title).put("source", url)
                 .put("format", "json").put("cached", false)
-                .put("rawData", body).put("records", JSONArray())
+                .put("records", records)
+                .put("message", if (records.length() == 0) "La respuesta JSON no contiene registros reconocibles." else "")
                 .toString()
         }
 
@@ -132,6 +134,32 @@ class OfficialPortalDataSource(private val session: SessionStore) {
             .put("headings", JSONArray(headings)).put("records", records)
             .put("message", if (records.length() == 0) "La página no contiene registros legibles en HTML estático; puede cargar los datos mediante JavaScript." else "")
             .toString()
+    }
+
+    private fun jsonRecords(body: String): JSONArray {
+        val out = JSONArray()
+        fun walk(value: Any?, depth: Int) {
+            if (depth > 7 || out.length() >= 100) return
+            when (value) {
+                is JSONArray -> for (i in 0 until value.length()) walk(value.opt(i), depth + 1)
+                is JSONObject -> {
+                    val titleKeys = listOf("title", "name", "nombre", "type", "tipo", "number", "numero", "id", "date", "fecha", "specialty", "especialidad")
+                    val detailKeys = listOf("detail", "description", "descripcion", "status", "estado", "date", "fecha", "professional", "profesional", "center", "centro")
+                    val title = titleKeys.firstNotNullOfOrNull { k -> value.opt(k)?.takeIf { it !is JSONObject && it !is JSONArray && it != JSONObject.NULL }?.toString()?.takeIf { it.isNotBlank() } }
+                    if (title != null) {
+                        val detail = detailKeys.mapNotNull { k ->
+                            value.opt(k)?.takeIf { it !is JSONObject && it !is JSONArray && it != JSONObject.NULL }?.toString()?.takeIf { it.isNotBlank() && it != title }
+                        }.distinct().joinToString(" · ").take(700)
+                        out.put(JSONObject().put("title", title.take(180)).put("detail", detail))
+                    } else {
+                        value.keys().forEach { key -> walk(value.opt(key), depth + 1) }
+                    }
+                }
+            }
+        }
+        val root: Any = if (body.trimStart().startsWith("[")) JSONArray(body) else JSONObject(body)
+        walk(root, 0)
+        return out
     }
 
     @Suppress("DEPRECATION")
