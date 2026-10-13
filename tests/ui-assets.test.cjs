@@ -188,7 +188,7 @@ test('la descarga pendiente no se presenta como una operación implementada', ()
 });
 
 
-test('la interfaz se sirve desde WebViewAssetLoader y sus recursos no dependen de Internet', () => {
+test('la presentación visual se carga desde recursos locales sin depender de Internet', () => {
   const activity = fs.readFileSync(
     path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'ui', 'MainActivity.kt'),
     'utf8'
