@@ -60,8 +60,8 @@ class PortalRepositoryImpl(
         if (demo) return DemoData.procedures
 
         // Portal Puntano 4.0 exige status=ACT o status=FIN y devuelve { content, page }.
-        val active = api.procedures(doc, status = "ACT").content.map { it.toProcedure("ACT") }
-        val finished = api.procedures(doc, status = "FIN").content.map { it.toProcedure("FIN") }
+        val active = api.procedures(userId, status = "ACT").content.map { it.toProcedure("ACT") }
+        val finished = api.procedures(userId, status = "FIN").content.map { it.toProcedure("FIN") }
         return active + finished
     }
 
