@@ -18,15 +18,18 @@ class SessionStore(context: Context) {
         set(v) { prefs.edit().putString("doc", v).apply() }
     var fullName: String? get() = prefs.getString("name", null)
         set(v) { prefs.edit().putString("name", v).apply() }
+    var userId: String? get() = prefs.getString("userId", null)
+        set(v) { prefs.edit().putString("userId", v).apply() }
     val isLoggedIn: Boolean get() = !token.isNullOrBlank()
 
     /** Persiste los campos de identidad juntos para evitar sesiones parcialmente escritas. */
-    fun saveSession(token: String, docNumber: String, fullName: String) {
+    fun saveSession(token: String, docNumber: String, fullName: String, userId: String? = null) {
         require(token.isNotBlank()) { "El token de sesión no puede estar vacío" }
         prefs.edit()
             .putString("token", token)
             .putString("doc", docNumber)
             .putString("name", fullName)
+            .putString("userId", userId)
             .apply()
     }
 
