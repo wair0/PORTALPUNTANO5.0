@@ -6,7 +6,6 @@ import com.gpsl.st.portalpuntano5.data.remote.PortalApi
 import com.gpsl.st.portalpuntano5.domain.model.*
 import com.gpsl.st.portalpuntano5.domain.repository.PortalRepository
 import kotlinx.coroutines.CancellationException
-import kotlinx.serialization.json.content
 
 class PortalRepositoryImpl(
     private val api: PortalApi,
@@ -69,7 +68,7 @@ class PortalRepositoryImpl(
         val done = requestedStatus == "FIN" || rawStatus.contains("REALIZ") || rawStatus == "FIN"
         val progress = progress ?: if (done) 100 else 33
         return Procedure(
-            id?.content ?: "",
+            id?.toString()?.removeSurrounding("\"") ?: "",
             name ?: coverLetter.orEmpty(),
             if (done) "REALIZADO" else "VIGENTE",
             progress,
