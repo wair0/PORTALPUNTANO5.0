@@ -269,3 +269,17 @@ test('el modo conectado exige endpoint configurado y HTTPS antes de crear Retrof
   assert.match(network, /require\(baseUrl\.isNotBlank\(\)\)/);
   assert.match(network, /require\(baseUrl\.startsWith\("https:\/\/"\s*,\s*ignoreCase\s*=\s*true\)\)/);
 });
+
+
+test('el cliente HTTP protege rutas autenticadas y limpia sesión ante 401', () => {
+  const network = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'remote', 'NetworkModule.kt'),
+    'utf8'
+  );
+  assert.match(network, /endsWith\("\/login",\s*ignoreCase\s*=\s*true\)/);
+  assert.match(network, /if\s*\(!isLoginRequest\)\s*session\.token\?\.takeIf\s*\{\s*it\.isNotBlank\(\)\s*\}\?\.let/);
+  assert.match(network, /header\("Authorization",\s*"Bearer \$it"\)/);
+  assert.match(network, /if\s*\(response\.code\s*==\s*401\)\s*\{[\s\S]*?session\.clear\(\)/);
+  assert.match(network, /connectTimeout\(20,\s*TimeUnit\.SECONDS\)/);
+  assert.match(network, /readTimeout\(30,\s*TimeUnit\.SECONDS\)/);
+});
