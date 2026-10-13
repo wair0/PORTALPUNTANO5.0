@@ -31,6 +31,13 @@ Este documento registra el estado comprobado del repositorio y los contratos ent
 | `civil.certificates` | Consulta certificados | Implementado en cliente; contrato remoto por validar |
 | `files.download` | Devuelve error explícito indicando que la descarga aún no está disponible | Pendiente |
 
+## Comportamiento esperado sin conexión
+
+- **Solo la presentación visual es local:** HTML, CSS, JavaScript, iconos y animaciones se sirven desde los recursos empaquetados de la app mediante `WebViewAssetLoader`.
+- **Los datos no se consideran offline:** perfil, turnos, trámites, liquidaciones y demás información deben venir de la sesión y de los servicios correspondientes; sin conexión, la app debe informar del error y no presentar datos ficticios como actuales.
+- **No confundir caché visual con disponibilidad de datos:** poder abrir la interfaz sin Internet no implica que las consultas, el inicio de sesión ni las operaciones remotas funcionen offline.
+- **Modo demo:** los datos ficticios solo son aceptables cuando la app indica claramente que está en modo demostración.
+
 ## Reglas obligatorias
 
 1. No mostrar datos ficticios como si fueran reales en modo conectado.
@@ -52,7 +59,7 @@ Este documento registra el estado comprobado del repositorio y los contratos ent
 ## Próximos pasos
 
 1. Completar la fase 2 con pruebas de contrato y revisión de rutas.
-2. Cerrar la fase 3 comprobando carga local de recursos, navegación y comportamiento sin conexión.
+2. Cerrar la fase 3 comprobando carga local de la presentación visual y navegación; verificar por separado que las consultas de datos requieren conectividad y muestran errores explícitos cuando no la hay.
 3. Revisar seguridad de sesión, WebView y políticas de contenido en la fase 4.
 4. Integrar y validar servicios oficiales en la fase 5.
 5. Probar módulos y regresiones en la fase 6.
