@@ -249,3 +249,23 @@ test('el cierre de sesión elimina todos los datos locales de identidad', () => 
   assert.match(session, /fun clear\(\) = prefs\.edit\(\)\.clear\(\)\.apply\(\)/);
   assert.match(auth, /override fun logout\(\) = session\.clear\(\)/);
 });
+
+test('los endpoints de servicios se configuran externamente y no incluyen HTTP heredado', () => {
+  const gradle = fs.readFileSync(path.join(__dirname, '..', 'app', 'build.gradle.kts'), 'utf8');
+  for (const key of ['PORTAL_BASE_URL', 'SALUD_BASE_URL', 'RECIPE_BASE_URL', 'EDU_BASE_URL']) {
+    assert.match(gradle, new RegExp('gradleProperty\\("' + key + '"\\)'));
+    assert.match(gradle, new RegExp('environmentVariable\\("' + key + '"\\)'));
+  }
+  assert.doesNotMatch(gradle, /http:\\/\\//i);
+  assert.doesNotMatch(gradle, /puntano\\.gob\\.ar|registrosmedicos\\.sanluis|Escuelas3punto0/i);
+});
+
+test('el modo conectado exige endpoint configurado y HTTPS antes de crear Retrofit', () => {
+  const network = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'remote', 'NetworkModule.kt'),
+    'utf8'
+  );
+  assert.match(network, /if\s*\(!BuildConfig\.DEMO_MODE\)/);
+  assert.match(network, /require\(baseUrl\.isNotBlank\(\)\)/);
+  assert.match(network, /require\(baseUrl\.startsWith\("https:\/\/"\s*,\s*ignoreCase\s*=\s*true\)\)/);
+});
