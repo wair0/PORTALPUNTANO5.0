@@ -31,6 +31,14 @@ Este documento registra el estado comprobado del repositorio y los contratos ent
 | `civil.certificates` | Consulta certificados | Implementado en cliente; contrato remoto por validar |
 | `files.download` | Devuelve error explícito indicando que la descarga aún no está disponible | Pendiente |
 
+## Sesión y seguridad
+
+- La sesión se conserva en `EncryptedSharedPreferences`, cifrada mediante una `MasterKey`.
+- El inicio de sesión persiste token, documento y nombre en una sola edición de preferencias; los tokens vacíos se rechazan.
+- El cierre de sesión borra los valores locales. Una respuesta HTTP 401 invalida la sesión para no reutilizar credenciales caducadas.
+- El cliente de red exige HTTPS en modo conectado y no adjunta el token previo a la solicitud de login.
+- Estas medidas no sustituyen las pruebas contra la API oficial ni una verificación en dispositivo real.
+
 ## Comportamiento esperado sin conexión
 
 - **Solo la presentación visual es local:** HTML, CSS, JavaScript, iconos y animaciones se sirven desde los recursos empaquetados de la app mediante `WebViewAssetLoader`.
@@ -53,7 +61,7 @@ Este documento registra el estado comprobado del repositorio y los contratos ent
 - [x] Enumerar rutas públicas del puente y su estado observado.
 - [x] Identificar módulos que fallan explícitamente por falta de integración.
 - [ ] Validar contratos de API con documentación/proveedor oficial.
-- [ ] Añadir pruebas de contrato para respuestas válidas, errores HTTP y sesión expirada.
+- [ ] Añadir pruebas de contrato para respuestas válidas y errores HTTP; la invalidación local ante HTTP 401 está cubierta por pruebas estáticas.
 - [x] Verificar automáticamente que las rutas de pantalla y las llamadas visibles de la UI existan en el puente nativo; las descargas siguen marcadas como pendientes.
 
 ## Próximos pasos
