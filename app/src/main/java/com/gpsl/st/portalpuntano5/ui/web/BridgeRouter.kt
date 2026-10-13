@@ -12,7 +12,8 @@ import retrofit2.HttpException
 class BridgeRouter(
     private val c: AppContainer,
     private val scanner: DniScanner,
-    private val loginLogger: LoginDiagnosticLogger
+    private val loginLogger: LoginDiagnosticLogger,
+    private val homeLogger: HomeDiagnosticLogger
 ) {
     private val json = Json { encodeDefaults = true }
     private inline fun <reified T> enc(v: T): String = json.encodeToString(v)
@@ -23,7 +24,7 @@ class BridgeRouter(
         "auth.login" -> login(payload)
         "auth.logout" -> { c.auth.logout(); """{"ok":true}""" }
         "auth.scanDni" -> enc(scanner.scan())
-        "home.summary" -> enc(c.portal.homeSummary())
+        "home.summary" -> homeSummary()
         "health.overview" -> enc(c.portal.healthOverview())
         "shifts.list" -> enc(c.portal.appointments())
         "procedures.list" -> enc(c.portal.procedures())
@@ -34,6 +35,22 @@ class BridgeRouter(
         "civil.certificates" -> enc(c.portal.civilCertificates())
         "files.download" -> error("Descarga disponible en la próxima fase")
         else -> error("Ruta desconocida: $route")
+    }
+
+    private suspend fun homeSummary(): String {
+        try {
+            return enc(c.portal.homeSummary())
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            val logName = runCatching {
+                homeLogger.recordFailure(c.session.docNumber, c.session.isLoggedIn, e)
+            }.getOrNull()
+            val status = (e as? HttpException)?.code()?.let { "HTTP " + it } ?: e.javaClass.simpleName
+            val logMessage = if (logName != null) " Diagnóstico: Descargas/PortalPuntano/" + logName else
+                " No se pudo crear el archivo de diagnóstico."
+            throw IllegalStateException("No se pudo cargar el inicio (" + status + ")." + logMessage, e)
+        }
     }
 
     private suspend fun login(payload: JsonObject): String {
