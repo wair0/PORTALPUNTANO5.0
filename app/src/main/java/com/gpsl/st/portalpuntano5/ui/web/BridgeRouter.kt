@@ -53,7 +53,7 @@ class BridgeRouter(
         } catch (e: HttpException) {
             val body = runCatching { e.response()?.errorBody()?.string().orEmpty() }
                 .getOrDefault("(no se pudo leer el cuerpo de error)")
-            loginLogger.recordHttpError(e.code(), e.message(), body)
+            loginLogger.recordHttpError(e.code(), e.message, body)
             throw IllegalStateException(
                 "Inicio de sesión rechazado (HTTP ${e.code()}). Consultá Descargas/PortalPuntano/$logName"
             )
