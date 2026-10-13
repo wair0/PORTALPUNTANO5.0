@@ -35,7 +35,18 @@ class BridgeRouter(
                 "payslips.list" -> enc(c.portal.payslips())
                 "credentials.list" -> enc(c.portal.credentials())
                 "education.students" -> enc(c.portal.students())
+                "education.studentDetail" -> enc(mapOf(
+                    "schoolCycles" to c.portal.schoolCycles(payload.str("studentId")),
+                    "analyticalCertificate" to c.portal.analyticalCertificate(c.session.docNumber.orEmpty())
+                ))
+                "education.cycleDetail" -> enc(mapOf(
+                    "student" to c.portal.studentCycle(payload.str("studentId"), payload.str("schoolCycleId")),
+                    "subjects" to c.portal.subjects(payload.str("studentId"), payload.str("schoolCycleId")),
+                    "reportCard" to c.portal.reportCard(payload.str("studentId"), payload.str("schoolCycleId"))
+                ))
+                "education.attendance" -> enc(c.portal.concurrence(payload.str("studentId"), payload.str("dateFrom"), payload.str("dateTo")))
                 "judicial.list" -> enc(c.portal.expedients())
+                "judicial.actions" -> enc(c.portal.expedientActions(payload.str("id")))
                 "civil.certificates" -> enc(c.portal.civilCertificates())
                 "files.download" -> error("Descarga disponible en la próxima fase")
                 else -> error("Ruta desconocida: $route")
