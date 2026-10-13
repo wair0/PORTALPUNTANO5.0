@@ -260,16 +260,20 @@ test('los endpoints de servicios se configuran externamente y no incluyen HTTP h
   for (const legacy of ['puntano.gob.ar', 'registrosmedicos.sanluis', 'Escuelas3punto0']) { assert.equal(gradle.includes(legacy), false, 'endpoint heredado: ' + legacy); }
 });
 
-test('el modo conectado exige endpoint configurado y HTTPS antes de crear Retrofit', () => {
+test('la aplicación Android se compila sin modo demo y valida la URL al realizar solicitudes', () => {
+  const gradle = fs.readFileSync(path.join(__dirname, '..', 'app', 'build.gradle.kts'), 'utf8');
   const network = fs.readFileSync(
     path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'remote', 'NetworkModule.kt'),
     'utf8'
   );
-  assert.match(network, /if\s*\(!BuildConfig\.DEMO_MODE\)/);
-  assert.match(network, /require\(configuredBaseUrl\.isNotBlank\(\)\)/);
-  assert.match(network, /require\(configuredBaseUrl\.startsWith\("https:\/\/"\s*,\s*ignoreCase\s*=\s*true\)\)/);
+  assert.match(gradle, /buildConfigField\("boolean",\s*"DEMO_MODE",\s*"false"\)/);
+  assert.match(network, /PORTAL_BASE_URL\.trim\(\)/);
+  assert.match(network, /configuredBaseUrl\.isBlank\(\)/);
+  assert.match(network, /PORTAL_BASE_URL con una dirección HTTPS oficial/);
+  assert.match(network, /startsWith\("https:\/\//);
+  assert.match(network, /throw IOException\(/);
+  assert.match(network, /portal-puntano-unconfigured\.invalid/);
 });
-
 
 test('el cliente HTTP protege rutas autenticadas y limpia sesión ante 401', () => {
   const network = fs.readFileSync(
@@ -300,14 +304,13 @@ test('la navegación WebView solo confía en recursos locales HTTPS y bloquea es
   assert.match(client, /Intent\(Intent\.ACTION_VIEW,\s*uri\)/);
 });
 
-test('el modo demo usa una URL base reservada para evitar el cierre de Retrofit al arrancar', () => {
+test('la base reservada solo permite construir Retrofit y la red exige configuración HTTPS real', () => {
   const network = fs.readFileSync(
     path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'remote', 'NetworkModule.kt'),
     'utf8'
   );
-  assert.match(network, /configuredBaseUrl\.ifBlank\s*\{\s*"https:\/\/portal-puntano-demo\.invalid\/"\s*\}/);
+  assert.match(network, /configuredBaseUrl\.ifBlank\s*\{\s*"https:\/\/portal-puntano-unconfigured\.invalid\/"\s*\}/);
   assert.match(network, /baseUrl\(effectiveBaseUrl\)/);
-  assert.match(network, /if\s*\(!BuildConfig\.DEMO_MODE\)/);
-  assert.match(network, /require\(configuredBaseUrl\.isNotBlank\(\)\)/);
-  assert.match(network, /require\(configuredBaseUrl\.startsWith\("https:\/\/"\s*,\s*ignoreCase\s*=\s*true\)\)/);
+  assert.match(network, /throw IOException\(/);
+  assert.doesNotMatch(network, /if\s*\(!BuildConfig\.DEMO_MODE\)\s*\{\s*require\(/);
 });
