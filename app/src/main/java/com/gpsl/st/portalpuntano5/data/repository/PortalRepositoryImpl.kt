@@ -7,7 +7,7 @@ import com.gpsl.st.portalpuntano5.domain.model.*
 import com.gpsl.st.portalpuntano5.domain.repository.PortalRepository
 import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
-import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.*
 
 class PortalRepositoryImpl(
     private val api: PortalApi,
@@ -83,7 +83,17 @@ class PortalRepositoryImpl(
 
     override suspend fun payslips(): List<Payslip> {
         if (demo) return DemoData.payslips
-        return api.liquidations(userId).liquidations.flatMap { group ->
+        // Una cuenta sin recibos puede responder 404; para esta sección significa lista vacía,
+        // no un error que bloquee la navegación.
+        val response = try {
+            api.liquidations(userId)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: HttpException) {
+            if (e.code() == 404 || e.code() == 204) return emptyList()
+            throw e
+        }
+        return response.liquidations.flatMap { group ->
             val year = group.year?.contentOrNull.orEmpty()
             group.liquidation.map { item ->
                 Payslip(item.id?.contentOrNull ?: "", listOf(year, item.period ?: item.name.orEmpty()).filter { it.isNotBlank() }.joinToString(" · "), item.net?.contentOrNull.orEmpty())
@@ -157,10 +167,53 @@ class PortalRepositoryImpl(
         }
     }
 
-    override suspend fun students(): List<Student> =
-        if (demo) DemoData.students else api.students().map {
-            Student(it.studentId?.contentOrNull ?: it.id?.contentOrNull ?: "", it.name.orEmpty(), it.docNumber.orEmpty(), it.school ?: it.schoolName.orEmpty())
+    override suspend fun students(): List<Student> {
+        if (demo) return DemoData.students
+        val response = api.students()
+        val candidates: List<JsonElement> = when (response) {
+            is JsonArray -> response.toList()
+            is JsonObject -> {
+                val wrapped = listOf("person", "students", "data", "content", "student").firstNotNullOfOrNull { response[it] }
+                when (wrapped) {
+                    is JsonArray -> wrapped.toList()
+                    is JsonObject -> listOf(wrapped)
+                    else -> if (response.keys.any { it in setOf("studentId", "id", "name", "docNumber", "school") }) listOf(response) else emptyList()
+                }
+            }
+            else -> emptyList()
         }
+        return candidates.mapNotNull { item ->
+            val obj = item as? JsonObject ?: return@mapNotNull null
+            fun value(vararg keys: String): String = keys.firstNotNullOfOrNull { key ->
+                obj[key]?.let { element ->
+                    when (element) {
+                        is JsonPrimitive -> element.contentOrNull
+                        is JsonObject -> element["name"]?.jsonPrimitive?.contentOrNull
+                        else -> null
+                    }
+                }?.takeIf { it.isNotBlank() }
+            }.orEmpty()
+            val id = value("studentId", "id", "personId")
+            val name = value("name", "fullName", "studentName").ifBlank {
+                listOf(value("firstName", "givenName"), value("lastName", "surname")).filter { it.isNotBlank() }.joinToString(" ")
+            }
+            if (id.isBlank() && name.isBlank()) null
+            else Student(id, name, value("docNumber", "documentNumber", "dni"), value("school", "schoolName", "institution"))
+        }
+    }
+
+    override suspend fun expedientActions(id: String): JsonElement {
+        if (demo) return buildJsonArray { }
+        return api.expedientActions(id)
+    }
+
+    override suspend fun schoolCycles(personId: String): JsonElement = api.schoolCycles(personId)
+    override suspend fun analyticalCertificate(docNumber: String): JsonElement = api.analyticalCertificate(docNumber)
+    override suspend fun studentCycle(studentId: String, schoolCycleId: String): JsonElement = api.studentCycle(studentId, schoolCycleId)
+    override suspend fun subjects(studentId: String, schoolCycleId: String): JsonElement = api.subjects(studentId, schoolCycleId)
+    override suspend fun reportCard(studentId: String, schoolCycleId: String): JsonElement = api.reportCard(studentId, schoolCycleId)
+    override suspend fun concurrence(studentId: String, dateFrom: String, dateTo: String): JsonElement =
+        api.concurrence(studentId, dateFrom, dateTo, present = false)
 
     override suspend fun expedients(): List<Expedient> =
         if (demo) DemoData.expedients else api.expedients(doc).map {
