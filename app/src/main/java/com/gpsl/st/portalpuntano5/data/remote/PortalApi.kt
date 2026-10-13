@@ -22,11 +22,17 @@ interface PortalApi {
         @Query("sort") sort: String = "dateCreated,desc"
     ): ProcedurePageDto
 
-    @GET("secure/liquidations/") suspend fun liquidations(): List<LiquidationDto>
+    // El código original de Portal Puntano 4.0 usa el ID interno del usuario,
+    // y devuelve un objeto con una lista "liquidations" agrupada por año.
+    @GET("secure/liquidations/{userId}")
+    suspend fun liquidations(@Path("userId") userId: String): LiquidationsResponseDto
+
     @GET("secure/judicialExpedient/docType/DNI/docNumber/{docNumber}") suspend fun expedients(@Path("docNumber") docNumber: String): List<ExpedientDto>
     @GET("secure/civilRegistration/certificates") suspend fun certificates(): List<CertificateDto>
     @GET("secure/appointments/rm") suspend fun appointments(): List<AppointmentDto>
     @GET("secure/driverLicense/license") suspend fun driverLicense(): CredentialDto
     @GET("secure/ministryOfHealth/credential") suspend fun healthCredential(): CredentialDto
-    @GET("secure/dependents") suspend fun students(): List<StudentDto>
+
+    // Endpoint confirmado en services/student.service.ts del código original.
+    @GET("secure/education/student/tutor") suspend fun students(): List<StudentDto>
 }
