@@ -12,13 +12,12 @@ class AuthRepositoryImpl(private val api: PortalApi, private val session: Sessio
     override fun currentSession() = if (session.isLoggedIn) SessionState(true, profileFromStore()) else SessionState(false)
     override suspend fun login(request: LoginRequest): SessionState {
         if (demo) {
-            session.token = "demo"; session.docNumber = request.docNumber; session.fullName = DemoData.profile.fullName
+            session.saveSession("demo", request.docNumber, DemoData.profile.fullName)
             return currentSession()
         }
         val res = api.login(LoginRequestDto(request.docNumber, request.sex, request.password))
         val token = res.token ?: error("Credenciales inválidas")
-        session.token = token; session.docNumber = request.docNumber
-        session.fullName = res.fullName ?: claim(token, "name") ?: request.docNumber
+        session.saveSession(token, request.docNumber, res.fullName ?: claim(token, "name") ?: request.docNumber)
         return currentSession()
     }
     override fun logout() = session.clear()
