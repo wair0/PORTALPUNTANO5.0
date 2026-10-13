@@ -31,7 +31,6 @@ class BridgeRouter(
                 "home.summary" -> homeSummary()
                 "health.overview" -> c.officialPortal.catalog()
                 "health.section" -> c.officialPortal.fetch(payload.str("path"))
-                "official.section" -> c.officialPortal.fetch(payload.str("path"))
                 "shifts.list" -> enc(c.portal.appointments())
                 "procedures.list" -> enc(c.portal.procedures())
                 "payslips.list" -> enc(c.portal.payslips())
