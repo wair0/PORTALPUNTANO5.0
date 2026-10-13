@@ -63,13 +63,13 @@
   const routes={
     home:['home.summary','home'],
     health:['health.overview','health'],
-    shifts:['official.section','officialSection','shifts'],
-    procedures:['official.section','officialSection','procedures'],
-    credentials:['official.section','officialSection','credentials'],
-    payslips:['official.section','officialSection','payslips'],
-    education:['official.section','officialSection','education'],
-    judicial:['official.section','officialSection','judicial'],
-    civil:['official.section','officialSection','civil'],
+    shifts:['shifts.list','shifts'],
+    procedures:['procedures.list','procedures'],
+    credentials:['credentials.list','credentials'],
+    payslips:['payslips.list','payslips'],
+    education:['education.students','education'],
+    judicial:['judicial.list','judicial'],
+    civil:['civil.certificates','civil'],
     profile:['home.summary','profile']
   };
 
@@ -89,7 +89,7 @@
 
     paint(Screens.loading());
     modeReady
-      .then(()=>Bridge.call(target[0],target[2]?{path:target[2]}:{}))
+      .then(()=>Bridge.call(target[0]))
       .then(data=>{if(current===route){detailItems=Array.isArray(data)?data:(data&&Array.isArray(data.records)?data.records:[]);detailRoute=route;paint(Screens[target[1]](data));}})
       .catch(error=>{
         if(current!==route)return;
