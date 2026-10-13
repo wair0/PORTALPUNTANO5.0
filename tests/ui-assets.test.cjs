@@ -266,8 +266,8 @@ test('el modo conectado exige endpoint configurado y HTTPS antes de crear Retrof
     'utf8'
   );
   assert.match(network, /if\s*\(!BuildConfig\.DEMO_MODE\)/);
-  assert.match(network, /require\(baseUrl\.isNotBlank\(\)\)/);
-  assert.match(network, /require\(baseUrl\.startsWith\("https:\/\/"\s*,\s*ignoreCase\s*=\s*true\)\)/);
+  assert.match(network, /require\(configuredBaseUrl\.isNotBlank\(\)\)/);
+  assert.match(network, /require\(configuredBaseUrl\.startsWith\("https:\/\/"\s*,\s*ignoreCase\s*=\s*true\)\)/);
 });
 
 
@@ -300,3 +300,14 @@ test('la navegación WebView solo confía en recursos locales HTTPS y bloquea es
   assert.match(client, /Intent\(Intent\.ACTION_VIEW,\s*uri\)/);
 });
 
+test('el modo demo usa una URL base reservada para evitar el cierre de Retrofit al arrancar', () => {
+  const network = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'remote', 'NetworkModule.kt'),
+    'utf8'
+  );
+  assert.match(network, /configuredBaseUrl\.ifBlank\s*\{\s*"https:\/\/portal-puntano-demo\.invalid\/"\s*\}/);
+  assert.match(network, /baseUrl\(effectiveBaseUrl\)/);
+  assert.match(network, /if\s*\(!BuildConfig\.DEMO_MODE\)/);
+  assert.match(network, /require\(configuredBaseUrl\.isNotBlank\(\)\)/);
+  assert.match(network, /require\(configuredBaseUrl\.startsWith\("https:\/\/"\s*,\s*ignoreCase\s*=\s*true\)\)/);
+});
