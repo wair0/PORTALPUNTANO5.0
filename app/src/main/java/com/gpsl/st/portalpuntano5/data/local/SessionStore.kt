@@ -37,5 +37,12 @@ class SessionStore(context: Context) {
             .apply()
     }
 
+    fun getOfficialCache(key: String): String? = prefs.getString("official_cache_" + key, null)
+
+    fun putOfficialCache(key: String, value: String) {
+        // Mantiene una copia pequeña por sección para que la interfaz siga siendo útil sin conexión.
+        prefs.edit().putString("official_cache_" + key, value.take(500_000)).apply()
+    }
+
     fun clear() = prefs.edit().clear().apply()
 }
