@@ -19,7 +19,7 @@ class OfficialPortalDataSource(private val session: SessionStore) {
     private val client = OkHttpClient.Builder()
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(25, TimeUnit.SECONDS)
-        .followRedirects(false)
+        .followRedirects(true)
         .followSslRedirects(false)
         .build()
 
@@ -58,19 +58,20 @@ class OfficialPortalDataSource(private val session: SessionStore) {
                 .header("Accept", "text/html,application/json;q=0.9,*/*;q=0.8")
                 .header("User-Agent", "PortalPuntano5/5.0 Android")
                 .header("X-Authorization", "Bearer " + session.token.orEmpty())
-                .header("Authorization", "Bearer " + session.token.orEmpty())
                 .build()
             client.newCall(request).execute().use { response ->
-                if (response.isRedirect) {
-                    throw IOException("El portal oficial redirigió la consulta al inicio de sesión (HTTP ${response.code}). La sesión actual de PP 5.0 todavía no está reconocida por esa web.")
+                val finalUrl = response.request.url
+                if (!finalUrl.isHttps || finalUrl.host != "mobilepuntano.sanluis.gob.ar") {
+                    throw IOException("El portal oficial redirigió a un dominio distinto; se bloqueó por seguridad.")
                 }
                 if (!response.isSuccessful) throw IOException("Portal oficial respondió HTTP ${response.code}.")
                 val body = response.body?.string().orEmpty()
                 if (body.isBlank()) throw IOException("El portal oficial devolvió una respuesta vacía.")
-                if (looksLikeLogin(body)) {
-                    throw IOException("El portal oficial no reconoció la sesión actual. No se solicitó un segundo inicio de sesión.")
+                val finalPath = finalUrl.encodedPath.lowercase()
+                if (finalPath.contains("login") || finalPath.contains("signin") || looksLikeLogin(body)) {
+                    throw IOException("El portal oficial no reconoció la sesión actual de PP 5.0. No se solicitó un segundo inicio de sesión.")
                 }
-                val result = parseResponse(key, entry.first, url, response.header("Content-Type").orEmpty(), body)
+                val result = parseResponse(key, entry.first, finalUrl.toString(), response.header("Content-Type").orEmpty(), body)
                 session.putOfficialCache(key, result)
                 result
             }
