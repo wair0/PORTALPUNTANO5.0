@@ -217,3 +217,35 @@ test('el puente libera solicitudes agotadas y no deja respuestas tardías pendie
   await assert.rejects(pending, /La solicitud tardó demasiado/);
   assert.doesNotThrow(() => window.PortalBridge.resolve(requestedId, { late: true }));
 });
+
+
+test('la sesión se guarda como una unidad y rechaza tokens vacíos', () => {
+  const session = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'local', 'SessionStore.kt'),
+    'utf8'
+  );
+  const auth = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'repository', 'AuthRepositoryImpl.kt'),
+    'utf8'
+  );
+  assert.match(session, /fun saveSession\(token: String, docNumber: String, fullName: String\)/);
+  assert.match(session, /require\(token\.isNotBlank\(\)\)/);
+  assert.match(session, /prefs\.edit\(\)[\s\S]*putString\("token", token\)[\s\S]*putString\("doc", docNumber\)[\s\S]*putString\("name", fullName\)[\s\S]*apply\(\)/);
+  assert.equal((auth.match(/session\.saveSession\(/g) || []).length, 2, 'el login demo y el login real deben guardar la sesión de forma atómica');
+  assert.doesNotMatch(auth, /session\.token\s*=/);
+  assert.doesNotMatch(auth, /session\.docNumber\s*=/);
+  assert.doesNotMatch(auth, /session\.fullName\s*=/);
+});
+
+test('el cierre de sesión elimina todos los datos locales de identidad', () => {
+  const session = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'local', 'SessionStore.kt'),
+    'utf8'
+  );
+  const auth = fs.readFileSync(
+    path.join(__dirname, '..', 'app', 'src', 'main', 'java', 'com', 'gpsl', 'st', 'portalpuntano5', 'data', 'repository', 'AuthRepositoryImpl.kt'),
+    'utf8'
+  );
+  assert.match(session, /fun clear\(\) = prefs\.edit\(\)\.clear\(\)\.apply\(\)/);
+  assert.match(auth, /override fun logout\(\) = session\.clear\(\)/);
+});
