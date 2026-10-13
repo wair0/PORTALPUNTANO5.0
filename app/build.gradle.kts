@@ -26,10 +26,10 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "5.0.0"
-        buildConfigField("String", "PORTAL_BASE_URL", "\"http://puntano.gob.ar:8080/portalServer/\"")
-        buildConfigField("String", "SALUD_BASE_URL", "\"http://www.registrosmedicos.sanluis.gob.ar:8080/saludServer/\"")
-        buildConfigField("String", "RECIPE_BASE_URL", "\"https://recetadigital.sanluis.gob.ar:8080/recipeServer/\"")
-        buildConfigField("String", "EDU_BASE_URL", "\"http://www.Escuelas3punto0.sanluis.gob.ar:8080/educacionalcenterServer/\"")
+        buildConfigField("String", "PORTAL_BASE_URL", "\\\"${portalBaseUrl}\\\"")
+        buildConfigField("String", "SALUD_BASE_URL", "\\\"${healthBaseUrl}\\\"")
+        buildConfigField("String", "RECIPE_BASE_URL", "\\\"${recipeBaseUrl}\\\"")
+        buildConfigField("String", "EDU_BASE_URL", "\\\"${educationBaseUrl}\\\"")
         buildConfigField("boolean", "DEMO_MODE", "true")
     }
     buildTypes { release { isMinifyEnabled = true; isShrinkResources = true; proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro") } }
