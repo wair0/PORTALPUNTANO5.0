@@ -18,6 +18,7 @@ import com.gpsl.st.portalpuntano5.BuildConfig
 import com.gpsl.st.portalpuntano5.PortalPuntanoApp
 import com.gpsl.st.portalpuntano5.scanner.DniScanner
 import com.gpsl.st.portalpuntano5.ui.web.BridgeRouter
+import com.gpsl.st.portalpuntano5.ui.web.LoginDiagnosticLogger
 import com.gpsl.st.portalpuntano5.ui.web.PortalBridge
 import com.gpsl.st.portalpuntano5.ui.web.PortalWebViewClient
 
@@ -39,7 +40,11 @@ class MainActivity : ComponentActivity() {
             settings.apply { javaScriptEnabled = true; allowFileAccess = false; allowContentAccess = false; allowFileAccessFromFileURLs = false; allowUniversalAccessFromFileURLs = false; domStorageEnabled = true; setSupportZoom(false) }
             if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, false)
             webViewClient = PortalWebViewClient(loader) { applyInsets() }
-            addJavascriptInterface(PortalBridge(this, lifecycleScope, BridgeRouter(container, DniScanner(this@MainActivity))), "PortalNative")
+            val diagnostics = LoginDiagnosticLogger(this@MainActivity)
+            addJavascriptInterface(
+                PortalBridge(this, lifecycleScope, BridgeRouter(container, DniScanner(this@MainActivity), diagnostics)),
+                "PortalNative"
+            )
             WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
             loadUrl("https://${WebViewAssetLoader.DEFAULT_DOMAIN}/assets/ui/index.html")
         }
